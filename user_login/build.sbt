@@ -44,9 +44,12 @@ libraryDependencies ++= Seq(
     "com.dripower"      % "play-circe_2.11"     % "2609.1",
     "io.spray"          % "spray-httpx_2.11"    % "1.3.3",
 
-//    pharbers 依赖
+// redis 依赖
+    "net.debasishg"     % "redisclient_2.11"    % "3.4",
+
+// pharbers 依赖
 	"com.pharbers"      % "base_module"         % "1.0",
-//    "com.pharbers"      % "errorcode"           % "1.0",
+    "com.pharbers"      % "errorcode"           % "1.0",
 	"com.pharbers"      % "jsonapi"             % "1.0",
     "com.pharbers"      % "mongo_drive"         % "1.0",
     "com.pharbers"      % "security"            % "1.0",
@@ -54,6 +57,7 @@ libraryDependencies ++= Seq(
     "com.pharbers"      % "third"               % "1.0",
     "com.pharbers"      % "client_pattern"      % "1.0",
     "com.pharbers"      % "models"              % "1.0",
+    "com.pharbers"      % "redis"               % "1.0",
 
 //    其他依赖(日志, 测试)
     "log4j"             % "log4j"               % "1.2.17",

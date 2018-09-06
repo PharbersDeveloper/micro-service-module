@@ -15,17 +15,20 @@ class BMAuthController @Inject()(implicit val cc: ControllerComponents, implicit
 
     import services._
 
-    def step(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
+    def routes(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
         Ok(
             (pkg, step) match {
                 case ("login", 0) => PlayEntry().excution(login()).asJson
                 case ("login", 1) => PlayEntry().excution(encryptToken()).asJson
-                case ("proposal", 0) => PlayEntry().excution(proposalLst()).asJson
-                case ("layout", 0) => PlayEntry().excution(proposalLst()).asJson
+                case ("proposalLst", 0) => PlayEntry().excution(queryBindUserProposal()).asJson
+                case ("proposalLst", 1) => PlayEntry().excution(proposalLst()).asJson
+                case ("layoutLst", 0) => PlayEntry().excution(proposalLst()).asJson
                 case (_, _) => throw new Exception("Bad Request for input")
             }
         )
     }
+
+    def routes2(pkg1: String, pkg2: String, step: Int): Action[RootObject] = routes(pkg1 + "/" + pkg2, step)
 
 //    def proposalLst: Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
 //

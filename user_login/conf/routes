@@ -3,4 +3,5 @@
 # ~~~~
 
 # An example controller showing a sample home page
-POST    /api/v1/:pkg/:step               controllers.BMAuthController.step(pkg: String, step: Int)
+POST    /api/v1/:pkg/:step               controllers.BMAuthController.routes(pkg: String, step: Int)
+POST    /api/v1/:pkg1/:pkg2/:step        controllers.BMAuthController.routes2(pkg1: String, pkg2: String, step: Int)

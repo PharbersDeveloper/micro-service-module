@@ -12,13 +12,13 @@ import com.pharbers.macros._
 import com.pharbers.pattern.mongo.client_db_inst._
 import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
-case class login()(implicit val request: Request[model.RootObject]) extends Brick with CirceJsonapiSupport {
+case class login()(implicit val rq: Request[model.RootObject]) extends Brick with CirceJsonapiSupport {
     override val brick_name: String = "verify email"
 
     var request_data: request = new request()
     var auth_data: auth = auth()
 
-    override def prepare: Unit = request_data = formJsonapi[request](request.body)
+    override def prepare: Unit = request_data = formJsonapi[request](rq.body)
 
     override def exec: Unit = queryObject[user](request_data) match {
         case Some(user) => auth_data.user = Some(user)
