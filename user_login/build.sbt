@@ -46,9 +46,10 @@ libraryDependencies ++= Seq(
 
 //    pharbers 依赖
 	"com.pharbers"      % "base_module"         % "1.0",
-    "com.pharbers"      % "errorcode"           % "1.0",
+//    "com.pharbers"      % "errorcode"           % "1.0",
 	"com.pharbers"      % "jsonapi"             % "1.0",
     "com.pharbers"      % "mongo_drive"         % "1.0",
+    "com.pharbers"      % "security"            % "1.0",
     "com.pharbers"      % "macros"              % "1.0",
     "com.pharbers"      % "third"               % "1.0",
     "com.pharbers"      % "client_pattern"      % "1.0",
