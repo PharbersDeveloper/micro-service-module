@@ -4,17 +4,17 @@ import java.util.Date
 
 import com.pharbers.driver.PhRedisDriver
 import play.api.mvc.Request
-import com.pharbers.models.auth
 import com.pharbers.jsonapi.model
 import com.pharbers.pattern.frame._
 import com.pharbers.macros._
 import com.pharbers.sercuity.Sercurity
 import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
+import com.pharbers.models.service.auth
 
 case class encryptToken()(implicit val rq: Request[model.RootObject]) extends Brick {
     override val brick_name: String = "encrypt token"
 
-    var auth_data: auth = auth()
+    var auth_data: auth = new auth()
 
     override def prepare: Unit = auth_data = formJsonapi[auth](rq.body)
 
@@ -25,11 +25,9 @@ case class encryptToken()(implicit val rq: Request[model.RootObject]) extends Br
         rd.addMap(token, "user_id", user.id)
         rd.addMap(token, "email", user.email)
         rd.addMap(token, "user_name", user.user_name)
-        rd.expire(token, auth_data.token_expire)
+//        rd.expire(token, auth_data.token_expire)
         token
     }
-
-    override def forwardTo(next_brick: String): Unit = {}
 
     override def goback: model.RootObject = toJsonapi(auth_data)
 
