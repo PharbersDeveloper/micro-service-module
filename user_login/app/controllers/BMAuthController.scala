@@ -23,6 +23,7 @@ class BMAuthController @Inject()(implicit val cc: ControllerComponents, implicit
                 case ("proposalLst", 0) => PlayEntry().excution(queryBindUserProposal()).asJson
                 case ("proposalLst", 1) => PlayEntry().excution(findProposal()).asJson
                 case ("layoutLst", 0) => PlayEntry().excution(layoutLst()).asJson
+                case ("repinputcards", 0) => PlayEntry().excution(queryRepByScen()).asJson
                 case ("test", 0) => PlayEntry().excution(findProposal()).asJson
                 case (_, _) => throw new Exception("Bad Request for input")
             }

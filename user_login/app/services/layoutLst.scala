@@ -11,7 +11,7 @@ import play.api.mvc.Request
 case class layoutLst()(implicit val rq: Request[model.RootObject])
         extends Brick with CirceJsonapiSupport with parseToken {
 
-    override val brick_name: String = "verify email"
+    override val brick_name: String = "find layout lst"
 
     var layout_data: List[alldecision] = Nil
 

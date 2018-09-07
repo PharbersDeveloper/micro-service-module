@@ -12,7 +12,7 @@ import play.api.mvc.Request
 
 case class findProposal()(implicit val rq: Request[model.RootObject])
         extends Brick with CirceJsonapiSupport with parseToken {
-    override val brick_name: String = "get proposal list"
+    override val brick_name: String = "find proposal list"
 
     var request_data: request = new request
     var proposal_data = new proposal()
