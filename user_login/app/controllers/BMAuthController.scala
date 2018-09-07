@@ -22,6 +22,8 @@ class BMAuthController @Inject()(implicit val cc: ControllerComponents, implicit
                 case ("login", 1) => PlayEntry().excution(encryptToken()).asJson
                 case ("proposalLst", 0) => PlayEntry().excution(queryBindUserProposal()).asJson
                 case ("proposalLst", 1) => PlayEntry().excution(findProposal()).asJson
+                case ("medicsnotices", 0) => PlayEntry().excution(findScenarioConnectGoods()).asJson
+                case ("medicsnotices", 1) => PlayEntry().excution(findMedicine()).asJson
                 case ("layoutLst", 0) => PlayEntry().excution(layoutLst()).asJson
                 case ("repinputcards", 0) => PlayEntry().excution(queryRepByScen()).asJson
                 case ("test", 0) => PlayEntry().excution(findProposal()).asJson
