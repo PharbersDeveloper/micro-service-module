@@ -6,7 +6,7 @@ import com.pharbers.models.entity.{hospital, representative}
 
 @One2OneConn[hospital]("hospital")
 @One2ManyConn[hospmedicinfo]("hospmedicinfos")
-@One2ManyConn[representative]("representatives")
+@One2OneConn[representative]("representative")
 @ToStringMacro
 class hospitalbaseinfo() extends commonEntity {
     var major = 1

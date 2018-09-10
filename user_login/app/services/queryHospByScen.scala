@@ -5,11 +5,10 @@ import com.pharbers.jsonapi.model
 import com.pharbers.macros._
 import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 import com.pharbers.models.entity.{hospital, medicine, representative, scenario}
-import com.pharbers.models.service.repinputinfo
+import com.pharbers.models.service.{hospitalbaseinfo, hospmedicinfo}
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.mongo.client_db_inst._
 import com.pharbers.pattern.request._
-import entity.{hospitalbaseinfo, hospmedicinfo}
 import play.api.mvc.Request
 
 case class queryHospByScen()(implicit val rq: Request[model.RootObject])
@@ -26,16 +25,16 @@ case class queryHospByScen()(implicit val rq: Request[model.RootObject])
     }
 
     override def exec: Unit = {
-        val scenario_data = queryObject[scenario](request_data)
-        val connect_dest = scenario_data.get.current("connect_dest").asInstanceOf[List[Map[String, Any]]]
-        val dest_goods_rep = scenario_data.get.current("dest_goods_rep").asInstanceOf[List[Map[String, Any]]]
-        val hosp_ids = connect_dest.map(_ ("id").asInstanceOf[String])
-        hosp_detail_lst = hosp_ids.take(1).map { hosp_id =>
+        implicit val any2Lst: Any => List[Map[String, Any]] = any => any.asInstanceOf[List[Map[String, Any]]]
+        val scenario_data = queryObject[scenario](request_data).getOrElse(throw new Exception("Could not find specified scenario"))
+        val dest_goods_rep = scenario_data.current("dest_goods_rep")
+        val hosp_ids = scenario_data.current("connect_dest").map(_ ("id").asInstanceOf[String])
+        hosp_detail_lst = hosp_ids.map { hosp_id =>
             val hosp_detail = new hospitalbaseinfo()
-            hosp_detail.hospital = None //findHospDetail(hosp_id)
+            hosp_detail.hospital = findHospDetail(hosp_id)
             hosp_detail.id = hosp_id
-            hosp_detail.hospmedicinfos = findConnMed(scenario_data.get, hosp_id)
-            hosp_detail.representatives = None //findConnRep(dest_goods_rep, hosp_id)
+            hosp_detail.hospmedicinfos = findConnMed(scenario_data, hosp_id)
+            hosp_detail.representative = findConnRep(dest_goods_rep, hosp_id)
             hosp_detail
         }
     }
@@ -52,6 +51,48 @@ case class queryHospByScen()(implicit val rq: Request[model.RootObject])
         queryObject[hospital](request)
     }
 
+    def findConnMed(scenario_data: scenario, hosp_id: String): Option[List[hospmedicinfo]] = {
+        implicit val any2Lst: Any => List[Map[String, Any]] = any => any.asInstanceOf[List[Map[String, Any]]]
+        val currnet_phase = scenario_data.current("phase").asInstanceOf[Int]
+        val dest_goods = scenario_data.current("dest_goods").filter(_ ("dest_id") == hosp_id)
+        val pre_current = scenario_data.past.find(_ ("phase") == currnet_phase - 1)
+                .getOrElse(throw new Exception("not next phase of data"))
+        val pre_dest_goods = pre_current("dest_goods").filter(_ ("dest_id") == hosp_id)
+        val pre_dest_goods_rep = pre_current("dest_goods_rep").filter(_ ("dest_id") == hosp_id)
+        val med_ids = dest_goods.map(_ ("goods_id").asInstanceOf[String])
+
+        Some(
+            med_ids.map { med_id =>
+                val hospmedicinfo = new hospmedicinfo()
+                hospmedicinfo.id = med_id
+                hospmedicinfo.pre_target = calcPreTarget(med_id, pre_dest_goods_rep)
+                hospmedicinfo.prod_category = findMedDetail(med_id).map(_.prod_category)
+                        .getOrElse(throw new Exception("Could not find specified medicine"))
+                hospmedicinfo.overview = getOverriew(med_id, dest_goods, pre_dest_goods)
+                hospmedicinfo.history = hospmedicinfo.history ++ Map("columnsValue" -> findMedHistory(med_id, scenario_data.past))
+                hospmedicinfo.detail = hospmedicinfo.detail ++ Map("columnsValue" -> findMedDetail(med_id, dest_goods))
+                hospmedicinfo
+            }
+        )
+    }
+
+    def findConnRep(dest_goods_rep: List[Map[String, Any]], hosp_id: String): Option[representative] =
+        dest_goods_rep.filter(_ ("dest_id") == hosp_id)
+                .map(_ ("rep_id").asInstanceOf[String])
+                .map(findRepDetail)
+                .filter(_.isDefined)
+                .map(_.get).distinct match {
+            case head :: _ => Some(head)
+            case _ => None
+        }
+
+    def calcPreTarget(med_id: String, pre_dest_goods_rep: List[Map[String, Any]]): Long = {
+        pre_dest_goods_rep.filter(_ ("goods_id") == med_id)
+                .map(_ ("relationship").asInstanceOf[Map[String, Any]])
+                .map(_ ("user_input_target").asInstanceOf[Long])
+                .sum
+    }
+
     def findMedDetail(med_id: String): Option[medicine] = {
         val request = new request()
         request.res = "goods"
@@ -62,23 +103,15 @@ case class queryHospByScen()(implicit val rq: Request[model.RootObject])
         queryObject[medicine](request)
     }
 
-    def findRepDetail(rep_id: String): Option[representative] = {
-        val request = new request()
-        request.res = "representative"
-        val ec = eqcond()
-        ec.key = "id"
-        ec.`val` = rep_id
-        request.eqcond = Some(List(ec))
-        queryObject[representative](request)
-    }
-
-    def getOverriew(hosp_id: String, med_id: String)
-                   (dest_goods: List[Map[String, Any]],
-                      pre_dest_goods: List[Map[String, Any]]): List[Map[String, Any]] = {
-        val data = dest_goods.find(x => x("dest_id") == hosp_id && x("goods_id") == med_id)
-                .get("relationship").asInstanceOf[Map[String, Any]]
-        val pr_data = pre_dest_goods.find(x => x("dest_id") == hosp_id && x("goods_id") == med_id)
-                .get("relationship").asInstanceOf[Map[String, Any]]
+    def getOverriew(med_id: String,
+                    dest_goods: List[Map[String, Any]],
+                    pre_dest_goods: List[Map[String, Any]]): List[Map[String, Any]] = {
+        val data = dest_goods.find(_ ("goods_id") == med_id)
+                .map(_("relationship").asInstanceOf[Map[String, Any]])
+                .getOrElse(throw new Exception("Could not find specified medicine"))
+        val pr_data = pre_dest_goods.find(_ ("goods_id") == med_id)
+                .map(_("relationship").asInstanceOf[Map[String, Any]])
+                .getOrElse(throw new Exception("Could not find specified medicine"))
 
         List(
             Map(
@@ -108,38 +141,50 @@ case class queryHospByScen()(implicit val rq: Request[model.RootObject])
         )
     }
 
-    def calcPreTarget(): Int = 100
-
-    def findConnMed(scenario_data: scenario, hosp_id: String): Option[List[hospmedicinfo]] = {
-        val currnet_phase = scenario_data.current("phase").asInstanceOf[Int]
-        val pre_dest_goods = scenario_data.past.find(_ ("phase") == currnet_phase - 1)
-                .get("dest_goods").asInstanceOf[List[Map[String, Any]]]
-                .filter(_ ("dest_id") == hosp_id)
-        val dest_goods = scenario_data.current("dest_goods").asInstanceOf[List[Map[String, Any]]]
-        val med_ids = dest_goods.filter(_ ("dest_id") == hosp_id).map(_ ("goods_id").asInstanceOf[String])
-
-        Some(
-            med_ids.map { med_id =>
-                val hospmedicinfo = new hospmedicinfo()
-                hospmedicinfo.id = med_id
-                hospmedicinfo.pre_target = calcPreTarget()
-                hospmedicinfo.prod_category = findMedDetail(med_id).get.prod_category
-                hospmedicinfo.overview = getOverriew(hosp_id, med_id)(dest_goods, pre_dest_goods)
-                hospmedicinfo.history = hospmedicinfo.history
-                hospmedicinfo.detail = hospmedicinfo.detail
-                findMedDetail(med_id)
-                hospmedicinfo
-            }
-        )
+    def findRepDetail(rep_id: String): Option[representative] = {
+        val request = new request()
+        request.res = "representative"
+        val ec = eqcond()
+        ec.key = "id"
+        ec.`val` = rep_id
+        request.eqcond = Some(List(ec))
+        queryObject[representative](request)
     }
 
-    def findConnRep(dest_goods_rep: List[Map[String, Any]], hosp_id: String): Option[List[representative]] =
-        Some(
-            dest_goods_rep.filter(_ ("dest_id") == hosp_id)
-                    .map(_ ("rep_id").asInstanceOf[String])
-                    .map(findRepDetail)
-                    .filter(_.isDefined)
-                    .map(_.get).distinct
-        )
+    def findMedHistory(med_id: String, past: List[Map[String, Any]]): List[Map[String, Any]] = {
+        past.map { phase_data =>
+            val phase = phase_data("phase")
+            val dest_goods_rep = phase_data("dest_goods_rep").asInstanceOf[List[Map[String, Any]]]
+                    .find(_("goods_id") == med_id)
+                    .getOrElse(throw new Exception("Could not find specified medicine"))
+            val rlsp = dest_goods_rep("relationship").asInstanceOf[Map[String, Any]]
+
+            Map(
+                "time" -> ("周期" + phase.toString),
+                "rep_name" -> findRepDetail(dest_goods_rep("rep_id").asInstanceOf[String]).get.rep_name,
+                "use_day" -> rlsp("user_input_day"),
+                "use_budget" -> (rlsp("user_input_money") + " / " + rlsp("budget_proportion")),
+                "target" -> (rlsp("user_input_target") + " / " + rlsp("target_growth") + " / " + rlsp("achieve_rate"))
+            )
+        }
+    }
+
+    def findMedDetail(med_id: String, dest_goods: List[Map[String, Any]]): List[Map[String, Any]] = {
+        val compete_goods_id = dest_goods.find(_ ("goods_id") == med_id)
+                .map(_("relationship").asInstanceOf[Map[String, Any]]("compete_goods"))
+                .getOrElse(throw new Exception("Could not find specified medicine"))
+                .asInstanceOf[List[Map[String, Any]]]
+                .map(_ ("goods_id").asInstanceOf[String])
+        compete_goods_id.map { goods_id =>
+            val tmp = findMedDetail(goods_id).get
+            Map(
+                "prod_name" -> tmp.prod_name,
+                "launch_time" -> tmp.launch_time,
+                "insure_type" -> tmp.insure_type,
+                "research_type" -> tmp.research_type,
+                "ref_price" -> tmp.ref_price
+            )
+        }
+    }
 
 }

@@ -6,7 +6,7 @@ import com.pharbers.models.entity.{hospital, medicine, representative}
 
 @ToStringMacro
 class hospmedicinfo() extends commonEntity {
-    var pre_target: Int = 0
+    var pre_target: Long = 0L
     var prod_category: String = ""
     var overview: List[Map[String, Any]] = Nil
     var history: Map[String, List[Map[String, Any]]] = Map(

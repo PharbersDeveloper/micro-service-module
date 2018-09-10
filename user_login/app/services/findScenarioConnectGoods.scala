@@ -5,7 +5,8 @@ import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros._
 import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
-import com.pharbers.models.entity.{medicine, notice, scenario}
+import com.pharbers.models.entity.{medicine, scenario}
+import com.pharbers.models.service.notice
 import com.pharbers.models.service.medicsnotice
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.mongo.client_db_inst._
@@ -19,7 +20,7 @@ import play.api.mvc.Request
   * @ Description: TODO
   */
 case class findScenarioConnectGoods()(implicit val rq: Request[model.RootObject])
-    extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with parseToken {
     override val brick_name: String = "find scenario connect goods list"
 
     var request_data: request = new request
@@ -34,18 +35,23 @@ case class findScenarioConnectGoods()(implicit val rq: Request[model.RootObject]
         case Some(data) =>
             scenario_data = data
             connect_goods = scenario_data.current("connect_goods").asInstanceOf[List[Map[String, Any]]]
-            val newsLst = connect_goods.flatMap(g => g("relationship").asInstanceOf[Map[String, Any]]("value").asInstanceOf[List[Map[String, Any]]].map(one => one("news").asInstanceOf[String]))
-            medicsnotice.notices = Some(newsLst.map(x => {
-                val n = new notice()
-                n.news = x
-                n
-            }))
+            val newsLst = connect_goods.flatMap(g =>
+                g("relationship")
+                        .asInstanceOf[Map[String, Any]]("value")
+                        .asInstanceOf[List[Map[String, Any]]]
+                        .map{one =>
+                            val n = new notice()
+                            n.title = "标题"
+                            n.news = one("news").asInstanceOf[String]
+                            n
+                        }
+            )
+            medicsnotice.notices = Some(newsLst)
 
         case None => throw new Exception("Could not find specified scenario")
     }
 
     override def forwardTo(next_brick: String): Unit = {
-
         connect_goods.foreach { g =>
             val request = new request()
             val eq1 = eqcond()
@@ -59,7 +65,6 @@ case class findScenarioConnectGoods()(implicit val rq: Request[model.RootObject]
             medicines = medicines :+ med
         }
         medicsnotice.medicines = Some(medicines)
-
     }
 
     override def goback: model.RootObject = toJsonapi(medicsnotice)
