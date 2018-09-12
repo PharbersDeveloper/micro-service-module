@@ -4,7 +4,7 @@ import io.circe.syntax._
 import play.api.mvc.Request
 import com.pharbers.jsonapi.model
 import com.pharbers.pattern.frame._
-import com.pharbers.pattern.request.request
+import com.pharbers.models.request.request
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.macros._
 import com.pharbers.pattern.mongo.client_db_inst._

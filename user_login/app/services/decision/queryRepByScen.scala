@@ -1,14 +1,15 @@
-package services
+package services.decision
 
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros._
-import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 import com.pharbers.models.entity.{representative, scenario}
+import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.models.service.repinputinfo
-import com.pharbers.pattern.frame._
-import com.pharbers.pattern.request._
+import com.pharbers.pattern.frame.Brick
 import play.api.mvc.Request
+import services.parseToken
+import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 import com.pharbers.pattern.mongo.client_db_inst._
 
 case class queryRepByScen()(implicit val rq: Request[model.RootObject])
@@ -40,7 +41,9 @@ case class queryRepByScen()(implicit val rq: Request[model.RootObject])
             rp_info.intro = formatRepIntro(connect_rep, rep_id)
             rp_info.total_days = total_day
             rp_info.used_days = formatRepUserDay(dest_goods_rep, rep_id)
-            rp_info.repInfo = findRepInfo(rep_id)
+            val rep = findRepInfo(rep_id)
+            rp_info.repInfo = rep
+            rp_info.id = rep.get.id
             rp_info
         }
     }

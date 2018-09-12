@@ -7,7 +7,7 @@ import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 import com.pharbers.models.entity.proposal
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.mongo.client_db_inst._
-import com.pharbers.pattern.request.request
+import com.pharbers.models.request.request
 import play.api.mvc.Request
 
 case class findProposal()(implicit val rq: Request[model.RootObject])

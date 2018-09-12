@@ -1,16 +1,17 @@
-package services
+package services.decision
 
-import io.circe.syntax._
-import play.api.mvc.Request
-import com.pharbers.jsonapi.model
-import com.pharbers.pattern.frame._
-import com.pharbers.pattern.request._
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
+import com.pharbers.jsonapi.model
 import com.pharbers.macros._
-import com.pharbers.pattern.mongo.client_db_inst._
-import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 import com.pharbers.models.entity.{bind_user_proposal, proposal}
+import com.pharbers.models.request.{eqcond, fmcond, request}
 import com.pharbers.models.service.auth
+import com.pharbers.pattern.frame.{Brick, forward}
+import play.api.mvc.Request
+import services.parseToken
+import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
+import com.pharbers.pattern.mongo.client_db_inst._
+import io.circe.syntax._
 
 case class queryBindUserProposal()(implicit val rq: Request[model.RootObject])
         extends Brick with CirceJsonapiSupport with parseToken {

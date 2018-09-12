@@ -1,15 +1,16 @@
-package services
+package services.decision
 
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros._
-import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 import com.pharbers.models.entity.{hospital, medicine, representative, scenario}
+import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.models.service.{hospitalbaseinfo, hospmedicinfo}
-import com.pharbers.pattern.frame._
-import com.pharbers.pattern.mongo.client_db_inst._
-import com.pharbers.pattern.request._
+import com.pharbers.pattern.frame.Brick
 import play.api.mvc.Request
+import services.parseToken
+import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
+import com.pharbers.pattern.mongo.client_db_inst._
 
 case class queryHospByScen()(implicit val rq: Request[model.RootObject])
         extends Brick with CirceJsonapiSupport with parseToken {
@@ -55,6 +56,10 @@ case class queryHospByScen()(implicit val rq: Request[model.RootObject])
         implicit val any2Lst: Any => List[Map[String, Any]] = any => any.asInstanceOf[List[Map[String, Any]]]
         val currnet_phase = scenario_data.current("phase").asInstanceOf[Int]
         val dest_goods = scenario_data.current("dest_goods").filter(_ ("dest_id") == hosp_id)
+        val total_budget = scenario_data.current("connect_reso")
+                .find(_ ("form") == "money")
+                .map(_("relationship").asInstanceOf[Map[String, Long]])
+                .map(_ ("value")).getOrElse(-1L)
         val pre_current = scenario_data.past.find(_ ("phase") == currnet_phase - 1)
                 .getOrElse(throw new Exception("not next phase of data"))
         val pre_dest_goods = pre_current("dest_goods").filter(_ ("dest_id") == hosp_id)
@@ -66,8 +71,10 @@ case class queryHospByScen()(implicit val rq: Request[model.RootObject])
                 val hospmedicinfo = new hospmedicinfo()
                 hospmedicinfo.id = med_id
                 hospmedicinfo.pre_target = calcPreTarget(med_id, pre_dest_goods_rep)
-                hospmedicinfo.prod_category = findMedDetail(med_id).map(_.prod_category)
-                        .getOrElse(throw new Exception("Could not find specified medicine"))
+                hospmedicinfo.total_budget = total_budget
+                val med_detail = findMedDetail(med_id).getOrElse(throw new Exception("Could not find specified medicine"))
+                hospmedicinfo.prod_category = med_detail.prod_category
+                hospmedicinfo.prod_name = med_detail.prod_name
                 hospmedicinfo.overview = getOverriew(med_id, dest_goods, pre_dest_goods)
                 hospmedicinfo.history = hospmedicinfo.history ++ Map("columnsValue" -> findMedHistory(med_id, scenario_data.past))
                 hospmedicinfo.detail = hospmedicinfo.detail ++ Map("columnsValue" -> findMedDetail(med_id, dest_goods))

@@ -1,17 +1,17 @@
-package services
+package services.decision
 
-import io.circe.syntax._
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros._
-import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 import com.pharbers.models.entity.{medicine, scenario}
-import com.pharbers.models.service.notice
-import com.pharbers.models.service.medicsnotice
-import com.pharbers.pattern.frame._
-import com.pharbers.pattern.mongo.client_db_inst._
-import com.pharbers.pattern.request.{eqcond, request}
+import com.pharbers.models.request.{eqcond, request}
+import com.pharbers.models.service.{medicsnotice, notice}
+import com.pharbers.pattern.frame.{Brick, forward}
 import play.api.mvc.Request
+import services.parseToken
+import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
+import com.pharbers.pattern.mongo.client_db_inst._
+import io.circe.syntax._
 
 /**
   * @ ProjectName user_login.services.findScenario

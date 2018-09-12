@@ -1,14 +1,15 @@
-package services
+package services.decision
 
-import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
-import com.pharbers.jsonapi.model
-import com.pharbers.macros._
-import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
-import com.pharbers.pattern.frame._
-import com.pharbers.pattern.mongo.client_db_inst._
-import com.pharbers.pattern.request.request
+import services.parseToken
 import play.api.mvc.Request
+import com.pharbers.macros._
+import com.pharbers.jsonapi.model
+import com.pharbers.pattern.frame.Brick
 import com.pharbers.models.entity.medicine
+import com.pharbers.models.request.request
+import com.pharbers.pattern.mongo.client_db_inst._
+import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
+import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 
 /**
   * @ ProjectName user_login.services.findMedicine

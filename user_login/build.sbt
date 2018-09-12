@@ -22,6 +22,13 @@ lazy val root = (project in file(".")).
 
 routesGenerator := InjectedRoutesGenerator
 
+
+// Docker
+import NativePackagerHelper.directory
+mappings in Universal ++= directory("pharbers_config_deploy")
+        .map(x => x._1 -> x._2.replace("pharbers_config_deploy", "pharbers_config"))
+
+// Scala Macro
 resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 addCompilerPlugin("org.scalamacros" % "paradise" % paradiseVersion cross CrossVersion.full)
@@ -49,10 +56,10 @@ libraryDependencies ++= Seq(
 
 // pharbers 依赖
 	"com.pharbers"      % "base_module"         % "1.0",
+	"com.pharbers"      % "common_util"         % "1.0",
     "com.pharbers"      % "errorcode"           % "1.0",
 	"com.pharbers"      % "jsonapi"             % "1.0",
     "com.pharbers"      % "mongo_drive"         % "1.0",
-    "com.pharbers"      % "security"            % "1.0",
     "com.pharbers"      % "macros"              % "1.0",
     "com.pharbers"      % "third"               % "1.0",
     "com.pharbers"      % "client_pattern"      % "1.0",
