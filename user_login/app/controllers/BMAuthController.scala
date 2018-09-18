@@ -8,8 +8,10 @@ import javax.inject.{Inject, Singleton}
 import com.pharbers.pattern.frame.PlayEntry
 import com.pharbers.jsonapi.model.RootObject
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
-import services.decision._
+
 import services.report._
+import services.decision._
+import services.assess_report._
 
 @Singleton
 class BMAuthController @Inject()(implicit val cc: ControllerComponents, implicit val actorSystem: ActorSystem)
@@ -22,13 +24,19 @@ class BMAuthController @Inject()(implicit val cc: ControllerComponents, implicit
             (pkg, step) match {
                 case ("login", 0) => PlayEntry().excution(login()).asJson
                 case ("login", 1) => PlayEntry().excution(encryptToken()).asJson
+
                 case ("proposalLst", 0) => PlayEntry().excution(queryBindUserProposal()).asJson
                 case ("proposalLst", 1) => PlayEntry().excution(findProposal()).asJson
+
                 case ("layoutLst", 0) => PlayEntry().excution(layoutLst()).asJson
                 case ("medicsnotices", 0) => PlayEntry().excution(findScenarioConnectGoods()).asJson
                 case ("medicsnotices", 1) => PlayEntry().excution(findMedicine()).asJson
+                case ("managerInputInfo", 0) => PlayEntry().excution(managerInputInfo()).asJson
                 case ("hospitalinfo", 0) => PlayEntry().excution(queryHospByScen()).asJson
                 case ("repinputcards", 0) => PlayEntry().excution(queryRepByScen()).asJson
+                case ("taskAllot", 0) => PlayEntry().excution(taskAllot()).asJson
+                case ("taskAllot", 1) => PlayEntry().excution(callR()).asJson
+
                 case ("reportLayout", 0) => PlayEntry().excution(reportLayout()).asJson
                 case ("reportWhich", 0) => PlayEntry().excution(reportWhich()).asJson
                 case ("cardsIndex", 0) => PlayEntry().excution(cardsIndex()).asJson
@@ -43,7 +51,11 @@ class BMAuthController @Inject()(implicit val cc: ControllerComponents, implicit
                 case ("tableRepresentTarget", 0) => PlayEntry().excution(tableRepresentTarget()).asJson
                 case ("cardsRepresentAbility", 0) => PlayEntry().excution(cardsRepresentAbility()).asJson
                 case ("tableRepresentAbility", 0) => PlayEntry().excution(tableRepresentAbility()).asJson
-                case ("test", 0) => PlayEntry().excution(findProposal()).asJson
+
+                case ("assessReportLayout", 0) => PlayEntry().excution(assessReportLayout()).asJson
+                case ("evaluationRadar", 0) => PlayEntry().excution(evaluationRadar()).asJson
+                case ("evaluationLine", 0) => PlayEntry().excution(evaluationLine()).asJson
+                case ("evaluationCards", 0) => PlayEntry().excution(evaluationCards()).asJson
                 case (_, _) => throw new Exception("Bad Request for input")
             }
         )

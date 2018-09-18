@@ -35,16 +35,14 @@ case class tableResource()(implicit val rq: Request[model.RootObject])
             Map("label" -> "医院名称", "valuePath" -> "hosp_name", "align" -> "center", "sorted" -> false),
             Map("label" -> "产品名称", "valuePath" -> "prod_name", "align" -> "center", "sorted" -> false),
             Map("label" -> "分配代表", "valuePath" -> "rep_name", "align" -> "center", "sorted" -> false),
-            Map("label" -> "时间分配(天)", "valuePath" -> "time", "align" -> "center"),
-            Map("label" -> "预算分配", "valuePath" -> "budget", "align" -> "center", "cellComponent" -> "table-number-thousands"),
+            Map("label" -> "时间分配(天)", "valuePath" -> "time", "align" -> "center", "cellComponent" -> "table-number-percent"),
+            Map("label" -> "预算分配", "valuePath" -> "target", "align" -> "center", "cellComponent" -> "table-number-thousands"),
             Map("label" -> "市场潜力", "valuePath" -> "potential", "align" -> "center", "cellComponent" -> "table-number-thousands"),
             Map("label" -> "市场增长(%)", "valuePath" -> "market_growth", "align" -> "center", "cellComponent" -> "table-number-percent"),
             Map("label" -> "销售额", "valuePath" -> "sales", "align" -> "center", "cellComponent" -> "table-number-thousands"),
             Map("label" -> "销售增长(%)", "valuePath" -> "sales_growth", "align" -> "center", "cellComponent" -> "table-number-percent"),
             Map("label" -> "份额(%)", "valuePath" -> "share", "align" -> "center", "cellComponent" -> "table-number-percent"),
             Map("label" -> "份额增长(%)", "valuePath" -> "share_change", "align" -> "center", "cellComponent" -> "table-number-percent"),
-            Map("label" -> "指标", "valuePath" -> "target", "align" -> "center", "cellComponent" -> "table-number-thousands"),
-            Map("label" -> "指标达成率(%)", "valuePath" -> "achieve_rate", "align" -> "center", "cellComponent" -> "table-number-percent"),
             Map("label" -> "销售贡献率(%)", "valuePath" -> "contri_rate", "align" -> "center", "cellComponent" -> "table-number-percent")
         )
         table_data.columnsValue = report.reso_allocation_report("value").map(_.asInstanceOf[Map[String, Any]])

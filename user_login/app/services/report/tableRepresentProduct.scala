@@ -36,9 +36,6 @@ case class tableRepresentProduct()(implicit val rq: Request[model.RootObject])
             Map("label" -> "产品名称", "valuePath" -> "prod_name", "align" -> "center", "sorted" -> false),
             Map("label" -> "当期销售额", "valuePath" -> "sales", "align" -> "center", "cellComponent" -> "table-number-thousands"),
             Map("label" -> "销售增长(%)", "valuePath" -> "sales_growth", "align" -> "center", "cellComponent" -> "table-number-percent"),
-            Map("label" -> "EV值(%)", "valuePath" -> "ev_value", "align" -> "center", "cellComponent" -> "table-number-percent"),
-            Map("label" -> "份额(%)", "valuePath" -> "share", "align" -> "center", "cellComponent" -> "table-number-percent"),
-            Map("label" -> "份额增长(%)", "valuePath" -> "share_change", "align" -> "center", "cellComponent" -> "table-number-percent"),
             Map("label" -> "指标", "valuePath" -> "target", "align" -> "center", "cellComponent" -> "table-number-thousands"),
             Map("label" -> "指标达成率(%)", "valuePath" -> "achieve_rate", "align" -> "center", "cellComponent" -> "table-number-percent"),
             Map("label" -> "销售贡献率(%)", "valuePath" -> "contri_rate", "align" -> "center", "cellComponent" -> "table-number-percent")

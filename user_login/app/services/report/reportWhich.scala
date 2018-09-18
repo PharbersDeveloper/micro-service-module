@@ -20,21 +20,27 @@ case class reportWhich()(implicit val rq: Request[model.RootObject])
 
     override def exec: Unit = {
         val dd1 = new dropdown_layout()
+        dd1.id = "dropdown_layout_1"
         dd1.whichpage = "index"
         dd1.text = "整体销售表现"
         val dd2 = new dropdown_layout()
+        dd2.id = "dropdown_layout_2"
         dd2.whichpage = "hosp-product"
         dd2.text = "医院-产品销售报告"
         val dd3 = new dropdown_layout()
+        dd3.id = "dropdown_layout_3"
         dd3.whichpage = "represent-product"
         dd3.text = "代表-产品销售报告"
         val dd4 = new dropdown_layout()
-        dd1.whichpage = "resource"
-        dd1.text = "资源投入与产出"
+        dd4.id = "dropdown_layout_4"
+        dd4.whichpage = "resource"
+        dd4.text = "资源投入与产出"
         val dd5 = new dropdown_layout()
+        dd5.id = "dropdown_layout_5"
         dd5.whichpage = "represent-target"
         dd5.text = "代表指标与资源"
         val dd6 = new dropdown_layout()
+        dd6.id = "dropdown_layout_6"
         dd6.whichpage = "represent-ability"
         dd6.text = "代表能力"
 

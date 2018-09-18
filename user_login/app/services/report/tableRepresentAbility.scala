@@ -36,7 +36,6 @@ case class tableRepresentAbility()(implicit val rq: Request[model.RootObject])
             Map("label" -> "总能力值", "valuePath" -> "overall_val", "align" -> "center", "cellComponent" -> "table-number-thousands"),
             Map("label" -> "产品知识", "valuePath" -> "prod_knowledge_val", "align" -> "center"),
             Map("label" -> "销售技巧", "valuePath" -> "sales_skills_val", "align" -> "center"),
-            Map("label" -> "增长", "valuePath" -> "prod_know", "align" -> "center"),
             Map("label" -> "工作积极性", "valuePath" -> "motivation_val", "align" -> "center")
         )
         table_data.columnsValue = report.rep_ability_report("value").map(_.asInstanceOf[Map[String, Any]])

@@ -33,13 +33,13 @@ case class tableRepresentTarget()(implicit val rq: Request[model.RootObject])
 
         table_data.columns = List(
             Map("label" -> "代表名称", "valuePath" -> "rep_name", "align" -> "center", "sorted" -> false),
-            Map("label" -> "负责指标", "valuePath" -> "potential", "align" -> "center", "cellComponent" -> "table-number-thousands"),
+            Map("label" -> "负责指标", "valuePath" -> "target", "align" -> "center", "cellComponent" -> "table-number-thousands"),
             Map("label" -> "当期销售额", "valuePath" -> "sales", "align" -> "center", "cellComponent" -> "table-number-thousands"),
             Map("label" -> "指标达成率(%)", "valuePath" -> "achieve_rate", "align" -> "center", "cellComponent" -> "table-number-percent"),
-            Map("label" -> "预算比例(%)", "valuePath" -> "budget_rate", "align" -> "center", "cellComponent" -> "table-number-percent"),
+            Map("label" -> "预算比例(%)", "valuePath" -> "budget_proportion", "align" -> "center", "cellComponent" -> "table-number-percent"),
             Map("label" -> "销售贡献率(%)", "valuePath" -> "contri_rate", "align" -> "center", "cellComponent" -> "table-number-percent"),
-            Map("label" -> "工作天数", "valuePath" -> "workdays", "align" -> "center"),
-            Map("label" -> "奖金", "valuePath" -> "target", "align" -> "center", "cellComponent" -> "table-number-thousands")
+            Map("label" -> "工作天数", "valuePath" -> "user_input_day", "align" -> "center"),
+            Map("label" -> "奖金", "valuePath" -> "bonus", "align" -> "center", "cellComponent" -> "table-number-thousands")
         )
         table_data.columnsValue = report.rep_ind_resos("value").map(_.asInstanceOf[Map[String, Any]])
     }

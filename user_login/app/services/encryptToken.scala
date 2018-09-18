@@ -14,12 +14,15 @@ case class encryptToken()(implicit val rq: Request[model.RootObject]) extends Br
 
     var auth_data: auth = new auth()
 
-    override def prepare: Unit = auth_data = formJsonapi[auth](rq.body)
+    override def prepare: Unit = {
+        println("fuck")
+        auth_data = formJsonapi[auth](rq.body)
+    }
 
     override def exec: Unit = auth_data.token = {
         val rd = new PhRedisDriver()
         val user = auth_data.user.get
-        val token = ObjectId.get.toString
+        val token = ObjectId.get().toString
         rd.addMap(token, "user_id", user.id)
         rd.addMap(token, "email", user.email)
         rd.addMap(token, "user_name", user.user_name)
