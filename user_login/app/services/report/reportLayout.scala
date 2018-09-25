@@ -22,6 +22,7 @@ case class reportLayout()(implicit val rq: Request[model.RootObject])
         val overview1 = new report_layout()
         overview1.component_name = "which-result"
         val dd = new dropdown_layout()
+        dd.id = "dropdown_layout_1"
         dd.whichpage = "index"
         dd.text = "整体销售表现"
         overview1.dropdown = Some(dd)

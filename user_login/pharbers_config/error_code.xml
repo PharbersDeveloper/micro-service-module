@@ -23,7 +23,7 @@
         <error reason="token parse error" code="-304" description="token数据解析出现错误" />
 
         <!-- role error -->
-        <error reason="role info has been use" code="-402" description="该权限信息已被使用" />
+        <error reason="role info has been use" code="-401" description="该权限信息已被使用" />
 
         <!-- proposal error -->
         <error reason="Could not find specified proposal" code="-501" description="未找到指定proposal" />
@@ -34,12 +34,10 @@
 
         <!-- scenario error -->
         <error reason="Could not find specified scenario" code="-601" description="未找到指定scenario" />
-        <error reason="Could not find specified medicine" code="-601" description="未找到指定药品" />
-        <error reason="request not find user_id" code="-501" description="输入参数中没有user_id" />
-        <error reason="request not find proposal_id" code="-502" description="输入参数中没有proposal_id" />
-        <error reason="request not find current" code="-503" description="输入参数中没有current" />
-        <error reason="request not find past" code="-504" description="输入参数中没有past" />
-        <error reason="not next phase of data" code="-505" description="没有下一个周期的数据" />
+        <error reason="Could not find specified medicine" code="-602" description="未找到指定药品" />
+        <error reason="allot_result not find managerinputinfo" code="-603" description="allot_result not find managerinputinfo" />
+        <error reason="allot_result not find repinputinfo" code="-604" description="allot_result not find repinputinfo" />
+        <error reason="allot_result not find hospitalbaseinfo" code="-604" description="allot_result not find hospitalbaseinfo" />
 
         <!-- report error -->
         <error reason="Could not find specified report" code="-701" description="未找到指定report" />

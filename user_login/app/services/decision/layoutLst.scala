@@ -1,13 +1,14 @@
-package services.report
+package services.decision
 
-import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
-import com.pharbers.jsonapi.model
-import com.pharbers.macros._
-import com.pharbers.models.service.{alldecision, hospdecision, mgrdecision}
-import com.pharbers.pattern.frame.Brick
-import play.api.mvc.Request
 import services.parseToken
+import play.api.mvc.Request
+import com.pharbers.macros._
+import com.pharbers.jsonapi.model
+import com.pharbers.macros.toJsonapi
+import com.pharbers.pattern.frame.Brick
 import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
+import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
+import com.pharbers.models.service.{alldecision, hospdecision, mgrdecision}
 
 case class layoutLst()(implicit val rq: Request[model.RootObject])
         extends Brick with CirceJsonapiSupport with parseToken {

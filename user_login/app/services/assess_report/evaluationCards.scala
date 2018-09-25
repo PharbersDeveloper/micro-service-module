@@ -39,7 +39,7 @@ case class evaluationCards()(implicit val rq: Request[model.RootObject])
             cca.title = x("item").asInstanceOf[String]
             cca.level = x("score").asInstanceOf[String]
             cca.desc = Map("title" -> "考核点", "content" -> x("test_point").asInstanceOf[List[String]]) ::
-                    Map("title" -> "能力", "content" -> x("ability_describe").asInstanceOf[String]) :: Nil
+                    Map("title" -> "能力", "content" -> List(x("ability_describe").asInstanceOf[String])) :: Nil
             cca
         }
 
