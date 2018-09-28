@@ -28,6 +28,8 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
                 case ("courseLst", 0) => PlayEntry().excution(findBindUserCourse()).asJson
                 case ("courseLst", 1) => PlayEntry().excution(findCourseById()).asJson
 
+                case ("exam", 0) => PlayEntry().excution(findCourseById()).asJson
+
                 case ("findMedById", 0) => PlayEntry().excution(findMedById()).asJson
                 case ("findBindCourseGoods", 0) => PlayEntry().excution(findBindCourseGoods()).asJson
                 case ("findBindCourseGoodsCompet", 0) => PlayEntry().excution(findBindCourseGoodsCompet()).asJson
@@ -40,6 +42,15 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
 
                 case ("findRepById", 0) => PlayEntry().excution(findRepById()).asJson
                 case ("findBindCourseRegionRep", 0) => PlayEntry().excution(findBindCourseRegionRep()).asJson
+
+                case ("findRadarById", 0) => PlayEntry().excution(findRadarById()).asJson
+                case ("findBindCourseRegionRadar", 0) => PlayEntry().excution(findBindCourseRegionRadar()).asJson
+
+                case ("findBusinessById", 0) => PlayEntry().excution(findBusinessById()).asJson
+                case ("findBindCourseRegionBusiness", 0) => PlayEntry().excution(findBindCourseRegionBusiness()).asJson
+
+                case ("findRepBehaviorById", 0) => PlayEntry().excution(findRepBehaviorById()).asJson
+                case ("findBindCourseRegionYmRepBehavior", 0) => PlayEntry().excution(findBindCourseRegionYmRepBehavior()).asJson
 
                 case (_, _) => throw new Exception("Bad Request for input")
             }

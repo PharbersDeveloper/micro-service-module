@@ -31,6 +31,9 @@
         <error reason="Could not find specified medicine" code="-502" description="未找到指定药品" />
         <error reason="Could not find specified representative" code="-503" description="未找到指定代表" />
         <error reason="Could not find specified sales" code="-504" description="未找到指定销售记录" />
+        <error reason="Could not find specified radar_figure" code="-505" description="未找到指定雷达图" />
+        <error reason="Could not find specified business_report" code="-506" description="未找到指定业务报告" />
+        <error reason="Could not find specified rep_behavior_report" code="-506" description="未找到指定代表行为报告" />
 
         <!-- third error -->
         <!-- EM error -->
