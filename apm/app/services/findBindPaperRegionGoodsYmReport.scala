@@ -3,49 +3,49 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_region_goods_ym_sales, sales}
+import com.pharbers.models.entity.{apm_report, bind_paper_region_goods_ym_report}
 import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
-case class findBindCourseRegionGoodsYmSales()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
+case class findBindPaperRegionGoodsYmReport()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
         extends Brick with CirceJsonapiSupport with parseToken {
 
-    import io.circe.syntax._
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
+    import io.circe.syntax._
 
-    override val brick_name: String = "find bind course region med ym sales list"
+    override val brick_name: String = "find bind paper region goods ym report list"
 
-    implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
+    implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("apm_report").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var salesIdLst: List[bind_course_region_goods_ym_sales] = Nil
+    var reportIdLst: List[bind_paper_region_goods_ym_report] = Nil
 
-    override def prepare: Unit = request_data = {
+    override def prepare: Unit = {
         parseToken(rq)
-        formJsonapi[request](rq.body)
+        request_data = formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = salesIdLst = queryMultipleObject[bind_course_region_goods_ym_sales](request_data)
+    override def exec: Unit = reportIdLst = queryMultipleObject[bind_paper_region_goods_ym_report](request_data)
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
-        request.res = "sales"
+        request.res = "report"
 
-        salesIdLst = salesIdLst.map { x =>
+        reportIdLst.map { x =>
             request.eqcond = None
             val ec = eqcond()
             ec.key = "id"
-            ec.`val` = x.sales_id
+            ec.`val` = x.report_id
             request.eqcond = Some(List(ec))
             val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces)
-            x.sales = Some(formJsonapi[sales](decodeJson[model.RootObject](parseJson(str))))
+            x.report = Some(formJsonapi[apm_report](decodeJson[model.RootObject](parseJson(str))))
             x
         }
     }
 
-    override def goback: model.RootObject = toJsonapi(salesIdLst)
+    override def goback: model.RootObject = toJsonapi(reportIdLst)
 }

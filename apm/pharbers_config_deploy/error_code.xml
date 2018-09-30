@@ -25,14 +25,20 @@
         <!-- role error -->
         <error reason="role info has been use" code="-401" description="该权限信息已被使用" />
 
-        <!-- course error -->
-        <error reason="Could not find specified course" code="-501" description="未找到指定course" />
-
-        <!-- medicine error -->
-        <error reason="Could not find specified medicine" code="-601" description="未找到指定药品" />
-
-        <!-- report error -->
-        <error reason="Could not find specified report" code="-701" description="未找到指定report" />
+        <!-- action error -->
+        <error reason="Could not find specified course" code="-501" description="未找到指定课程" />
+        <error reason="Could not find specified region" code="-501" description="未找到指定区域" />
+        <error reason="Could not find specified medicine" code="-502" description="未找到指定药品" />
+        <error reason="Could not find specified representative" code="-503" description="未找到指定代表" />
+        <error reason="Could not find specified sales" code="-504" description="未找到指定销售记录" />
+        <error reason="Could not find specified radar_figure" code="-505" description="未找到指定雷达图" />
+        <error reason="Could not find specified business_report" code="-506" description="未找到指定业务报告" />
+        <error reason="Could not find specified rep_behavior_report" code="-507" description="未找到指定代表行为报告" />
+        <error reason="Could not find specified paper" code="-508" description="未找到指定试卷" />
+        <error reason="Could not find specified action_plan" code="-509" description="未找到指定行动计划" />
+        <error reason="update failed for paper_input" code="-510" description="更新失败" />
+        <error reason="Could not find specified apm_quarter_report" code="-511" description="未找到指定季度报告" />
+        <error reason="Could not find specified apm_report" code="-512" description="未找到指定报告" />
 
         <!-- third error -->
         <!-- EM error -->

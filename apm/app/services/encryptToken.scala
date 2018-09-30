@@ -21,14 +21,14 @@ case class encryptToken()(implicit val rq: Request[model.RootObject], rd: RedisM
         auth_data = formJsonapi[auth](rq.body)
     }
 
-    override def exec: Unit = auth_data.token = {
+    override def exec: Unit = {
         val user = auth_data.user.get
         val token = ObjectId.get().toString
         rd.addMap(token, "user_id", user.id)
         rd.addMap(token, "email", user.email)
         rd.addMap(token, "user_name", user.user_name)
 //        rd.expire(token, auth_data.token_expire)
-        token
+        auth_data.token = token
     }
 
     override def goback: model.RootObject = toJsonapi(auth_data)
