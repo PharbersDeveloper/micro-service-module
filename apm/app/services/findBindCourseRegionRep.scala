@@ -1,9 +1,10 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_region_rep, representative, sales}
+import com.pharbers.models.entity.{bind_course_region_rep, representative}
 import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -42,7 +43,8 @@ case class findBindCourseRegionRep()(implicit val rq: Request[model.RootObject],
             ec.key = "id"
             ec.`val` = x.rep_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18007")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             formJsonapi[representative](decodeJson[model.RootObject](parseJson(str)))
         }
     }

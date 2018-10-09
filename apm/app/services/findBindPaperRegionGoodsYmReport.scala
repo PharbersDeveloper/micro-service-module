@@ -1,9 +1,10 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{apm_report, bind_paper_region_goods_ym_report}
+import com.pharbers.models.entity.{apmreport, bind_paper_region_goods_ym_report}
 import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -29,7 +30,7 @@ case class findBindPaperRegionGoodsYmReport()(implicit val rq: Request[model.Roo
         request_data = formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = reportIdLst = queryMultipleObject[bind_paper_region_goods_ym_report](request_data)
+    override def exec: Unit = reportIdLst = queryMultipleObject[bind_paper_region_goods_ym_report](request_data, sort = "ym").reverse
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
@@ -41,8 +42,9 @@ case class findBindPaperRegionGoodsYmReport()(implicit val rq: Request[model.Roo
             ec.key = "id"
             ec.`val` = x.report_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            x.report = Some(formJsonapi[apm_report](decodeJson[model.RootObject](parseJson(str))))
+//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18013")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            x.apmreport = Some(formJsonapi[apmreport](decodeJson[model.RootObject](parseJson(str))))
             x
         }
     }

@@ -1,11 +1,12 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.jsonapi.model.{Attribute, Attributes}
 import com.pharbers.jsonapi.model.JsonApiObject.StringValue
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_region, bind_user_course_paper, paperInput}
+import com.pharbers.models.entity.{bind_course_region, bind_user_course_paper, paperinput}
 import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -43,7 +44,7 @@ case class pushPaperInputByCourse()(implicit val rq: Request[model.RootObject], 
 
     override def forwardTo(next_brick: String): Unit = {
         regionIdLst.foreach{ x =>
-            val tmp = new paperInput
+            val tmp = new paperinput
             tmp.paper_id = bind_data.paper_id
             tmp.region_id = x.region_id
             forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(tmp).asJson.noSpaces).check()

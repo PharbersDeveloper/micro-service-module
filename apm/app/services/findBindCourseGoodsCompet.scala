@@ -1,5 +1,6 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
@@ -42,7 +43,8 @@ case class findBindCourseGoodsCompet()(implicit val rq: Request[model.RootObject
             ec.key = "id"
             ec.`val` = x.compet_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18005")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             formJsonapi[medicine](decodeJson[model.RootObject](parseJson(str)))
         }
     }

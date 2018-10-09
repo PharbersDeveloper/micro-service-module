@@ -1,6 +1,6 @@
 package services
 
-import com.pharbers.http.HTTP
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
@@ -30,7 +30,7 @@ case class findBindCourseRegionGoodsYmSales()(implicit val rq: Request[model.Roo
         request_data = formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = salesIdLst = queryMultipleObject[bind_course_region_goods_ym_sales](request_data, sort= "ym")
+    override def exec: Unit = salesIdLst = queryMultipleObject[bind_course_region_goods_ym_sales](request_data, sort= "ym").reverse
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()

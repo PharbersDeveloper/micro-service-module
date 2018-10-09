@@ -1,5 +1,6 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
@@ -41,9 +42,8 @@ case class findBindCourseRegionRadar()(implicit val rq: Request[model.RootObject
             ec.key = "id"
             ec.`val` = x.radar_id
             request.eqcond = Some(List(ec))
-            println("aaa")
 //            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18002")("/api/v1/findRadarById/0").post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18008")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             x.radarfigure = Some(formJsonapi[radarfigure](decodeJson[model.RootObject](parseJson(str))))
             x
         }

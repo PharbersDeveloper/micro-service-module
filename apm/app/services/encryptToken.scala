@@ -22,7 +22,6 @@ case class encryptToken()(implicit val rq: Request[model.RootObject], rd: RedisM
     }
 
     override def exec: Unit = {
-        println("exec")
         val user = auth_data.user.get
         val token = ObjectId.get().toString
         rd.addMap(token, "user_id", user.id)

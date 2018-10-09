@@ -1,5 +1,6 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import play.api.mvc.Request
 import com.pharbers.jsonapi.model
 import com.pharbers.pattern.frame._

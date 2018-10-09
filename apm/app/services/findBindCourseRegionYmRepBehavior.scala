@@ -1,9 +1,10 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_region_ym_rep_behavior, rep_behavior_report}
+import com.pharbers.models.entity.{bind_course_region_ym_rep_behavior, repbehaviorreport}
 import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -41,8 +42,9 @@ case class findBindCourseRegionYmRepBehavior()(implicit val rq: Request[model.Ro
             ec.key = "id"
             ec.`val` = x.rep_behavior_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            x.rep_behavior_report = Some(formJsonapi[rep_behavior_report](decodeJson[model.RootObject](parseJson(str))))
+//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18010")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            x.repbehaviorreport = Some(formJsonapi[repbehaviorreport](decodeJson[model.RootObject](parseJson(str))))
             x
         }
     }

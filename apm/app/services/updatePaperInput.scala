@@ -1,11 +1,12 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.jsonapi.model.JsonApiObject.StringValue
 import com.pharbers.jsonapi.model.{Attribute, Attributes}
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.paperInput
+import com.pharbers.models.entity.paperinput
 import com.pharbers.models.request.request
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -18,7 +19,7 @@ case class updatePaperInput()(implicit val rq: Request[model.RootObject], dbt: D
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
-    override val brick_name: String = "update paperInput"
+    override val brick_name: String = "update paperinput"
 
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
@@ -30,7 +31,7 @@ case class updatePaperInput()(implicit val rq: Request[model.RootObject], dbt: D
         request_data = formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = update_result = updateObject[paperInput](request_data)
+    override def exec: Unit = update_result = updateObject[paperinput](request_data)
 
     override def goback: model.RootObject = update_result match {
         case 1 =>
@@ -42,6 +43,6 @@ case class updatePaperInput()(implicit val rq: Request[model.RootObject], dbt: D
                     )
                 )
             ))
-        case _ => throw new Exception("update failed for paperInput")
+        case _ => throw new Exception("update failed for paperinput")
     }
 }

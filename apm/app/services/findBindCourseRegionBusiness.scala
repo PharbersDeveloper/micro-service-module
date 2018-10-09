@@ -1,9 +1,10 @@
 package services
 
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_region_business, business_report}
+import com.pharbers.models.entity.{bind_course_region_business, businessreport}
 import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -41,8 +42,9 @@ case class findBindCourseRegionBusiness()(implicit val rq: Request[model.RootObj
             ec.key = "id"
             ec.`val` = x.business_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            x.business_report = Some(formJsonapi[business_report](decodeJson[model.RootObject](parseJson(str))))
+//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18009")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            x.businessreport = Some(formJsonapi[businessreport](decodeJson[model.RootObject](parseJson(str))))
             x
         }
     }
