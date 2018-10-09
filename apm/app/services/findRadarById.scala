@@ -3,7 +3,7 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.radar_figure
+import com.pharbers.models.entity.radarfigure
 import com.pharbers.models.request.request
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -16,12 +16,12 @@ case class findRadarById()(implicit val rq: Request[model.RootObject], dbt: DBMa
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
-    override val brick_name: String = "find radar_figure by id"
+    override val brick_name: String = "find radarFigure by id"
 
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var radar_data: radar_figure = null
+    var radar_data: radarfigure = null
 
     override def prepare: Unit = {
         parseToken(rq)
@@ -29,7 +29,7 @@ case class findRadarById()(implicit val rq: Request[model.RootObject], dbt: DBMa
     }
 
     override def exec: Unit = radar_data =
-            queryObject[radar_figure](request_data).getOrElse(throw new Exception("Could not find specified radar_figure"))
+            queryObject[radarfigure](request_data).getOrElse(throw new Exception("Could not find specified radarFigure"))
 
     override def goback: model.RootObject = toJsonapi(radar_data)
 }

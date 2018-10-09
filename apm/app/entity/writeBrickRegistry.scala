@@ -51,7 +51,10 @@ object writeBrickRegistry extends App {
         "/api/v1/answer/" -> List("127.0.0.1"),
         "/api/v1/actionPlanLst/" -> List("127.0.0.1", "127.0.0.1"),
         "/api/v1/findQuarterReport/" -> List("127.0.0.1", "127.0.0.1"),
-        "/api/v1/findReportMedSales/" -> List("127.0.0.1", "127.0.0.1")
+        "/api/v1/findReportMedSales/" -> List("127.0.0.1", "127.0.0.1"),
+        "/api/v1/findRadarFigure/" -> List("127.0.0.1", "127.0.0.1"),
+        "/api/v1/findBusinessReport/" -> List("127.0.0.1", "127.0.0.1"),
+        "/api/v1/findRepBehavior/" -> List("127.0.0.1", "127.0.0.1")
     )
 
     val rd = new PhRedisDriver()

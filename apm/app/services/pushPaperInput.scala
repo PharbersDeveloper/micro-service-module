@@ -3,7 +3,7 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.paper_input
+import com.pharbers.models.entity.paperInput
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -19,11 +19,11 @@ case class pushPaperInput()(implicit val rq: Request[model.RootObject], dbt: DBM
 
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
-    var insert_data: paper_input = null
+    var insert_data: paperInput = null
 
     override def prepare: Unit = {
         parseToken(rq)
-        insert_data = formJsonapi[paper_input](rq.body)
+        insert_data = formJsonapi[paperInput](rq.body)
     }
 
     override def exec: Unit = insert_data.id = insertObject(insert_data).get("_id").toString

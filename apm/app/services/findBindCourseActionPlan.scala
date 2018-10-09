@@ -3,7 +3,7 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{action_plan, bind_course_action_plan}
+import com.pharbers.models.entity.{actionPlan, bind_course_action_plan}
 import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -17,13 +17,13 @@ case class findBindCourseActionPlan()(implicit val rq: Request[model.RootObject]
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
     import io.circe.syntax._
 
-    override val brick_name: String = "find bind course action_plan list"
+    override val brick_name: String = "find bind course actionPlan list"
 
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
     var planIdLst: List[bind_course_action_plan] = Nil
-    var planLst: List[action_plan] = Nil
+    var planLst: List[actionPlan] = Nil
 
     override def prepare: Unit = request_data = {
         parseToken(rq)
@@ -34,7 +34,7 @@ case class findBindCourseActionPlan()(implicit val rq: Request[model.RootObject]
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
-        request.res = "action_plan"
+        request.res = "actionPlan"
 
         planLst = planIdLst.map { x =>
             request.eqcond = None
@@ -43,7 +43,7 @@ case class findBindCourseActionPlan()(implicit val rq: Request[model.RootObject]
             ec.`val` = x.plan_id
             request.eqcond = Some(List(ec))
             val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            formJsonapi[action_plan](decodeJson[model.RootObject](parseJson(str)))
+            formJsonapi[actionPlan](decodeJson[model.RootObject](parseJson(str)))
         }
     }
 

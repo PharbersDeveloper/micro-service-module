@@ -2,13 +2,14 @@ package services
 
 import play.api.mvc.Request
 import com.pharbers.jsonapi.model
-import com.pharbers.pattern.frame._
 import com.pharbers.models.entity.course
 import com.pharbers.models.request.request
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
+import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.frame.Brick
 
 case class findCourseById()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
         extends Brick with CirceJsonapiSupport with parseToken {

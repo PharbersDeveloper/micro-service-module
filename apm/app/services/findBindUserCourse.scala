@@ -51,7 +51,8 @@ case class findBindUserCourse()(implicit val rq: Request[model.RootObject], dbt:
             ec.key = "id"
             ec.`val` = x.course_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18004")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             val rootObject = decodeJson[model.RootObject](parseJson(str))
             formJsonapi[course](rootObject)
         }

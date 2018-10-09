@@ -40,7 +40,7 @@ case class findBindCourseQuarterReport()(implicit val rq: Request[model.RootObje
             request.eqcond = None
             val ec = eqcond()
             ec.key = "id"
-            ec.`val` = x.report_id
+            ec.`val` = x.quarter_report_id
             request.eqcond = Some(List(ec))
             val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             formJsonapi[apm_quarter_report](decodeJson[model.RootObject](parseJson(str)))

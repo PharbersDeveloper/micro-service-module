@@ -26,7 +26,6 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
                 case ("login", 1) => PlayEntry().excution(encryptToken()).asJson
 
                 case ("courseLst", 0) => PlayEntry().excution(findBindUserCourse()).asJson
-                case ("courseLst", 1) => PlayEntry().excution(findCourseById()).asJson
 
                 case ("exam", 0) => PlayEntry().excution(pushPaper()).asJson
                 case ("exam", 1) => PlayEntry().excution(pushBindUserCoursePaper()).asJson
@@ -43,24 +42,22 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
                 case ("regionLst", 1) => PlayEntry().excution(findRegionById()).asJson
 
                 case ("findMedSales", 0) => PlayEntry().excution(findBindCourseRegionGoodsYmSales()).asJson
-                case ("findMedSales", 1) => PlayEntry().excution(findSalesById()).asJson
 
                 case ("findRegionRep", 0) => PlayEntry().excution(findBindCourseRegionRep()).asJson
                 case ("findRegionRep", 1) => PlayEntry().excution(findRepById()).asJson
 
-                case ("findRadarById", 0) => PlayEntry().excution(findRadarById()).asJson
-                case ("findBindCourseRegionRadar", 0) => PlayEntry().excution(findBindCourseRegionRadar()).asJson
+                case ("findRadarFigure", 0) => PlayEntry().excution(findBindCourseRegionRadar()).asJson
+                case ("findRadarFigure", 1) => PlayEntry().excution(findRadarById()).asJson
 
-                case ("findBusinessById", 0) => PlayEntry().excution(findBusinessById()).asJson
-                case ("findBindCourseRegionBusiness", 0) => PlayEntry().excution(findBindCourseRegionBusiness()).asJson
+                case ("findBusinessReport", 0) => PlayEntry().excution(findBindCourseRegionBusiness()).asJson
+                case ("findBusinessReport", 1) => PlayEntry().excution(findBusinessById()).asJson
 
-                case ("findRepBehaviorById", 0) => PlayEntry().excution(findRepBehaviorById()).asJson
-                case ("findBindCourseRegionYmRepBehavior", 0) => PlayEntry().excution(findBindCourseRegionYmRepBehavior()).asJson
+                case ("findRepBehavior", 0) => PlayEntry().excution(findBindCourseRegionYmRepBehavior()).asJson
+                case ("findRepBehavior", 1) => PlayEntry().excution(findRepBehaviorById()).asJson
 
                 case ("findPaper", 0) => PlayEntry().excution(findBindUserCoursePaperByToken()).asJson
                 case ("findPaper", 1) => PlayEntry().excution(findPaperById()).asJson
                 case ("findPaper", 2) => PlayEntry().excution(findBindUserCoursePaperByPaper()).asJson
-                case ("findPaper", 3) => PlayEntry().excution(findCourseById()).asJson
 
                 case ("answer", 0) => PlayEntry().excution(updatePaperInput()).asJson
 
@@ -78,5 +75,5 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
         )
     }
 
-    def routes2(pkg1: String, pkg2: String, step: Int): Action[RootObject] = routes(pkg1 + "/" + pkg2, step)
+    def routes2(pkg1: String  , pkg2: String, step: Int): Action[RootObject] = routes(pkg1 + "/" + pkg2, step)
 }

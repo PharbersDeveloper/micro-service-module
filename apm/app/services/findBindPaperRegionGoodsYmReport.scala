@@ -41,7 +41,7 @@ case class findBindPaperRegionGoodsYmReport()(implicit val rq: Request[model.Roo
             ec.key = "id"
             ec.`val` = x.report_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces)
+            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             x.report = Some(formJsonapi[apm_report](decodeJson[model.RootObject](parseJson(str))))
             x
         }

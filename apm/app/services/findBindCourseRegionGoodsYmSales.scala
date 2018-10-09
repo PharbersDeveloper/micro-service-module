@@ -1,5 +1,6 @@
 package services
 
+import com.pharbers.http.HTTP
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
@@ -24,24 +25,24 @@ case class findBindCourseRegionGoodsYmSales()(implicit val rq: Request[model.Roo
     var request_data: request = null
     var salesIdLst: List[bind_course_region_goods_ym_sales] = Nil
 
-    override def prepare: Unit = request_data = {
+    override def prepare: Unit = {
         parseToken(rq)
-        formJsonapi[request](rq.body)
+        request_data = formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = salesIdLst = queryMultipleObject[bind_course_region_goods_ym_sales](request_data)
+    override def exec: Unit = salesIdLst = queryMultipleObject[bind_course_region_goods_ym_sales](request_data, sort= "ym")
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
         request.res = "sales"
-
         salesIdLst = salesIdLst.map { x =>
             request.eqcond = None
             val ec = eqcond()
             ec.key = "id"
             ec.`val` = x.sales_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces)
+//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18003")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             x.sales = Some(formJsonapi[sales](decodeJson[model.RootObject](parseJson(str))))
             x
         }
