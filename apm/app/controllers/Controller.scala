@@ -50,7 +50,6 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
                 case ("paperInputLst", 0) => PlayEntry().excution(findPaperInput()).asJson
                 case ("findExamRequire", 0) => PlayEntry().excution(findExamRequireIdByCourse()).asJson
 
-
                 case (_, _) => throw new Exception("Bad Request for input")
             }
         )

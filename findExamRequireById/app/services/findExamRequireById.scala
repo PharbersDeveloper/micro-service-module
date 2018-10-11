@@ -23,7 +23,7 @@ case class findExamRequireById()(implicit val rq: Request[model.RootObject], dbt
     var exam_require_data: examrequire = null
 
     override def prepare: Unit = {
-//        parseToken(rq)
+        parseToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 

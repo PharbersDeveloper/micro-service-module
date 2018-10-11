@@ -27,7 +27,7 @@ case class findExamRequireIdByCourse()(implicit val rq: Request[model.RootObject
     var exam_requires : List[examrequire] = Nil
 
     override def prepare: Unit = {
-//        parseToken(rq)
+        parseToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 
@@ -43,7 +43,7 @@ case class findExamRequireIdByCourse()(implicit val rq: Request[model.RootObject
             cond.key = "_id"
             cond.`val` = x.exam_require_id
             request.eqcond = Some(List(cond))
-            val res = forward("127.0.0.1", "18014")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val res = forward("123.56.179.133", "18014")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             formJsonapi[examrequire](decodeJson[model.RootObject](parseJson(res)))
         })
     }
