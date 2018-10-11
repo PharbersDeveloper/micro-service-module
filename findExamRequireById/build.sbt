@@ -65,6 +65,7 @@ libraryDependencies ++= Seq(
     "com.pharbers"      % "client_pattern"      % "1.0",
     "com.pharbers"      % "models"              % "1.0",
     "com.pharbers"      % "redis"               % "1.0",
+    "com.pharbers"      % "logs"                % "1.0",
 
 //    其他依赖(日志, 测试)
     "log4j"             % "log4j"               % "1.2.17",

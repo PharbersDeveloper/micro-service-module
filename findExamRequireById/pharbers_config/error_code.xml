@@ -39,7 +39,6 @@
         <error reason="update failed for paper_input" code="-510" description="更新失败" />
         <error reason="Could not find specified apm_quarter_report" code="-511" description="未找到指定季度报告" />
         <error reason="Could not find specified apm_report" code="-512" description="未找到指定报告" />
-        <error reason="find more quarter_report" code="-513" description="找到多条季度报告" />
         <error reason="Could not find specified exam require" code="-514" description="未找到指定要求" />
 
         <!-- third error -->
