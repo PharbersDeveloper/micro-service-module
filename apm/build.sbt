@@ -56,6 +56,7 @@ libraryDependencies ++= Seq(
 
 // pharbers 依赖
 	"com.pharbers"      % "base_module"         % "1.0",
+	"com.pharbers"      % "logs"                % "1.0",
     "com.pharbers"      % "errorcode"           % "1.0",
 	"com.pharbers"      % "jsonapi"             % "1.0",
     "com.pharbers"      % "mongo_drive"         % "1.0",
@@ -64,7 +65,6 @@ libraryDependencies ++= Seq(
     "com.pharbers"      % "client_pattern"      % "1.0",
     "com.pharbers"      % "models"              % "1.0",
     "com.pharbers"      % "redis"               % "1.0",
-    "com.pharbers"      % "logs"               % "1.0",
 
 //    其他依赖(日志, 测试)
     "log4j"             % "log4j"               % "1.2.17",

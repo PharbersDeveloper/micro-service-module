@@ -44,6 +44,7 @@ object writeBrickRegistry extends App {
         "/api/v1/answer/" -> List("127.0.0.1"),
         "/api/v1/actionPlanLst/" -> List("127.0.0.1", "apm_findactionplanbyid"),
         "/api/v1/findQuarterReport/" -> List("127.0.0.1", "apm_findquarterreportbyid"),
+        "/api/v1/callAPMr/" -> List("127.0.0.1"),
         "/api/v1/findReportMedSales/" -> List("127.0.0.1", "apm_findreportsalesbyid"),
         "/api/v1/findRadarFigure/" -> List("127.0.0.1", "apm_findradarbyid"),
         "/api/v1/findBusinessReport/" -> List("127.0.0.1", "apm_findbusinessbyid"),
@@ -58,7 +59,7 @@ object writeBrickRegistry extends App {
         rd.addListRight(x._1, x._2: _*)
     }
 
-    val test_route = "/api/v1/regionLst/"
+    val test_route = "/api/v1/callAPMr/"
     println(rd.getListSize(test_route))
     println(rd.getListAllValue(test_route))
     println("write brick registry success")

@@ -1,7 +1,5 @@
 package services
 
-import java.util.concurrent.{ExecutorService, Executors}
-
 import play.api.mvc.Request
 import com.pharbers.jsonapi.model
 import com.pharbers.pattern.frame.{forward, _}
@@ -27,7 +25,9 @@ case class login()(implicit val rq: Request[model.RootObject], dbt: DBManagerMod
     var request_data: request = new request()
     var auth_data: auth = new auth()
 
-    override def prepare: Unit = request_data = formJsonapi[request](rq.body)
+    override def prepare: Unit = {
+        request_data = formJsonapi[request](rq.body)
+    }
 
     override def exec: Unit = {
         val user = queryObject[user](request_data).getOrElse(throw new Exception("email or password error"))
@@ -36,29 +36,9 @@ case class login()(implicit val rq: Request[model.RootObject], dbt: DBManagerMod
     }
 
     override def forwardTo(next_brick: String): Unit = {
-//        val threadPool: ExecutorService = Executors.newFixedThreadPool(5)
-//        for(i <- 1 to 3){
-//            println(i)
-////            forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(auth_data).asJson.noSpaces).check()
-//            threadPool.execute(new ThreadDemo(next_brick))
-//        }
-
         val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(auth_data).asJson.noSpaces).check()
-//        println(str)
-//        val str1 = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(auth_data).asJson.noSpaces).check()
-//        println(str1)
-//        val str2 = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(auth_data).asJson.noSpaces).check()
-//        println(str2)
         val rootObject = decodeJson[model.RootObject](parseJson(str))
         auth_data.token = formJsonapi[auth](rootObject).token
-    }
-
-    //定义线程类
-    class ThreadDemo(next_brick: String) extends Runnable{
-        override def run(){
-//            forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(auth_data).asJson.noSpaces).check()
-            println(forward(next_brick)("/api/v1/courseLst/0").post("{}").check())
-        }
     }
 
     override def goback: model.RootObject = toJsonapi(auth_data)

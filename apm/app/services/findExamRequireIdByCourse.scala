@@ -22,9 +22,9 @@ case class findExamRequireIdByCourse()(implicit val rq: Request[model.RootObject
 
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
-    var bind_course_exam_require_datas : List[bind_course_exam_require] = Nil
     var request_data : request = null
-    var exam_requires : List[examrequire] = Nil
+    var bind_course_exam_require_datas : List[bind_course_exam_require] = Nil
+    var exam_requires : examrequire = null
 
     override def prepare: Unit = {
         parseToken(rq)
@@ -36,16 +36,18 @@ case class findExamRequireIdByCourse()(implicit val rq: Request[model.RootObject
     }
 
     override def forwardTo(next_brick: String): Unit = {
-        exam_requires = bind_course_exam_require_datas.map(x =>{
-            val request = new request
-            request.res = "examrequire"
-            val cond = eqcond()
-            cond.key = "_id"
-            cond.`val` = x.exam_require_id
-            request.eqcond = Some(List(cond))
-            val res = forward("123.56.179.133", "18014")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            formJsonapi[examrequire](decodeJson[model.RootObject](parseJson(res)))
-        })
+        bind_course_exam_require_datas match {
+            case one :: Nil =>
+                val request = new request
+                request.res = "examrequire"
+                val cond = eqcond()
+                cond.key = "_id"
+                cond.`val` = one.exam_require_id
+                request.eqcond = Some(List(cond))
+                val res = forward("123.56.179.133", "18014")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+                exam_requires = formJsonapi[examrequire](decodeJson[model.RootObject](parseJson(res)))
+            case _ => throw new Exception("find more exam_requires")
+        }
     }
 
     override def goback: model.RootObject = toJsonapi(exam_requires)

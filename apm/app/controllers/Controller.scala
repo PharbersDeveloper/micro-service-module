@@ -46,6 +46,7 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
                 case ("findRepBehavior", 0) => PlayEntry().excution(findBindCourseRegionYmRepBehavior()).asJson
                 case ("actionPlanLst", 0) => PlayEntry().excution(findBindCourseActionPlan()).asJson
                 case ("findQuarterReport", 0) => PlayEntry().excution(findBindCourseQuarterReport()).asJson
+                case ("callAPMr", 0) => PlayEntry().excution(apm_call_r()).asJson
                 case ("findReportMedSales", 0) => PlayEntry().excution(findBindPaperRegionGoodsYmReport()).asJson
                 case ("paperInputLst", 0) => PlayEntry().excution(findPaperInput()).asJson
                 case ("findExamRequire", 0) => PlayEntry().excution(findExamRequireIdByCourse()).asJson
