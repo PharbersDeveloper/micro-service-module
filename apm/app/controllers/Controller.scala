@@ -23,17 +23,8 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
         Ok(
             (pkg, step) match {
                 case ("login", 0) => PlayEntry().excution(login()).asJson
-                case ("login", 1) => PlayEntry().excution(encryptToken()).asJson
-
                 case ("exam", 0) => PlayEntry().excution(pushPaper()).asJson
-                case ("exam", 1) => PlayEntry().excution(pushBindUserCoursePaper()).asJson
-                case ("exam", 2) => PlayEntry().excution(pushPaperInputByCourse()).asJson
-                case ("exam", 3) => PlayEntry().excution(pushPaperInput()).asJson
-
                 case ("findPaper", 0) => PlayEntry().excution(findBindUserCoursePaperByToken()).asJson
-                case ("findPaper", 1) => PlayEntry().excution(findPaperById()).asJson
-                case ("findPaper", 2) => PlayEntry().excution(findBindUserCoursePaperByPaper()).asJson
-
                 case ("courseLst", 0) => PlayEntry().excution(findBindUserCourse()).asJson
                 case ("findCourseGoods", 0) => PlayEntry().excution(findBindCourseGoods()).asJson
                 case ("findCompetGoods", 0) => PlayEntry().excution(findBindCourseGoodsCompet()).asJson
@@ -46,7 +37,7 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
                 case ("findRepBehavior", 0) => PlayEntry().excution(findBindCourseRegionYmRepBehavior()).asJson
                 case ("actionPlanLst", 0) => PlayEntry().excution(findBindCourseActionPlan()).asJson
                 case ("findQuarterReport", 0) => PlayEntry().excution(findBindCourseQuarterReport()).asJson
-                case ("callAPMr", 0) => PlayEntry().excution(apm_call_r()).asJson
+                case ("callAPMr", 0) => PlayEntry().excution(updatePaper2Done()).asJson
                 case ("findReportMedSales", 0) => PlayEntry().excution(findBindPaperRegionGoodsYmReport()).asJson
                 case ("paperInputLst", 0) => PlayEntry().excution(findPaperInput()).asJson
                 case ("findExamRequire", 0) => PlayEntry().excution(findExamRequireIdByCourse()).asJson

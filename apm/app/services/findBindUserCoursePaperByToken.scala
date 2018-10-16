@@ -52,7 +52,7 @@ case class findBindUserCoursePaperByToken()(implicit val rq: Request[model.RootO
             ec.key = "id"
             ec.`val` = x.paper_id
             request.eqcond = Some(List(ec))
-            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("123.56.179.133", "18021")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             formJsonapi[paper](decodeJson[model.RootObject](parseJson(str)))
         }
     }

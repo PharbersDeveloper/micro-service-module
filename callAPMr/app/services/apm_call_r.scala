@@ -4,9 +4,8 @@ import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.jsonapi.model.{Attribute, Attributes}
 import com.pharbers.jsonapi.model.JsonApiObject.StringValue
-import com.pharbers.macros.api.commonEntity
-import com.pharbers.macros.common.connecting.ToStringMacro
 import com.pharbers.macros.convert.mongodb.TraitRequest
+import com.pharbers.models.service.callapmr
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.common.parseToken
 import com.pharbers.pattern.frame._
@@ -22,7 +21,7 @@ case class apm_call_r()(implicit val rq: Request[model.RootObject], dbt: DBManag
 
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
-    var request_data : callapmr = null
+    var request_data: callapmr = null
 
     override def prepare: Unit = {
         parseToken(rq)
@@ -30,7 +29,7 @@ case class apm_call_r()(implicit val rq: Request[model.RootObject], dbt: DBManag
     }
 
     override def exec: Unit = {
-        val result = forward("123.56.179.133", "18015")("/tmist_training/" + request_data.paper_id).get
+        val result = forward("apm_r", "8000")("/tmist_training/" + request_data.paper_id).get
         if(!result.toString.contains("DONE")) throw new Exception("R call fails")
     }
 
@@ -42,9 +41,4 @@ case class apm_call_r()(implicit val rq: Request[model.RootObject], dbt: DBManag
             )
         )
     ))
-}
-
-@ToStringMacro
-class callapmr extends commonEntity {
-    var paper_id: String = ""
 }

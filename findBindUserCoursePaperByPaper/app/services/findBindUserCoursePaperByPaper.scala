@@ -40,8 +40,7 @@ case class findBindUserCoursePaperByPaper()(implicit val rq: Request[model.RootO
         ec.key = "id"
         ec.`val` = bind_data.course_id
         request.eqcond = Some(List(ec))
-//        val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-        val str = forward("123.56.179.133", "18004")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
         course_data = formJsonapi[course](decodeJson[model.RootObject](parseJson(str)))
     }
 

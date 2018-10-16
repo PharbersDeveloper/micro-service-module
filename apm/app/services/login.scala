@@ -36,7 +36,7 @@ case class login()(implicit val rq: Request[model.RootObject], dbt: DBManagerMod
     }
 
     override def forwardTo(next_brick: String): Unit = {
-        val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(auth_data).asJson.noSpaces).check()
+        val str = forward("123.56.179.133", "18016")(api + (cur_step + 1)).post(toJsonapi(auth_data).asJson.noSpaces).check()
         val rootObject = decodeJson[model.RootObject](parseJson(str))
         auth_data.token = formJsonapi[auth](rootObject).token
     }

@@ -3,8 +3,9 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_region, paperinput, region}
-import com.pharbers.models.request.{eqcond, request}
+import com.pharbers.models.entity.paperinput
+import com.pharbers.models.request.request
+import com.pharbers.models.service.paperinputstep
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.common.parseToken
 import com.pharbers.pattern.frame._
@@ -30,7 +31,37 @@ case class findPaperInput()(implicit val rq: Request[model.RootObject], dbt: DBM
         request_data = formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = paperInputLst = queryMultipleObject[paperinput](request_data)
+    override def exec: Unit = {
+        paperInputLst = queryMultipleObject[paperinput](request_data)
+
+        val step = calcStep(paperInputLst)
+
+        paperInputLst = paperInputLst.map { x =>
+            x.paperinputstep = step
+            x
+        }
+    }
+
+    def calcStep(pis: List[paperinput]): Option[paperinputstep] = {
+        pis match {
+            case one :: _ =>
+                val tmp = new paperinputstep
+                tmp.id = "paperinputstep"
+
+                if(one.hint == "") tmp.step = 0
+                else if(one.sorting == "") tmp.step = 1
+                else if(one.predicted_target == 0) tmp.step = 2
+                else if(one.field_work_days == 0 ||
+                        one.national_meeting == 0 ||
+                        one.city_meeting == 0 ||
+                        one.depart_meeting == 0) tmp.step = 3
+                else if(one.action_plans == Nil) tmp.step = 4
+                else tmp.step = 0
+
+                Some(tmp)
+            case Nil => None
+        }
+    }
 
     override def goback: model.RootObject = toJsonapi(paperInputLst)
 }

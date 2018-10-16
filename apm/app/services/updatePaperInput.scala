@@ -43,6 +43,6 @@ case class updatePaperInput()(implicit val rq: Request[model.RootObject], dbt: D
                     )
                 )
             ))
-        case _ => throw new Exception("update failed for paperinput")
+        case _ => throw new Exception("update failed for paper_input")
     }
 }
