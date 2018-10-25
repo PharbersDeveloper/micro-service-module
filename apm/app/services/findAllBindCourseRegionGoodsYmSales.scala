@@ -86,6 +86,12 @@ case class findAllBindCourseRegionGoodsYmSales()(implicit val rq: Request[model.
 //            x._2.`type` = "sales"
 //            x._1.sales = Some(x._2)
 //        })
+
+        val these = salesIdLst.iterator
+        val those = salesList.iterator
+        while (these.hasNext && those.hasNext){
+            these.next().sales = Some(those.next())
+        }
 //        salesIdLst = salesIdLst.map { x =>
 //            x.sales = Some(
 //                formJsonapi[sales](decodeJson[model.RootObject](parseJson(str))))
