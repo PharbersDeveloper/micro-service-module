@@ -1,14 +1,11 @@
 package services
 
-import com.mongodb.casbah.Imports.DBObject
 import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
-import com.pharbers.jsonapi.model.RootObject
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_course_region_goods_ym_sales, sales}
 import com.pharbers.models.request.{fmcond, incond, request}
-import com.pharbers.mongodb.dbconnect.dbInstance
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
