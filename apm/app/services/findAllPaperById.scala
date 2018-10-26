@@ -6,6 +6,7 @@ import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_user_course_paper, course, paper}
 import com.pharbers.models.request.{eqcond, fmcond, incond, request}
+import com.pharbers.models.service.auth
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -27,18 +28,11 @@ case class findAllPaperById()(implicit val rq: Request[model.RootObject], dbt: D
 
     var request_data: request = null
     var paper_dataLst: List[paper] = null
+    var auth_data: auth = null
 
     override def prepare: Unit = {
-//        request_data = {
-//            parseToken(rq)
-//            val re = formJsonapi[request](rq.body)
-//            val in = incond()
-//            in.key = re.incond.getOrElse(Nil).head.key
-////            in.`val` = re.incond.getOrElse(Nil).head.`val`.asInstanceOf[List].map(x => new ObjectId(x.toString)).toSet
-//            re.incond = Some(List(in))
-//            re
-//        }
-
+        auth_data = parseToken(rq)
+        request_data = formJsonapi[request](rq.body)
     }
 
     override def exec: Unit = {
@@ -47,7 +41,7 @@ case class findAllPaperById()(implicit val rq: Request[model.RootObject], dbt: D
             val ec = eqcond()
             val fm = fmcond()
             ec.key = "user_id"
-            ec.`val` = parseToken(rq).user.get.id
+            ec.`val` = auth_data.user.get.id
             request.res = "bind_user_course_paper"
             request.eqcond = Some(List(ec))
             request.fmcond = Some(fm)

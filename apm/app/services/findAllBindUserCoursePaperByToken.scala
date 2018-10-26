@@ -31,11 +31,31 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
     override def prepare: Unit = auth_data = parseToken(rq)
 
     override def exec: Unit = {
-
+        val request = new request()
+        val ec = eqcond()
+        val fm = fmcond()
+        ec.key = "user_id"
+        ec.`val` = auth_data.user.get.id
+        request.res = "bind_user_course_paper"
+        request.eqcond = Some(List(ec))
+        request.fmcond = Some(fm)
+        paperIdLst = queryMultipleObject[bind_user_course_paper](request)
     }
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request
+        request.res = "paper"
+
+        var valList: List[Any] = Nil
+        paperIdLst.foreach(x => valList = valList :+ x.paper_id)
+        val fm = fmcond()
+        fm.take = 1000
+        request.fmcond = Some(fm)
+        val in = incond()
+        in.key = "_id"
+        in.`val` = valList
+        request.incond = Some(List(in))
+
         val str = forward("127.0.0.1", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
         paperLst = formJsonapiLst[paper](decodeJson[model.RootObject](parseJson(str)))
 
