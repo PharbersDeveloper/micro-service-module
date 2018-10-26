@@ -22,9 +22,6 @@
         <error reason="token expired" code="-304" description="token过期" />
         <error reason="token parse error" code="-304" description="token数据解析出现错误" />
 
-        <!-- role error -->
-        <error reason="role info has been use" code="-401" description="该权限信息已被使用" />
-
         <!-- action error -->
         <error reason="Could not find specified course" code="-501" description="未找到指定课程" />
         <error reason="Could not find specified region" code="-501" description="未找到指定区域" />

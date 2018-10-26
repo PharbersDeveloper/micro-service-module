@@ -14,16 +14,18 @@
 
         <!-- company error -->
         <error reason="company name has been use" code="-201" description="公司名已被使用" />
+        <error reason="company not exist" code="-202" description="公司不存在" />
+        <error reason="secret not exist" code="-203" description="秘钥对不存在" />
+        <error reason="product not exist" code="-204" description="产品不存在" />
 
         <!-- user error -->
         <error reason="user email has been use" code="-301" description="用户邮箱已被使用" />
         <error reason="email or password error" code="-302" description="邮箱或密码错误" />
         <error reason="user not exist" code="-303" description="用户不存在" />
         <error reason="token expired" code="-304" description="token过期" />
-        <error reason="token parse error" code="-304" description="token数据解析出现错误" />
-
-        <!-- role error -->
-        <error reason="role info has been use" code="-401" description="该权限信息已被使用" />
+        <error reason="token parse error" code="-305" description="token数据解析出现错误" />
+        <error reason="role not exist" code="-306" description="角色不存在" />
+        <error reason="viewblock not exist" code="-307" description="显示组件不存在" />
 
         <!-- action error -->
         <error reason="Could not find specified course" code="-501" description="未找到指定课程" />

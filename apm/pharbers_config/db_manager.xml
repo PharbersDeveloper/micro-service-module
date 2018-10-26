@@ -1,6 +1,6 @@
 <pharbers-modules>
     <mongodb-connect-nodes>
-        <connect-config-path name="test" value="pharbers_config/test_connect.xml" />
+        <connect-config-path name="auth" value="pharbers_config/auth_connect.xml" />
         <connect-config-path name="client" value="pharbers_config/client_connect.xml" />
         <connect-config-path name="tm_report" value="pharbers_config/tm_report_connect.xml" />
         <connect-config-path name="apm_report" value="pharbers_config/apm_report_connect.xml" />

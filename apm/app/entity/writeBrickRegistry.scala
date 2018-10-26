@@ -4,7 +4,7 @@ import com.pharbers.driver.PhRedisDriver
 
 object writeBrickRegistry extends App {
     private val routes: Map[String, List[String]] = Map(
-        "/api/v1/login/" -> List("127.0.0.1", "127.0.0.1"),
+        "/api/v1/login/" -> List("127.0.0.1", "encrypttoken"),
         "/api/v1/proposalLst/" -> List("127.0.0.1", "127.0.0.1"),
         "/api/v1/layoutLst/" -> List("127.0.0.1"),
         "/api/v1/medicsnotices/" -> List("127.0.0.1", "127.0.0.1"),
@@ -31,9 +31,10 @@ object writeBrickRegistry extends App {
         "/api/v1/evaluationLine/" -> List("127.0.0.1"),
         "/api/v1/evaluationCards/" -> List("127.0.0.1")
     ) ++ Map(
-        "/api/v1/login/" -> List("127.0.0.1", "encrypttoken"),
-        "/api/v1/courseLst/" -> List("127.0.0.1", "apm_findcoursebyid"),
+        "/api/v1/companyRegister/" -> List("127.0.0.1"),
+        "/api/v1/layout/" -> List("127.0.0.1"),
         "/api/v1/exam/" -> List("127.0.0.1", "apm_pushbindusercoursepaper", "apm_pushpaperinputbycourse", "apm_pushpaperinput"),
+        "/api/v1/courseLst/" -> List("127.0.0.1", "apm_findcoursebyid"),
         "/api/v1/findCourseGoods/" -> List("127.0.0.1", "findmedbyid"),
         "/api/v1/findCompetGoods/" -> List("127.0.0.1", "findmedbyid"),
         "/api/v1/regionLst/" -> List("127.0.0.1", "apm_findregionbyid"),

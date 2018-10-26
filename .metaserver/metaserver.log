@@ -1,0 +1,66 @@
+18:43:53.270 INFO  s.m.l.Main$ - Starting server in /Users/clock/workSpace/Pharbers/micro-service-module
+18:43:53.318 INFO  s.m.l.Main$ - Classpath: /Users/clock/.atom/packages/ide-scala/coursier
+18:43:56.780 INFO  s.m.l.Formatter$ - Classloading scalafmt with 28 downloaded jars
+18:43:58.297 INFO  s.m.l.ScalametaLanguageServer - Initialized with /Users/clock/workSpace/Pharbers/micro-service-module, InitializeParams(3660,/Users/clock/workSpace/Pharbers/micro-service-module/,ClientCapabilities())
+18:44:00.682 ERROR l.c.LanguageServer$$anon$1 - Invalid Notification: List((,List(JsonValidationError(List(notification parameters must be given),WrappedArray())))) - Message: JsonRpcNotificationMessage(initialized,NoParams)
+18:44:00.695 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:00.696 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):0:0
+18:44:00.699 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:00.700 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):15:62
+18:44:00.707 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:00.707 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):15:52
+18:44:00.710 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:00.711 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):15:51
+18:44:00.712 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:00.713 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):15:46
+18:44:00.831 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:00.831 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):15:47
+18:44:00.833 INFO  s.m.l.ScalametaLanguageServer - completion
+18:44:00.834 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:00.835 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):15:47
+18:44:04.143 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:04.144 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):15:47
+18:44:04.518 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:04.518 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):9:45
+18:44:07.684 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:07.686 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):9:34
+18:44:15.598 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):13:43
+18:44:15.776 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):13:43
+18:44:15.834 ERROR l.c.LanguageServer$$anon$1 - Invalid Notification: List((,List(JsonValidationError(List(unknown method textDocument/willSave),WrappedArray())))) - Message: JsonRpcNotificationMessage(textDocument/willSave,ObjectParams({"textDocument":{"uri":"file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala"},"reason":1}))
+18:44:15.867 DEBUG s.m.l.ScalametaLanguageServer - saveTextDocument TextDocumentIdentifier(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:18.331 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:44:18.332 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):9:34
+18:46:19.288 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:46:19.290 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):6:34
+18:46:19.555 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:46:19.555 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):7:34
+18:46:21.805 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:46:21.805 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):25:21
+18:46:23.164 ERROR l.c.LanguageServer$$anon$1 - Invalid Notification: List((,List(JsonValidationError(List(unknown method textDocument/willSave),WrappedArray())))) - Message: JsonRpcNotificationMessage(textDocument/willSave,ObjectParams({"textDocument":{"uri":"file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala"},"reason":1}))
+18:46:23.171 DEBUG s.m.l.ScalametaLanguageServer - saveTextDocument TextDocumentIdentifier(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:46:24.735 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala)
+18:46:24.735 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/callAPMr/app/services/apm_call_r.scala):25:21
+19:32:09.058 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/controllers/Controller.scala)
+19:32:09.059 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/controllers/Controller.scala):0:0
+19:32:10.378 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:10.379 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):0:0
+19:32:11.722 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:11.725 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):13:62
+19:32:17.894 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:17.895 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):6:47
+19:32:18.360 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:18.361 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):5:47
+19:32:21.554 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:21.555 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):2:44
+19:32:24.286 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:24.287 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):23:0
+19:32:24.709 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:24.710 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):26:44
+19:32:25.125 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:25.125 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):25:21
+19:32:26.522 ERROR l.c.LanguageServer$$anon$1 - Invalid Notification: List((,List(JsonValidationError(List(unknown method textDocument/willSave),WrappedArray())))) - Message: JsonRpcNotificationMessage(textDocument/willSave,ObjectParams({"textDocument":{"uri":"file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala"},"reason":1}))
+19:32:26.555 DEBUG s.m.l.ScalametaLanguageServer - saveTextDocument TextDocumentIdentifier(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:29.073 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:29.073 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):25:21
+19:32:33.103 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala)
+19:32:33.103 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindUserCoursePaper/app/services/pushBindUserCoursePaper.scala):22:29

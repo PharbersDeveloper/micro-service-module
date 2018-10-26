@@ -34,6 +34,7 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
         val request = new request()
         val ec = eqcond()
         val fm = fmcond()
+        fm.take = 1000
         ec.key = "user_id"
         ec.`val` = auth_data.user.get.id
         request.res = "bind_user_course_paper"
