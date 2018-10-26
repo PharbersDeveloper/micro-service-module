@@ -44,7 +44,6 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
                 case ("findAllMedSales", 0) => PlayEntry().excution(findAllBindCourseRegionGoodsYmSales()).asJson
                 case ("findAllReportMedSales", 0) => PlayEntry().excution(findAllBindPaperRegionGoodsYmReport()).asJson
                 case ("findAllPaper", 0) => PlayEntry().excution(findAllBindUserCoursePaperByToken()).asJson
-                case ("findAllPaper", 1) => PlayEntry().excution(findAllPaperById()).asJson
 
                 case (_, _) => throw new Exception("Bad Request for input")
             }
