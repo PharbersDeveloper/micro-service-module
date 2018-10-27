@@ -6,13 +6,12 @@ import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.actionplan
 import com.pharbers.models.request.request
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
 import com.pharbers.pattern.frame.Brick
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class findActionPlanById()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._

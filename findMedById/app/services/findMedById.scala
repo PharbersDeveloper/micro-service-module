@@ -6,13 +6,12 @@ import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.medicine
 import com.pharbers.models.request.request
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
 import com.pharbers.pattern.frame.Brick
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class findMedById()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
@@ -25,7 +24,6 @@ case class findMedById()(implicit val rq: Request[model.RootObject], dbt: DBMana
     var med_data: medicine = null
 
     override def prepare: Unit = {
-        parseToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 

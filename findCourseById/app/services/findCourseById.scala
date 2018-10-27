@@ -8,11 +8,10 @@ import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
-import com.pharbers.pattern.common.parseToken
 import com.pharbers.pattern.frame.Brick
 
 case class findCourseById()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
@@ -25,7 +24,6 @@ case class findCourseById()(implicit val rq: Request[model.RootObject], dbt: DBM
     var course_data: course = null
 
     override def prepare: Unit = request_data = {
-        parseToken(rq)
         formJsonapi[request](rq.body)
     }
 

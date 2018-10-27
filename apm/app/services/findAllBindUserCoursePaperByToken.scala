@@ -57,7 +57,7 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
         in.`val` = valList
         request.incond = Some(List(in))
 
-        val str = forward("123.56.179.133", "18015")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        val str = forward("123.56.179.133", "18023")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
         paperLst = formJsonapiLst[paper](decodeJson[model.RootObject](parseJson(str)))
 
     }

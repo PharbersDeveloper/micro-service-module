@@ -1,6 +1,5 @@
 package services
 
-import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.jsonapi.model.{Attribute, Attributes}
@@ -14,7 +13,7 @@ import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class pushPaperInputByCourse()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport {
 
     import io.circe.syntax._
     import com.pharbers.macros._
@@ -28,7 +27,6 @@ case class pushPaperInputByCourse()(implicit val rq: Request[model.RootObject], 
     var regionIdLst: List[bind_course_region] = Nil
 
     override def prepare: Unit = {
-        parseToken(rq)
         bind_data = formJsonapi[bind_user_course_paper](rq.body)
     }
 
