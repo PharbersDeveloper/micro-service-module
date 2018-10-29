@@ -63,8 +63,13 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
 
         val str = forward("123.56.179.133", "18023")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
         paperLst = formJsonapiLst[paper](decodeJson[model.RootObject](parseJson(str)))
-
     }
 
-    override def goback: model.RootObject = toJsonapi(paperLst)
+    override def goback: model.RootObject = {
+        val tmp = toJsonapi(paperLst)
+        if(tmp.data.isEmpty) model.RootObject(Some(
+            model.RootObject.ResourceObjects(Nil)
+        ))
+        else tmp
+    }
 }

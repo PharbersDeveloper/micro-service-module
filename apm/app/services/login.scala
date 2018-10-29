@@ -29,6 +29,7 @@ case class login()(implicit val rq: Request[model.RootObject], dbt: DBManagerMod
     override def prepare: Unit = login_data = formJsonapi[request](rq.body)
 
     override def exec: Unit = {
+
         // 保存用户输入的密码密文
         val password = login_data.eqcond.map(x => x.find(_.key == "password").map(_.`val`.toString).getOrElse("")).get
         // 用户登录来源
@@ -36,6 +37,7 @@ case class login()(implicit val rq: Request[model.RootObject], dbt: DBManagerMod
 
         login_data.eqcond = login_data.eqcond.map(x => x.filter(_.key == "email"))
         val user_data = queryObject[user](login_data).getOrElse(throw new Exception("user not exist"))
+
 
         // 查看用户所属公司是否有登录来源的访问权限
         val bind_company_user_data = queryBindCompanyUser(user_data.id)
