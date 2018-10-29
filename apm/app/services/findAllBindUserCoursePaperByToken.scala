@@ -43,6 +43,11 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
         paperIdLst = queryMultipleObject[bind_user_course_paper](request)
     }
 
+    override def done: Option[String] = {
+        if(paperIdLst.isEmpty) None
+        else super.done
+    }
+
     override def forwardTo(next_brick: String): Unit = {
         val request = new request
         request.res = "paper"
