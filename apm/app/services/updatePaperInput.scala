@@ -8,6 +8,7 @@ import com.pharbers.jsonapi.model.{Attribute, Attributes}
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.paperinput
 import com.pharbers.models.request.request
+import com.pharbers.models.service.call_result
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -35,14 +36,11 @@ case class updatePaperInput()(implicit val rq: Request[model.RootObject], dbt: D
 
     override def goback: model.RootObject = update_result match {
         case 1 =>
-            model.RootObject(Some(
-                model.RootObject.ResourceObject(
-                    `type` = "result",
-                    attributes = Some(
-                        Seq(Attribute("update", StringValue("success"))).asInstanceOf[Attributes]
-                    )
-                )
-            ))
+            val tmp = call_result()
+            tmp.state = true
+            tmp.des = "update success"
+
+            toJsonapi[call_result](tmp)
         case _ => throw new Exception("update failed for paper_input")
     }
 }

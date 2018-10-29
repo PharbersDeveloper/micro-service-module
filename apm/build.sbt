@@ -17,7 +17,7 @@ lazy val root = (project in file(".")).
         settings(
             name := "apm",
             fork in run := true,
-            javaOptions += "-Xmx2G"
+            javaOptions += "-Xmx4G"
         )
 
 routesGenerator := InjectedRoutesGenerator

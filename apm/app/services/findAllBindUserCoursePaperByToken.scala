@@ -46,7 +46,6 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
     override def forwardTo(next_brick: String): Unit = {
         val request = new request
         request.res = "paper"
-
         var valList: List[Any] = Nil
         paperIdLst.foreach(x => valList = valList :+ x.paper_id)
         val fm = fmcond()

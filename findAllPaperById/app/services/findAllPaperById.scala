@@ -18,7 +18,6 @@ import scala.collection.mutable
 case class findAllPaperById()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
         extends Brick with CirceJsonapiSupport with parseToken {
 
-    import io.circe.syntax._
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
@@ -36,38 +35,14 @@ case class findAllPaperById()(implicit val rq: Request[model.RootObject], dbt: D
     }
 
     override def exec: Unit = {
-        var paperIdLst = {
-            val request = new request()
-            val ec = eqcond()
-            val fm = fmcond()
-            ec.key = "user_id"
-            ec.`val` = auth_data.user.get.id
-            request.res = "bind_user_course_paper"
-            request.eqcond = Some(List(ec))
-            request.fmcond = Some(fm)
-            queryMultipleObject[bind_user_course_paper](request)
+        request_data.incond = request_data.incond.map{ x =>
+            x.map{ incond =>
+                incond.`val` = incond.`val`.asInstanceOf[List[String]].map{ id => new ObjectId(id) }
+                incond
+            }
         }
 
-
-
-        paper_dataLst = {
-            val request = new request()
-            request.res = "paper"
-
-            var valList: List[ObjectId] = Nil
-            paperIdLst.foreach(x => valList = valList :+ new ObjectId(x.paper_id))
-            val fm = fmcond()
-            fm.take = 1000
-            request.fmcond = Some(fm)
-            val in = incond()
-            in.key = "_id"
-            in.`val` = valList.toSet
-            request.incond = Some(List(in))
-
-            queryMultipleObject[paper](request)
-        }
-
-
+        paper_dataLst = queryMultipleObject[paper](request_data)
 
         val courseIdLst = {
             val request = new request()
@@ -101,8 +76,6 @@ case class findAllPaperById()(implicit val rq: Request[model.RootObject], dbt: D
             queryMultipleObject[course](request, "_id").foreach(x => map(x.id) = x)
             map
         }
-
-
 
         val these = paper_dataLst.iterator
         val those = courseIdLst.iterator
