@@ -22,9 +22,9 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
     def routes(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
         Ok(
             (pkg, step) match {
-                case ("companyRegister", _) => PlayEntry().excution(companyRegister()).asJson
+                case ("companyRegister", 0) => PlayEntry().excution(companyRegister()).asJson
                 case ("login", 0) => PlayEntry().excution(login()).asJson
-                case ("layout", _) => PlayEntry().excution(findLayout()).asJson
+                case ("layout", 0) => PlayEntry().excution(findLayout()).asJson
                 case ("exam", 0) => PlayEntry().excution(pushPaper()).asJson
                 case ("findPaper", 0) => PlayEntry().excution(findBindUserCoursePaperByToken()).asJson
                 case ("courseLst", 0) => PlayEntry().excution(findBindUserCourse()).asJson
