@@ -54,7 +54,7 @@ object writeBrickRegistry extends App {
         "/api/v1/findExamRequire/" -> List("127.0.0.1", "apm_findexamrequirebyid"),
         "/api/v1/findAllMedSales/" -> List("127.0.0.1"),
         "/api/v1/findAllReportMedSales/" -> List("127.0.0.1"),
-        "/api/v1/findAllPaper/" -> List("127.0.0.1", "apm_findAllPaperById")
+        "/api/v1/findAllPaper/" -> List("127.0.0.1", "apm_findallpaperbyid")
     )
 
     val rd = new PhRedisDriver()
