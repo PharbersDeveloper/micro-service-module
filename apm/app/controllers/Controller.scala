@@ -23,6 +23,7 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
         Ok(
             (pkg, step) match {
                 case ("companyRegister", 0) => PlayEntry().excution(companyRegister()).asJson
+                case ("userRegister", 0) => PlayEntry().excution(userRegister()).asJson
                 case ("login", 0) => PlayEntry().excution(login()).asJson
                 case ("layout", 0) => PlayEntry().excution(findLayout()).asJson
                 case ("exam", 0) => PlayEntry().excution(pushPaper()).asJson
