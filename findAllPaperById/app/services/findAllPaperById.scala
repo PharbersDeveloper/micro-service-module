@@ -18,7 +18,6 @@ import scala.collection.mutable
 case class findAllPaperById()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
         extends Brick with CirceJsonapiSupport with parseToken {
 
-    import io.circe.syntax._
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
@@ -31,7 +30,6 @@ case class findAllPaperById()(implicit val rq: Request[model.RootObject], dbt: D
     var auth_data: auth = null
 
     override def prepare: Unit = {
-        auth_data = parseToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 
