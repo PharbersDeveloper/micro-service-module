@@ -15,7 +15,6 @@ import play.api.mvc.Request
 case class findAllBindCourseRegionGoodsYmSales()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
         extends Brick with CirceJsonapiSupport with parseToken {
 
-    import io.circe.syntax._
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 

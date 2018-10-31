@@ -43,10 +43,14 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
         paperIdLst = queryMultipleObject[bind_user_course_paper](request)
     }
 
+    override def done: Option[String] = {
+        if(paperIdLst.isEmpty) None
+        else super.done
+    }
+
     override def forwardTo(next_brick: String): Unit = {
         val request = new request
         request.res = "paper"
-
         var valList: List[Any] = Nil
         paperIdLst.foreach(x => valList = valList :+ x.paper_id)
         val fm = fmcond()
@@ -57,10 +61,15 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
         in.`val` = valList
         request.incond = Some(List(in))
 
-        val str = forward("123.56.179.133", "18015")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-//        paperLst = formJsonapiLst[paper](decodeJson[model.RootObject](parseJson(str)))
-
+        val str = forward("123.56.179.133", "18023")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        paperLst = formJsonapiLst[paper](decodeJson[model.RootObject](parseJson(str)))
     }
 
-    override def goback: model.RootObject = toJsonapi(paperLst)
+    override def goback: model.RootObject = {
+        val tmp = toJsonapi(paperLst)
+        if(tmp.data.isEmpty) model.RootObject(Some(
+            model.RootObject.ResourceObjects(Nil)
+        ))
+        else tmp
+    }
 }

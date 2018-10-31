@@ -8,7 +8,7 @@ import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.paper
 import com.pharbers.models.request._
 import com.pharbers.models.request.request
-import com.pharbers.models.service.callapmr
+import com.pharbers.models.service.{call_result, callapmr}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.common.parseToken
 import com.pharbers.pattern.frame._
@@ -49,12 +49,11 @@ case class updatePaper2Done()(implicit val rq: Request[model.RootObject], dbt: D
         forward("123.56.179.133", "18020")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
-    override def goback: model.RootObject = model.RootObject(Some(
-        model.RootObject.ResourceObject(
-            `type` = "result",
-            attributes = Some(
-                Seq(Attribute("call R", StringValue("success"))).asInstanceOf[Attributes]
-            )
-        )
-    ))
+    override def goback: model.RootObject = {
+        val tmp = call_result()
+        tmp.state = true
+        tmp.des = "call R success"
+
+        toJsonapi[call_result](tmp)
+    }
 }

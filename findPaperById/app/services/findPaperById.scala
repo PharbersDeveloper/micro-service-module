@@ -1,6 +1,5 @@
 package services
 
-import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
@@ -12,7 +11,7 @@ import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class findPaperById()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport {
 
     import io.circe.syntax._
     import com.pharbers.macros._
@@ -26,7 +25,6 @@ case class findPaperById()(implicit val rq: Request[model.RootObject], dbt: DBMa
     var paper_data: paper = null
 
     override def prepare: Unit = request_data = {
-        parseToken(rq)
         formJsonapi[request](rq.body)
     }
 

@@ -32,7 +32,7 @@ case class findAllBindPaperRegionGoodsYmReport()(implicit val rq: Request[model.
     }
 
     override def exec: Unit = {
-        reportIdLst = queryMultipleObject[bind_paper_region_goods_ym_report](request_data, sort = "report_id").reverse
+        reportIdLst = queryMultipleObject[bind_paper_region_goods_ym_report](request_data, sort = "report_id")
         val request = new request()
         request.res = "report"
         var valList: List[ObjectId] = Nil

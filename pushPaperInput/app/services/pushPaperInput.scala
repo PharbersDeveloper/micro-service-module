@@ -1,6 +1,5 @@
 package services
 
-import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
@@ -11,7 +10,7 @@ import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class pushPaperInput()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
@@ -23,7 +22,6 @@ case class pushPaperInput()(implicit val rq: Request[model.RootObject], dbt: DBM
     var insert_data: paperinput = null
 
     override def prepare: Unit = {
-        parseToken(rq)
         insert_data = formJsonapi[paperinput](rq.body)
     }
 
