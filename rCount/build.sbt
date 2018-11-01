@@ -15,7 +15,7 @@ lazy val root = (project in file(".")).
         disablePlugins(PlayFilters).
         settings(common: _*).
         settings(
-            name := "findRepBehaviorById",
+            name := "rCount",
             fork in run := true,
             javaOptions += "-Xmx2G"
         )
@@ -56,7 +56,7 @@ libraryDependencies ++= Seq(
 
 // pharbers 依赖
 	"com.pharbers"      % "base_module"         % "1.0",
-	"com.pharbers"      % "logs"         % "1.0",
+	"com.pharbers"      % "logs"                % "1.0",
     "com.pharbers"      % "errorcode"           % "1.0",
 	"com.pharbers"      % "jsonapi"             % "1.0",
     "com.pharbers"      % "mongo_drive"         % "1.0",

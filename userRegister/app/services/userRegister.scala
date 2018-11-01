@@ -5,13 +5,10 @@ import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity._
 import com.pharbers.models.request._
-import com.pharbers.models.service.auth
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame.Brick
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
-import com.pharbers.security.cryptogram.rsa.RSA
 import org.apache.commons.codec.digest.DigestUtils
-import org.bson.types.ObjectId
 import play.api.mvc.Request
 
 case class userRegister()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
@@ -30,10 +27,14 @@ case class userRegister()(implicit val rq: Request[model.RootObject], dbt: DBMan
     override def exec: Unit = {
         val company_id: String = "5bd16a83ed925c081c056966"
         val role_id: String = "5bd1a068eeefcc015029cb88"
+        val course_id_1: String = "5baa0e58eeefcc05923c9414"
+        val course_id_2: String = "5baa1d78eeefcc05923c9424"
         emailVerify(user_data.email)
         val user_id = insertUser(user_data, company_id)
         insertBindCompanyUser(company_id, user_id)
         insertBindUserRole(user_id, role_id)
+        insertBindUserCourse(user_id, course_id_1)
+        insertBindUserCourse(user_id, course_id_2)
     }
 
     override def goback: model.RootObject = toJsonapi(user_data)
@@ -72,6 +73,15 @@ case class userRegister()(implicit val rq: Request[model.RootObject], dbt: DBMan
         bind_data.user_id = user_id
         bind_data.role_id = role_id
         insertObject[bind_user_role](bind_data)
+    }
+
+    def insertBindUserCourse(user_id: String, course_id: String): Unit = {
+        implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
+        val bind_data = new bind_user_course
+        bind_data.`type` = "bind_user_course"
+        bind_data.user_id = user_id
+        bind_data.course_id = course_id
+        insertObject[bind_user_course](bind_data)
     }
 
 }

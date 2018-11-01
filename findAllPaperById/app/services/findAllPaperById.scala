@@ -30,7 +30,6 @@ case class findAllPaperById()(implicit val rq: Request[model.RootObject], dbt: D
     var auth_data: auth = null
 
     override def prepare: Unit = {
-        auth_data = parseToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 
