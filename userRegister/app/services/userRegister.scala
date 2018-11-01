@@ -51,27 +51,10 @@ case class userRegister()(implicit val rq: Request[model.RootObject], dbt: DBMan
     }
 
     def insertUser(user_data: user, company_id: String): String = {
-        def queryBindCompanySecret(company_id: String): bind_company_secret = {
-            val rq = new request
-            rq.res = "bind_company_secret"
-            rq.eqcond = Some(eq2c("company_id", company_id) :: Nil)
-            queryObject[bind_company_secret](rq).getOrElse(throw new Exception(""))
-        }
-
-        def querySecret(secret_id: String): secret = {
-            val rq = new request
-            rq.res = "secret"
-            rq.eqcond = Some(eq2c("id", secret_id) :: Nil)
-            queryObject[secret](rq).getOrElse(throw new Exception("secret not exist"))
-        }
-
         user_data.image = "https://pharbers-images.oss-cn-beijing.aliyuncs.com/pharbers-tm-hospital-list-ember-addon/hosp_avatar.png"
 
         // 使用默认公司加密密码
-        val bind_company_secret_data = queryBindCompanySecret(company_id)
-        val secret_data = querySecret(bind_company_secret_data.secret_id)
-        val encrypted = RSA(puk = secret_data.public_key).encrypt(user_data.password)
-        user_data.password = DigestUtils.md5Hex(encrypted).toUpperCase
+        user_data.password = DigestUtils.md5Hex(user_data.password).toUpperCase
         insertObject[user](user_data).get("_id").toString
     }
 
