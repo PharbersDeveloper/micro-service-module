@@ -23,7 +23,7 @@ case class findAllBindCourseRegionGoodsYmSales()(implicit val rq: Request[model.
 
     override val brick_name: String = "find all bind course region med ym sales list"
 
-    implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
+     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     override def prepare: Unit = {
         parseToken(rq)
