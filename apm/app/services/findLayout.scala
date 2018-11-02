@@ -3,7 +3,7 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_role_view_viewblock, bind_viewblock_viewblock, viewblock}
+import com.pharbers.models.entity.auth.{bind_role_view_viewblock, bind_viewblock_viewblock, viewblock}
 import com.pharbers.models.request.{eq2c, request}
 import com.pharbers.models.service.auth
 import com.pharbers.mongodb.dbtrait.DBTrait

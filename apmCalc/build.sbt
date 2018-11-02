@@ -15,7 +15,7 @@ lazy val root = (project in file(".")).
         disablePlugins(PlayFilters).
         settings(common: _*).
         settings(
-            name := "rCount",
+            name := "apmCalc",
             fork in run := true,
             javaOptions += "-Xmx2G"
         )

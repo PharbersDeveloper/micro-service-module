@@ -4,7 +4,7 @@ import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_region_goods_ym_sales, sales}
+import com.pharbers.models.entity.{bind_course_region_goods_time_sales, sales}
 import com.pharbers.models.request.{fmcond, incond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -19,7 +19,7 @@ case class findAllBindCourseRegionGoodsYmSales()(implicit val rq: Request[model.
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
     var request_data: request = null
-    var salesIdLst: List[bind_course_region_goods_ym_sales] = Nil
+    var salesIdLst: List[bind_course_region_goods_time_sales] = Nil
 
     override val brick_name: String = "find all bind course region med ym sales list"
 
@@ -31,7 +31,7 @@ case class findAllBindCourseRegionGoodsYmSales()(implicit val rq: Request[model.
     }
 
     override def exec: Unit = {
-        salesIdLst = queryMultipleObject[bind_course_region_goods_ym_sales](request_data, "sales_id")
+        salesIdLst = queryMultipleObject[bind_course_region_goods_time_sales](request_data, "sales_id")
         val request = new request()
         request.res = "sales"
         var valList: List[ObjectId] = Nil

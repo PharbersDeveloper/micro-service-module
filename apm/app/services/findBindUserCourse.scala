@@ -1,15 +1,15 @@
 package services
 
-import com.pharbers.pattern.common.parseToken
 import play.api.mvc.Request
 import com.pharbers.jsonapi.model
 import com.pharbers.pattern.frame._
+import com.pharbers.models.request._
 import com.pharbers.models.service.auth
 import com.pharbers.mongodb.dbtrait.DBTrait
+import com.pharbers.pattern.common.parseToken
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.models.entity.{bind_user_course, course}
-import com.pharbers.models.request.{eqcond, fmcond, request}
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 
 case class findBindUserCourse()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
@@ -31,13 +31,9 @@ case class findBindUserCourse()(implicit val rq: Request[model.RootObject], dbt:
 
     override def exec: Unit = {
         val request = new request()
-        val ec = eqcond()
-        val fm = fmcond()
-        ec.key = "user_id"
-        ec.`val` = auth_data.user.get.id
         request.res = "bind_user_course"
-        request.eqcond = Some(List(ec))
-        request.fmcond = Some(fm)
+        request.eqcond = Some(eq2c("user_id", auth_data.user.get.id) :: Nil)
+        request.fmcond = Some(fm2c(0, 1000))
 
         courseIdLst = queryMultipleObject[bind_user_course](request)
     }

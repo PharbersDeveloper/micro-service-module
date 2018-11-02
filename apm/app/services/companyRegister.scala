@@ -3,7 +3,7 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_company_secret, company, secret}
+import com.pharbers.models.entity.auth.{bind_company_secret, company, secret}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame.Brick
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}

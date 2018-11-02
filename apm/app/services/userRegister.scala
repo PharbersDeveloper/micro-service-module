@@ -2,7 +2,7 @@ package services
 
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
-import com.pharbers.models.entity.user
+import com.pharbers.models.entity.auth.user
 import com.pharbers.pattern.frame.{Brick, forward, _}
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request

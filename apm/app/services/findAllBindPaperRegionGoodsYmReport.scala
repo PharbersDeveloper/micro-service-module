@@ -4,7 +4,7 @@ import com.pharbers.pattern.common.parseToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{apmreport, bind_paper_region_goods_ym_report}
+import com.pharbers.models.entity.{apmreport, bind_paper_region_goods_time_report}
 import com.pharbers.models.request.{eqcond, fmcond, incond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
@@ -24,7 +24,7 @@ case class findAllBindPaperRegionGoodsYmReport()(implicit val rq: Request[model.
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("apm_report").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var reportIdLst: List[bind_paper_region_goods_ym_report] = Nil
+    var reportIdLst: List[bind_paper_region_goods_time_report] = Nil
 
     override def prepare: Unit = {
         parseToken(rq)
@@ -32,7 +32,7 @@ case class findAllBindPaperRegionGoodsYmReport()(implicit val rq: Request[model.
     }
 
     override def exec: Unit = {
-        reportIdLst = queryMultipleObject[bind_paper_region_goods_ym_report](request_data, sort = "report_id")
+        reportIdLst = queryMultipleObject[bind_paper_region_goods_time_report](request_data, sort = "report_id")
         val request = new request()
         request.res = "report"
         var valList: List[ObjectId] = Nil

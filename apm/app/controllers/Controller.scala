@@ -22,32 +22,28 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
     def routes(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
         Ok(
             (pkg, step) match {
-                case ("companyRegister", 0) => PlayEntry().excution(companyRegister()).asJson
-                case ("userRegister", 0) => PlayEntry().excution(userRegister()).asJson
                 case ("login", 0) => PlayEntry().excution(login()).asJson
+                case ("userRegister", 0) => PlayEntry().excution(userRegister()).asJson
+                case ("companyRegister", 0) => PlayEntry().excution(companyRegister()).asJson
                 case ("layout", 0) => PlayEntry().excution(findLayout()).asJson
                 case ("exam", 0) => PlayEntry().excution(pushPaper()).asJson
-                case ("findPaper", 0) => PlayEntry().excution(findBindUserCoursePaperByToken()).asJson
                 case ("courseLst", 0) => PlayEntry().excution(findBindUserCourse()).asJson
                 case ("findCourseGoods", 0) => PlayEntry().excution(findBindCourseGoods()).asJson
                 case ("findCompetGoods", 0) => PlayEntry().excution(findBindCourseGoodsCompet()).asJson
                 case ("regionLst", 0) => PlayEntry().excution(findBindCourseRegion()).asJson
-                case ("findMedSales", 0) => PlayEntry().excution(findBindCourseRegionGoodsYmSales()).asJson
                 case ("findRegionRep", 0) => PlayEntry().excution(findBindCourseRegionRep()).asJson
-                case ("answer", 0) => PlayEntry().excution(updatePaperInput()).asJson
                 case ("findRadarFigure", 0) => PlayEntry().excution(findBindCourseRegionRadar()).asJson
                 case ("findBusinessReport", 0) => PlayEntry().excution(findBindCourseRegionBusiness()).asJson
-                case ("findRepBehavior", 0) => PlayEntry().excution(findBindCourseRegionYmRepBehavior()).asJson
+                case ("findRepBehavior", 0) => PlayEntry().excution(findBindCourseRegionTimeRepBehavior()).asJson
+                case ("answer", 0) => PlayEntry().excution(updatePaperInput()).asJson
                 case ("actionPlanLst", 0) => PlayEntry().excution(findBindCourseActionPlan()).asJson
                 case ("findQuarterReport", 0) => PlayEntry().excution(findBindCourseQuarterReport()).asJson
-                case ("callAPMr", 0) => PlayEntry().excution(updatePaper2Done()).asJson
-                case ("findReportMedSales", 0) => PlayEntry().excution(findBindPaperRegionGoodsYmReport()).asJson
+                case ("apmCalc", 0) => PlayEntry().excution(updatePaper2Done()).asJson
                 case ("paperInputLst", 0) => PlayEntry().excution(findPaperInput()).asJson
                 case ("findExamRequire", 0) => PlayEntry().excution(findExamRequireIdByCourse()).asJson
+                case ("findAllPaper", 0) => PlayEntry().excution(findAllBindUserCoursePaperByToken()).asJson
                 case ("findAllMedSales", 0) => PlayEntry().excution(findAllBindCourseRegionGoodsYmSales()).asJson
                 case ("findAllReportMedSales", 0) => PlayEntry().excution(findAllBindPaperRegionGoodsYmReport()).asJson
-                case ("findAllPaper", 0) => PlayEntry().excution(findAllBindUserCoursePaperByToken()).asJson
-//                case ("callRTest", 0) => PlayEntry().excution(rServiceCount()).asJson
 
                 case (_, _) => throw new Exception("Bad Request for input")
             }

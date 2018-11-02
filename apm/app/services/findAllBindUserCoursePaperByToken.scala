@@ -5,12 +5,11 @@ import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_user_course_paper, paper}
-import com.pharbers.models.request.{eqcond, fmcond, incond, request}
+import com.pharbers.models.request._
 import com.pharbers.models.service.auth
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
-import org.bson.types.ObjectId
 import play.api.mvc.Request
 
 case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
@@ -31,16 +30,11 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
     override def prepare: Unit = auth_data = parseToken(rq)
 
     override def exec: Unit = {
-        val request = new request()
-        val ec = eqcond()
-        val fm = fmcond()
-        fm.take = 1000
-        ec.key = "user_id"
-        ec.`val` = auth_data.user.get.id
-        request.res = "bind_user_course_paper"
-        request.eqcond = Some(List(ec))
-        request.fmcond = Some(fm)
-        paperIdLst = queryMultipleObject[bind_user_course_paper](request)
+        val rq = new request()
+        rq.res = "bind_user_course_paper"
+        rq.eqcond = Some(eq2c("user_id", auth_data.user.get.id) :: Nil)
+        rq.fmcond = Some(fm2c(0, 1000))
+        paperIdLst = queryMultipleObject[bind_user_course_paper](rq).reverse
     }
 
     override def done: Option[String] = {
@@ -51,25 +45,18 @@ case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.Ro
     override def forwardTo(next_brick: String): Unit = {
         val request = new request
         request.res = "paper"
-        var valList: List[Any] = Nil
-        paperIdLst.foreach(x => valList = valList :+ x.paper_id)
-        val fm = fmcond()
-        fm.take = 1000
-        request.fmcond = Some(fm)
-        val in = incond()
-        in.key = "_id"
-        in.`val` = valList
-        request.incond = Some(List(in))
+        request.fmcond = Some(fm2c(0, 1000))
+        val valList = paperIdLst.map(_.paper_id)
+        request.incond = Some(in2c("_id", valList) :: Nil)
 
         val str = forward("123.56.179.133", "18023")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
         paperLst = formJsonapiLst[paper](decodeJson[model.RootObject](parseJson(str)))
     }
 
     override def goback: model.RootObject = {
-        val tmp = toJsonapi(paperLst)
-        if(tmp.data.isEmpty) model.RootObject(Some(
+        if(paperLst.isEmpty) model.RootObject(Some(
             model.RootObject.ResourceObjects(Nil)
         ))
-        else tmp
+        else toJsonapi(paperLst)
     }
 }

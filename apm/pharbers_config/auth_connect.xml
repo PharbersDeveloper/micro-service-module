@@ -4,6 +4,6 @@
         <server_port value="5555" />
         <connect_name value="" />
         <connect_pwd value="" />
-        <conn_name value="pharbers-auth" />
+        <conn_name value="dev-pharbers-auth" />
     </mongodb-connect>
 </pharbers-modules>
