@@ -4,7 +4,6 @@ import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.models.request._
 import com.pharbers.pattern.frame._
-import com.pharbers.models.service.auth
 import com.pharbers.pattern.frame.{Brick, forward}
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
@@ -18,14 +17,13 @@ case class login()(implicit val rq: Request[model.RootObject], dbt: DBManagerMod
 
     override val brick_name: String = "login"
     var login_data: request = null
-    var auth: auth = null
+    var auth: String = ""
 
     override def prepare: Unit = {}
 
     override def exec: Unit = {
-        val str = forward("123.56.179.133", "19001")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
-        auth = formJsonapi[auth](decodeJson[model.RootObject](parseJson(str)))
+        auth = forward("127.0.0.1", "19001")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
-    override def goback: model.RootObject = toJsonapi(auth)
+    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(auth))
 }

@@ -1,0 +1,16 @@
+18:41:13.330 INFO  s.m.l.Main$ - Starting server in /Users/clock/workSpace/Pharbers/micro-service-module
+18:41:13.341 INFO  s.m.l.Main$ - Classpath: /Users/clock/.atom/packages/ide-scala/coursier
+18:41:15.325 INFO  s.m.l.Formatter$ - Classloading scalafmt with 28 downloaded jars
+18:41:15.997 INFO  s.m.l.ScalametaLanguageServer - Initialized with /Users/clock/workSpace/Pharbers/micro-service-module, InitializeParams(4232,/Users/clock/workSpace/Pharbers/micro-service-module/,ClientCapabilities())
+18:41:18.557 ERROR l.c.LanguageServer$$anon$1 - Invalid Notification: List((,List(JsonValidationError(List(notification parameters must be given),WrappedArray())))) - Message: JsonRpcNotificationMessage(initialized,NoParams)
+18:41:18.578 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala)
+18:41:18.579 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala):46:23
+18:41:18.578 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala)
+18:41:18.582 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala):46:23
+18:41:18.579 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala)
+18:41:18.586 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala):67:26
+18:41:37.967 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala)
+18:41:37.968 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala):21:61
+19:03:33.799 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala)
+19:03:33.799 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/findAllPaperById/app/services/findAllPaperById.scala):21:61
+19:03:40.279 INFO  s.m.l.ScalametaLanguageServer - Shutting down...

@@ -40,7 +40,7 @@ case class findBindCourseRegionTimeRepBehavior()(implicit val rq: Request[model.
             request.eqcond = None
             request.eqcond = Some(eq2c("id", x.rep_behavior_id) :: Nil)
 //            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18010")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("127.0.0.1", "18010")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             x.repbehaviorreport = Some(formJsonapi[repbehaviorreport](decodeJson[model.RootObject](parseJson(str))))
             x
         }

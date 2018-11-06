@@ -23,6 +23,7 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
         Ok(
             (pkg, step) match {
                 case ("login", 0) => PlayEntry().excution(login()).asJson
+                case ("emailVerify", 0) => PlayEntry().excution(emailVerify()).asJson
                 case ("userRegister", 0) => PlayEntry().excution(userRegister()).asJson
                 case ("companyRegister", 0) => PlayEntry().excution(companyRegister()).asJson
                 case ("layout", 0) => PlayEntry().excution(findLayout()).asJson
@@ -42,8 +43,10 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
                 case ("paperInputLst", 0) => PlayEntry().excution(findPaperInput()).asJson
                 case ("findExamRequire", 0) => PlayEntry().excution(findExamRequireIdByCourse()).asJson
                 case ("findAllPaper", 0) => PlayEntry().excution(findAllBindUserCoursePaperByToken()).asJson
-                case ("findAllMedSales", 0) => PlayEntry().excution(findAllBindCourseRegionGoodsYmSales()).asJson
-                case ("findAllReportMedSales", 0) => PlayEntry().excution(findAllBindPaperRegionGoodsYmReport()).asJson
+                case ("findAllMedUnit", 0) => PlayEntry().excution(findAllBindCourseRegionGoodsTimeUnit()).asJson
+                case ("findAllMedSales", 0) => PlayEntry().excution(findAllBindCourseRegionGoodsTimeSales()).asJson
+                case ("findAllMedPatient", 0) => PlayEntry().excution(findAllBindCourseRegionGoodsTimePatient()).asJson
+                case ("findAllReportMedSales", 0) => PlayEntry().excution(findAllBindPaperRegionGoodsTimeReport()).asJson
 
                 case (_, _) => throw new Exception("Bad Request for input")
             }

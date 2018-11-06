@@ -3,7 +3,7 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity._
+import com.pharbers.models.entity.auth._
 import com.pharbers.models.request._
 import com.pharbers.models.service.auth
 import com.pharbers.mongodb.dbtrait.DBTrait
@@ -75,6 +75,7 @@ case class login()(implicit val rq: Request[model.RootObject], dbt: DBManagerMod
 
         auth.token = ObjectId.get().toString
         rd.addString(auth.token, toJsonapi(auth).asJson.noSpaces)
+        rd.expire(auth.token, auth.token_expire)
     }
 
     override def goback: model.RootObject = toJsonapi(auth)

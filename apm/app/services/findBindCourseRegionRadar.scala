@@ -43,7 +43,7 @@ case class findBindCourseRegionRadar()(implicit val rq: Request[model.RootObject
             ec.`val` = x.radar_id
             request.eqcond = Some(List(ec))
 //            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18008")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+            val str = forward("127.0.0.1", "18008")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             x.radarfigure = Some(formJsonapi[radarfigure](decodeJson[model.RootObject](parseJson(str))))
             x
         }

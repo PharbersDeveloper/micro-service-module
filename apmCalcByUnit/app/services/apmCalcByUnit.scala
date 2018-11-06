@@ -15,13 +15,13 @@ import play.api.mvc.Request
 
 import scala.collection.mutable
 
-case class apmCalc()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
+case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
         extends Brick with CirceJsonapiSupport {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
-    override val brick_name: String = "apm calc"
+    override val brick_name: String = "apm calc by unit"
     var request_data: request = null
     var courseId: String = ""
     var paperId: String = ""
@@ -60,17 +60,17 @@ case class apmCalc()(implicit val rq: Request[model.RootObject], dbt: DBManagerM
             generateSingleReport(currentGoodsId, paperinput)(before_time, gen_time)(goodsSalesInfoLst, answerLst, modelMap)
         }
 
-        val salesSum = goodsReportLstTmp.map(_.apmreport.get.sales).sum
+        val unitSum = goodsReportLstTmp.map(_.apmreport.get.unit).sum
 
         val goodsReportLst = goodsReportLstTmp.map { bind =>
             val report = bind.apmreport.get
-            report.sales_contri = report.sales / salesSum
-            report.sales_contri_index = report.sales_contri / report.potential_contri
+            report.contri = report.unit / unitSum
+            report.contri_index = report.contri / report.potential_contri
             bind.apmreport = Some(report)
             bind
         }
 
-        val productReportLst = generateProductReportLst(currentGoodsId, competIdLst)(allRegion, before_time, gen_time)(salesSum, goodsSalesInfoLst)
+        val productReportLst = generateProductReportLst(currentGoodsId, competIdLst)(allRegion, before_time, gen_time)(unitSum, goodsSalesInfoLst)
 
         allReportLst = goodsReportLst ::: productReportLst
         allReportLst.foreach { reportInfo =>
@@ -155,29 +155,29 @@ case class apmCalc()(implicit val rq: Request[model.RootObject], dbt: DBManagerM
 
     def queryGoodsSales(courseId: String, allRegion: String,
                         beforeTime: String, genTime: String,
-                        currentGoodsId: String, competIdLst: List[String]): List[bind_course_region_goods_time_sales] = {
+                        currentGoodsId: String, competIdLst: List[String]): List[bind_course_region_goods_time_unit] = {
 
         implicit val db_client: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
-        def querySales(sales_id: String): sales = {
+        def querySales(unit_id: String): unit = {
             val rq = new request()
-            rq.res = "sales"
-            rq.eqcond = Some(eq2c("_id", sales_id) :: Nil)
-            queryObject[sales](rq) match {
+            rq.res = "unit"
+            rq.eqcond = Some(eq2c("_id", unit_id) :: Nil)
+            queryObject[unit](rq) match {
                 case Some(one) => one
-                case None => throw new Exception("Could not find specified sales")
+                case None => throw new Exception("Could not find specified unit")
             }
         }
 
-        def querySalesAndBindInfo(course_id: String, region_id: String, goods_id: String, time: String): bind_course_region_goods_time_sales = {
+        def querySalesAndBindInfo(course_id: String, region_id: String, goods_id: String, time: String): bind_course_region_goods_time_unit = {
             val rq = new request()
-            rq.res = "bind_course_region_goods_time_sales"
+            rq.res = "bind_course_region_goods_time_unit"
             rq.eqcond = Some(eq2c("course_id", course_id) :: eq2c("region_id", region_id) :: eq2c("goods_id", goods_id) :: eq2c("time", time) :: Nil)
-            queryObject[bind_course_region_goods_time_sales](rq) match {
+            queryObject[bind_course_region_goods_time_unit](rq) match {
                 case Some(one) =>
-                    one.sales = Some(querySales(one.sales_id))
+                    one.unit = Some(querySales(one.unit_id))
                     one
-                case None => throw new Exception("Could not find specified sales")
+                case None => throw new Exception("Could not find specified unit")
             }
         }
 
@@ -203,27 +203,26 @@ case class apmCalc()(implicit val rq: Request[model.RootObject], dbt: DBManagerM
 
     def generateSingleReport(curGoodsId: String, input: paperinput)
                             (beforeTime: String, genTime: String)
-                            (goodsSalesInfoLst: List[bind_course_region_goods_time_sales],
+                            (goodsSalesInfoLst: List[bind_course_region_goods_time_unit],
                              answerLst: List[answer],
                              modelMap: Map[String, Map[Double, Double]]): bind_paper_region_goods_time_report = {
 
         val beforeTimeSales = goodsSalesInfoLst.find(x => x.goods_id == curGoodsId && x.time == beforeTime && x.region_id == input.region_id)
-                .get.sales.get
+                .get.unit.get
         val genTimeSales = goodsSalesInfoLst.find(x => x.goods_id == curGoodsId && x.time == genTime && x.region_id == input.region_id)
-                .get.sales.get
+                .get.unit.get
 
-        def genReport: apmreport = {
-            val report = new apmreport()
+        def genReport: apm_unit_report = {
+            val report = new apm_unit_report()
             report.`type` = "report"
-            report.sales_growth = getPaperScore(input)(answerLst, modelMap)
-            report.sales = (beforeTimeSales.sales * (1 + report.sales_growth)).toLong
+            report.growth = getPaperScore(input)(answerLst, modelMap)
+            report.unit = (beforeTimeSales.unit * (1 + report.growth)).toLong
             report.potential = genTimeSales.potential
-            report.potential_growth = genTimeSales.potential_growth
             report.potential_contri = genTimeSales.potential_contri
-            report.sales_share = report.sales / report.potential
-            report.sales_share_change = report.sales_share - beforeTimeSales.sales_share
-            report.sales_target = genTimeSales.sales_target
-            report.sales_achieve_rate = report.sales / report.sales_target
+            report.share = report.unit / report.potential
+            report.share_change = report.share - beforeTimeSales.share
+            report.company_target = genTimeSales.company_target
+            report.achieve_rate = report.unit / report.company_target
             report
         }
 
@@ -293,28 +292,27 @@ case class apmCalc()(implicit val rq: Request[model.RootObject], dbt: DBManagerM
 
     def generateProductReportLst(currentGoodsId: String, competIdLst: List[String])
                                 (allRegion: String, beforeTime: String, genTime: String)
-                                (salesSum: Double, goodsSalesInfoLst: List[bind_course_region_goods_time_sales]): List[bind_paper_region_goods_time_report] = {
+                                (unitSum: Double, goodsSalesInfoLst: List[bind_course_region_goods_time_unit]): List[bind_paper_region_goods_time_report] = {
         val curGoodsLastAllRegionSalesInfo = goodsSalesInfoLst.find(x => x.goods_id == currentGoodsId && x.time == beforeTime && x.region_id == allRegion).get
         val competLastAllRegionSalesInfo = competIdLst.map( competId =>
             goodsSalesInfoLst.find(x => x.goods_id == competId && x.time == beforeTime && x.region_id == allRegion).get
         )
         val allGoodsLastAllRegionSalesInfo = curGoodsLastAllRegionSalesInfo :: competLastAllRegionSalesInfo
-        val curSales: Double = curGoodsLastAllRegionSalesInfo.sales.get.sales
-        val lastSumSales: Double = allGoodsLastAllRegionSalesInfo.map(_.sales.get.sales).sum
+        val curSales: Double = curGoodsLastAllRegionSalesInfo.unit.get.unit
+        val lastSumSales: Double = allGoodsLastAllRegionSalesInfo.map(_.unit.get.unit).sum
 
-        def genReport(lastSalesInfo: bind_course_region_goods_time_sales): apmreport = {
-            val lastSales = lastSalesInfo.sales.get
-            val report = new apmreport()
+        def genReport(lastSalesInfo: bind_course_region_goods_time_unit): apm_unit_report = {
+            val lastSales = lastSalesInfo.unit.get
+            val report = new apm_unit_report()
             report.`type` = "report"
             if(lastSalesInfo.goods_id == currentGoodsId)
-                report.sales = salesSum.toLong
+                report.unit = unitSum.toLong
             else
-                report.sales = ((lastSumSales - salesSum) * lastSales.sales / (lastSumSales - curSales)).toLong
-            report.sales_share = report.sales / lastSumSales
+                report.unit = ((lastSumSales - unitSum) * lastSales.unit / (lastSumSales - curSales)).toLong
+            report.share = report.unit / lastSumSales
             report.potential = lastSales.potential
-            report.potential_growth = lastSales.potential_growth
             report.potential_contri = lastSales.potential_contri
-            report.sales_share_change = report.sales_share - lastSales.sales_share
+            report.share_change = report.share - lastSales.share
 
             report
         }
@@ -333,9 +331,9 @@ case class apmCalc()(implicit val rq: Request[model.RootObject], dbt: DBManagerM
         }
     }
 
-    def insertApmReport(data: apmreport): DBObject = {
+    def insertApmReport(data: apm_unit_report): DBObject = {
         implicit val db_report: DBTrait[TraitRequest] = dbt.queryDBInstance("apm_report").get.asInstanceOf[DBTrait[TraitRequest]]
-        insertObject[apmreport](data)
+        insertObject[apm_unit_report](data)
     }
 
     def insertBindReport(data: bind_paper_region_goods_time_report): DBObject = {

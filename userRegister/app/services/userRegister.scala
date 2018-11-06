@@ -3,7 +3,8 @@ package services
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity._
+import com.pharbers.models.entity.auth._
+import com.pharbers.models.entity.bind_user_course
 import com.pharbers.models.request._
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame.Brick
@@ -44,7 +45,6 @@ case class userRegister()(implicit val rq: Request[model.RootObject], dbt: DBMan
         val rq = new request()
         rq.res = "user"
         rq.eqcond = Some(eq2c("email", email) :: Nil)
-        println(rq)
         queryObject[user](rq) match {
             case Some(_) => throw new Exception("user email has been use")
             case None => Unit
