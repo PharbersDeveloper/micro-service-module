@@ -46,7 +46,7 @@ case class updatePaper2Done()(implicit val rq: Request[model.RootObject], dbt: D
     }
 
     override def forwardTo(next_brick: String): Unit = {
-        forward("127.0.0.1", "18020")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        forward("123.56.179.133", "18020")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = {

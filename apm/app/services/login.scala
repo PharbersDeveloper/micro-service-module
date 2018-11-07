@@ -22,7 +22,7 @@ case class login()(implicit val rq: Request[model.RootObject], dbt: DBManagerMod
     override def prepare: Unit = {}
 
     override def exec: Unit = {
-        auth = forward("127.0.0.1", "19001")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        auth = forward("123.56.179.133", "19001")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(auth))
