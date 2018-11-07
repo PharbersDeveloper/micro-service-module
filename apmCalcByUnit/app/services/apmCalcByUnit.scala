@@ -232,7 +232,7 @@ case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBMa
         bind_data.paper_id = paperId
         bind_data.region_id = input.region_id
         bind_data.goods_id = curGoodsId
-        bind_data.time_type = "quarter"
+        bind_data.time_type = "season"
         bind_data.time = genTime
         bind_data.apmreport = Some(genReport)
         bind_data
@@ -324,7 +324,7 @@ case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBMa
             bind_data.paper_id = paperId
             bind_data.region_id = allRegion
             bind_data.goods_id = lastSalesInfo.goods_id
-            bind_data.time_type = "quarter"
+            bind_data.time_type = "season"
             bind_data.time = genTime
             bind_data.apmreport = Some(genReport(lastSalesInfo))
             bind_data

@@ -52,7 +52,7 @@ case class updatePaper2Done()(implicit val rq: Request[model.RootObject], dbt: D
     override def goback: model.RootObject = {
         val tmp = call_result()
         tmp.state = true
-        tmp.des = "call R success"
+        tmp.des = "apm calc success"
 
         toJsonapi[call_result](tmp)
     }
