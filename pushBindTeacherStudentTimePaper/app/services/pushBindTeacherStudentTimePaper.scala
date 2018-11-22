@@ -30,10 +30,20 @@ case class pushBindTeacherStudentTimePaper()(implicit val rq: Request[model.Root
     }
 
     override def exec: Unit = {
-        insert_data.student_id = auth.user.get.id
-        insert_data.time = queryPaper(insert_data.paper_id).end_time
+        val req = new request
+        req.res = "bind_teacher_student_time_paper"
+        req.eqcond = Some(
+            eq2c("teacher_id", insert_data.teacher_id) :: eq2c("paper_id", insert_data.paper_id) :: Nil
+        )
+        queryObject[bind_teacher_student_time_paper](req) match {
+            case Some(one) => insert_data = one
+            case None =>
+                insert_data.`type` = "bind_teacher_student_time_paper"
+                insert_data.student_id = auth.user.get.id
+                insert_data.time = queryPaper(insert_data.paper_id).end_time
 
-        insert_data.id = insertObject(insert_data).get("_id").toString
+                insert_data.id = insertObject(insert_data).get("_id").toString
+        }
     }
 
     override def goback: model.RootObject = toJsonapi(insert_data)

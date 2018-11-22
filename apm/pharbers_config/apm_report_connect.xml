@@ -4,6 +4,6 @@
         <server_port value="5555" />
         <connect_name value="" />
         <connect_pwd value="" />
-        <conn_name value="dev-pharbers-apm-report" />
+        <conn_name value="pharbers-apm-report" />
     </mongodb-connect>
 </pharbers-modules>

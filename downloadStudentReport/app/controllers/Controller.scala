@@ -20,9 +20,12 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
     import services.{downloadStudentReport, downloadFile}
 
     def routes(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
-//        Ok(downloadFile().download("")).as("text/csv")
         Ok(PlayEntry().excution(downloadStudentReport()).asJson)
     }
 
     def routes2(pkg1: String  , pkg2: String, step: Int): Action[RootObject] = routes(pkg1 + "/" + pkg2, step)
+
+    def download(pkg: String, step: Int) = Action {
+        Ok(downloadFile().download(pkg)).as("excel/csv")
+    }
 }

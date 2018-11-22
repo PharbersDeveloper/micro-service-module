@@ -1,13 +1,11 @@
-19:54:18.744 INFO  s.m.l.Main$ - Starting server in /Users/clock/workSpace/Pharbers/micro-service-module
-19:54:18.756 INFO  s.m.l.Main$ - Classpath: /Users/clock/.atom/packages/ide-scala/coursier
-19:54:21.763 INFO  s.m.l.Formatter$ - Classloading scalafmt with 28 downloaded jars
-19:54:23.345 INFO  s.m.l.ScalametaLanguageServer - Initialized with /Users/clock/workSpace/Pharbers/micro-service-module, InitializeParams(7447,/Users/clock/workSpace/Pharbers/micro-service-module/,ClientCapabilities())
-19:54:25.245 ERROR l.c.LanguageServer$$anon$1 - Invalid Notification: List((,List(JsonValidationError(List(notification parameters must be given),WrappedArray())))) - Message: JsonRpcNotificationMessage(initialized,NoParams)
-19:54:25.258 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala)
-19:54:25.259 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala):30:10
-19:54:25.264 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala)
-19:54:25.267 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala):30:10
-19:54:25.269 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala)
-19:54:25.269 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala):15:42
-19:54:31.321 INFO  s.m.l.ScalametaLanguageServer - Shutting down...
-19:54:31.451 DEBUG s.m.l.ScalametaLanguageServer - exit
+13:20:29.791 INFO  s.m.l.Main$ - Starting server in /Users/clock/workSpace/Pharbers/micro-service-module
+13:20:29.807 INFO  s.m.l.Main$ - Classpath: /Users/clock/.atom/packages/ide-scala/coursier
+13:20:31.834 INFO  s.m.l.Formatter$ - Classloading scalafmt with 28 downloaded jars
+13:20:32.601 INFO  s.m.l.ScalametaLanguageServer - Initialized with /Users/clock/workSpace/Pharbers/micro-service-module, InitializeParams(2192,/Users/clock/workSpace/Pharbers/micro-service-module/,ClientCapabilities())
+13:20:35.351 ERROR l.c.LanguageServer$$anon$1 - Invalid Notification: List((,List(JsonValidationError(List(notification parameters must be given),WrappedArray())))) - Message: JsonRpcNotificationMessage(initialized,NoParams)
+13:20:35.366 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala)
+13:20:35.366 INFO  s.m.l.p.DocumentHighlightProvider$ - Document highlight in Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala)
+13:20:35.367 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala):15:42
+13:20:35.367 INFO  s.m.l.s.InMemorySymbolIndex - resolveName at Uri(file:///Users/clock/workSpace/Pharbers/micro-service-module/pushBindTeacherStudentTimePaper/app/services/pushBindTeacherStudentTimePaper.scala):15:42
+13:23:01.495 INFO  s.m.l.ScalametaLanguageServer - Shutting down...
+13:23:01.625 DEBUG s.m.l.ScalametaLanguageServer - exit

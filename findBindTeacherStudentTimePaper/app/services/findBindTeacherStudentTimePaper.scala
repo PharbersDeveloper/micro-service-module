@@ -36,11 +36,16 @@ case class findBindTeacherStudentTimePaper()(implicit val rq: Request[model.Root
         bind_lst = bind_lst.map { x =>
             x.student = queryUser(x.student_id)
             x.course = queryCourse(queryBindUserCoursePaper(x.paper_id).course_id)
+            x.course.get.describe = ""
             x
         }
     }
 
-    override def goback: model.RootObject = toJsonapi(bind_lst)
+    override def goback: model.RootObject =
+        if(bind_lst.isEmpty) model.RootObject(Some(
+            model.RootObject.ResourceObjects(Nil)
+        ))
+        else toJsonapi(bind_lst)
 
     def queryUser(user_id: String): Option[user] = {
         implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("auth").get.asInstanceOf[DBTrait[TraitRequest]]
