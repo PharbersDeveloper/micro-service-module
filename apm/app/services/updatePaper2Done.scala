@@ -8,13 +8,13 @@ import com.pharbers.models.request._
 import com.pharbers.models.request.request
 import com.pharbers.models.service.{call_result, callapmr}
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class updatePaper2Done()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import io.circe.syntax._
     import com.pharbers.macros._

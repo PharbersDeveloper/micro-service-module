@@ -7,13 +7,13 @@ import com.pharbers.models.entity.auth.{bind_role_view_viewblock, bind_viewblock
 import com.pharbers.models.request.{eq2c, request}
 import com.pharbers.models.service.auth
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.pattern.frame.Brick
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class findLayout()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._

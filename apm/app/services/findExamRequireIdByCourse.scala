@@ -6,14 +6,14 @@ import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_course_exam_require, examrequire}
 import com.pharbers.models.request.{eqcond, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.pattern.frame.{Brick, forward}
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import com.pharbers.pattern.frame._
 import play.api.mvc.Request
 
 case class findExamRequireIdByCourse()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
     import io.circe.syntax._
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._

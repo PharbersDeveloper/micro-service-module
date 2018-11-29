@@ -1,5 +1,6 @@
 package services
 
+import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -26,14 +27,18 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
     override val brick_name: String = "download student report"
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
     var request_data: request = null
-    var outputStream: StringBuffer = new StringBuffer
+    var result_str: String = ""
+
     val SEP: String = ", "
+    val OLD_CHARSET: String = "UTF-8"
+    val NEW_CHARSET: String = "GB2312"
 
     override def prepare: Unit = {
         request_data = formJsonapi[request](rq.body)
     }
 
     override def exec: Unit = {
+        val outputStream: StringBuffer = new StringBuffer
         val bind_lst = queryMultipleObject[bind_teacher_student_time_paper](request_data)
 
         val regionLst = bind_lst.map(x => x.paper_id).distinct.map { paper_id =>
@@ -59,7 +64,7 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
         }
 
         val string_head = s"提交时间${SEP}账号${SEP}用户名${SEP}地区名称${SEP}区域名称${SEP}总体分析要点${SEP}排序${SEP}" +
-                s"本季预测指标(%)${SEP}辅导协防时间(%)${SEP}全国会名额(%)${SEP}城市会名额(%)${SEP}科室会名额(%)${SEP}" +
+                s"本季预测指标(%)${SEP}辅导协访时间(%)${SEP}全国会名额(%)${SEP}城市会名额(%)${SEP}科室会名额(%)${SEP}" +
                 s"行动计划${SEP}地区本季份额(%)${SEP}地区本季销量${SEP}区域本季销量${SEP}区域本季贡献率(%)${SEP}区域本季份额(%)\n"
         outputStream.append(string_head)
 
@@ -90,12 +95,15 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
                 outputStream.append(paper_region.action_plans.mkString(";")).append(SEP)
                 outputStream.append(all_share).append(SEP)
                 outputStream.append(all_unit).append(SEP)
-                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).unit.toPercent).append(SEP)
+                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).unit.toIntPercent).append(SEP)
                 outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).contri.toPercent).append(SEP)
                 outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).share.toPercent).append(SEP)
                 outputStream.append("\n")
             }
         }
+
+
+        result_str = new String(outputStream.toString.getBytes(Charset.forName(NEW_CHARSET)), NEW_CHARSET)
     }
 
     override def goback: model.RootObject = model.RootObject(Some(
@@ -104,7 +112,7 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
             attributes = Some(Seq(
                 model.Attribute(
                     "outputStream",
-                    model.JsonApiObject.StringValue(outputStream.toString)
+                    model.JsonApiObject.StringValue(result_str)
                 )
             ).asInstanceOf[model.Attributes])
         )
@@ -181,7 +189,8 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
         reportLst.find(x => x.goods_id == goods_id && x.region_id == region_id).get.apmreport.get
     }
 
-    implicit class double2percent(double: Double) {
-        def toPercent: Int = (double * 100).toInt
+    implicit class numberTransform(double: Double) {
+        def toPercent: String = (double * 100).formatted("%.2f")
+        def toIntPercent: String = (double * 100).toInt.toString
     }
 }

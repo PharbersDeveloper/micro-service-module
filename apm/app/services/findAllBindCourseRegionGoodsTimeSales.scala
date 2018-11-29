@@ -4,12 +4,12 @@ import play.api.mvc.Request
 import com.pharbers.jsonapi.model
 import com.pharbers.models.request._
 import com.pharbers.pattern.frame._
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 
 case class findAllBindCourseRegionGoodsTimeSales()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import io.circe.syntax._
 

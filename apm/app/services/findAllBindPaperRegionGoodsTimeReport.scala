@@ -1,6 +1,6 @@
 package services
 
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
@@ -13,7 +13,7 @@ import org.bson.types.ObjectId
 import play.api.mvc.Request
 
 case class findAllBindPaperRegionGoodsTimeReport()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._

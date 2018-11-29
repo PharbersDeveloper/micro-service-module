@@ -1,6 +1,6 @@
 package services
 
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import play.api.mvc.Request
 import com.pharbers.jsonapi.model
 import com.pharbers.pattern.frame._
@@ -12,7 +12,7 @@ import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 
 case class findBindCourseGoods()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import io.circe.syntax._
     import com.pharbers.macros._

@@ -6,13 +6,13 @@ import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_course_region_goods_time_patient, patient}
 import com.pharbers.models.request._
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class findAllBindCourseRegionGoodsTimePatient()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
@@ -25,7 +25,7 @@ case class findAllBindCourseRegionGoodsTimePatient()(implicit val rq: Request[mo
      implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     override def prepare: Unit = {
-        parseToken(rq)
+        existToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 

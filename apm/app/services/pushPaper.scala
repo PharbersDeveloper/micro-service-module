@@ -6,13 +6,13 @@ import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_user_course_paper, paper}
 import com.pharbers.models.service.auth
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class pushPaper()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import io.circe.syntax._
     import com.pharbers.macros._

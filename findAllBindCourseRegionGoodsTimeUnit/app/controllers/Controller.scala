@@ -1,5 +1,7 @@
 package controllers
 
+import java.util.Date
+
 import play.api.mvc._
 import io.circe.syntax._
 import akka.actor.ActorSystem
@@ -20,7 +22,12 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
     import services.findAllBindCourseRegionGoodsTimeUnit
 
     def routes(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
-        Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimeUnit()).asJson)
+        val start1 = new Date().getTime
+        val a = Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimeUnit()).asJson)
+
+        val end1 = new Date().getTime
+        println("excution" + (end1 - start1))
+        a
     }
 
     def routes2(pkg1: String  , pkg2: String, step: Int): Action[RootObject] = routes(pkg1 + "/" + pkg2, step)

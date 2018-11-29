@@ -7,13 +7,13 @@ import com.pharbers.models.entity.paperinput
 import com.pharbers.models.request.request
 import com.pharbers.models.service.paperinputstep
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 import play.api.mvc.Request
 
 case class findPaperInput()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
@@ -50,11 +50,11 @@ case class findPaperInput()(implicit val rq: Request[model.RootObject], dbt: DBM
 
                 if(one.hint == "") tmp.step = 0
                 else if(one.sorting == "") tmp.step = 1
-                else if(one.predicted_target == 0) tmp.step = 2
-                else if(one.field_work_days == 0 ||
-                        one.national_meeting == 0 ||
-                        one.city_meeting == 0 ||
-                        one.depart_meeting == 0) tmp.step = 3
+                else if(one.predicted_target == -1) tmp.step = 2
+                else if(one.field_work_days == -1 ||
+                        one.national_meeting == -1 ||
+                        one.city_meeting == -1 ||
+                        one.depart_meeting == -1) tmp.step = 3
                 else if(one.action_plans == Nil) tmp.step = 4
                 else tmp.step = 0
 

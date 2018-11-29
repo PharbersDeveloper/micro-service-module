@@ -1,5 +1,7 @@
 package controllers
 
+import java.util.Date
+
 import play.api.mvc._
 import io.circe.syntax._
 import akka.actor.ActorSystem
@@ -32,7 +34,14 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
             case ("findCourseGoods", 0) => Ok(PlayEntry().excution(findBindCourseGoods()).asJson)
             case ("findCompetGoods", 0) => Ok(PlayEntry().excution(findBindCourseGoodsCompet()).asJson)
             case ("regionLst", 0) => Ok(PlayEntry().excution(findBindCourseRegion()).asJson)
-            case ("findRegionRep", 0) => Ok(PlayEntry().excution(findBindCourseRegionRep()).asJson)
+            case ("findRegionRep", 0) =>
+//                val start1 = new Date().getTime
+
+                val a = Ok(PlayEntry().excution(findBindCourseRegionRep()).asJson)
+
+//                val end1 = new Date().getTime
+//                println("excution" + (end1 - start1))
+                a
             case ("findRadarFigure", 0) => Ok(PlayEntry().excution(findBindCourseRegionRadar()).asJson)
             case ("findBusinessReport", 0) => Ok(PlayEntry().excution(findBindCourseRegionBusiness()).asJson)
             case ("findRepBehavior", 0) => Ok(PlayEntry().excution(findBindCourseRegionTimeRepBehavior()).asJson)
@@ -44,7 +53,14 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
             case ("findExamRequire", 0) => Ok(PlayEntry().excution(findExamRequireIdByCourse()).asJson)
             case ("findAllPaper", 0) => Ok(PlayEntry().excution(findAllBindUserCoursePaperByToken()).asJson)
             case ("findAllMedSales", 0) => Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimeSales()).asJson)
-            case ("findAllMedUnit", 0) => Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimeUnit()).asJson)
+            case ("findAllMedUnit", 0) =>
+
+//                val start1 = new Date().getTime
+                val a = Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimeUnit()).asJson)
+
+//                val end1 = new Date().getTime
+//                println("excution" + (end1 - start1))
+                a
             case ("findAllMedPatient", 0) => Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimePatient()).asJson)
             case ("findAllReportMedUnit", 0) => Ok(PlayEntry().excution(findAllBindPaperRegionGoodsTimeReport()).asJson)
             case ("pushBindTeacherStudentTimePaper", 0) => Ok(PlayEntry().excution(pushBindTeacherStudentTimePaper()).asJson)

@@ -18,7 +18,8 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
     override def prepare: Unit = {}
 
     override def exec: Unit = {
-        result = forward("123.56.179.133", "18027")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+//        result = forward("123.56.179.133", "18027")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        result = forward("apm_downloadstudentreport", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(result))
@@ -30,6 +31,6 @@ object RootObject2DownloadStream {
             obj.data.get.asInstanceOf[model.RootObject.ResourceObject]
                     .attributes.get.head.value
                     .asInstanceOf[model.JsonApiObject.StringValue]
-                    .value.getBytes()
+                    .value.getBytes("GB2312")
     }
 }

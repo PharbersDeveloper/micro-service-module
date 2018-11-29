@@ -4,6 +4,7 @@ import com.pharbers.driver.PhRedisDriver
 
 object writeBrickRegistry extends App {
     private val routes: Map[String, List[String]] = Map(
+//        "/api/v1/login/" -> List("127.0.0.1", "127.0.0.1"), // 目前TM在用
         "/api/v1/login/" -> List("127.0.0.1", "encrypttoken"),
         "/api/v1/proposalLst/" -> List("127.0.0.1", "127.0.0.1"),
         "/api/v1/layoutLst/" -> List("127.0.0.1"),
