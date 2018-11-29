@@ -24,6 +24,7 @@ case class findAllBindCourseRegionGoodsTimeUnit()(implicit val rq: Request[model
 
     override def exec: Unit = {
         result = forward("findallbindcourseregiongoodstimeunit", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+//        result = forward("123.56.179.133", "19005")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = {
