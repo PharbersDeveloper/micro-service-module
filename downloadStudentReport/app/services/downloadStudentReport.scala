@@ -10,7 +10,7 @@ import com.pharbers.pattern.frame._
 import com.pharbers.models.entity._
 import com.pharbers.models.entity.auth.user
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.common.parseToken
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.models.request.{eq2c, in2c, request}
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
@@ -19,7 +19,7 @@ import com.pharbers.models.entity.apm.teacher.{bind_teacher_student_time_paper, 
 import org.bson.types.ObjectId
 
 case class downloadStudentReport()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
-        extends Brick with CirceJsonapiSupport with parseToken {
+        extends Brick with CirceJsonapiSupport with PhToken {
 
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
@@ -34,6 +34,7 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
     val NEW_CHARSET: String = "GB2312"
 
     override def prepare: Unit = {
+        existToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 
@@ -178,7 +179,7 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
     }
 
     def tranTimeToString(time: Long): String = {
-        new SimpleDateFormat("yyyy/MM/dd").format(new Date(time))
+        new SimpleDateFormat("yyyy/MM/dd - HH:mm:ss").format(new Date(time))
     }
 
     def getRegionName(region_id: String)(implicit regionLst: List[region]): String = {
