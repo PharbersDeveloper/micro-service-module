@@ -1,7 +1,5 @@
 package services
 
-import java.util.Date
-
 import play.api.mvc.Request
 import com.pharbers.jsonapi.model
 import com.pharbers.pattern.frame._
@@ -23,15 +21,9 @@ case class findAllBindCourseRegionGoodsTimeUnit()(implicit val rq: Request[model
     override def prepare: Unit = {}
 
     override def exec: Unit = {
-        result = forward("findallbindcourseregiongoodstimeunit", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
 //        result = forward("123.56.179.133", "19005")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        result = forward("findallbindcourseregiongoodstimeunit", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
-    override def goback: model.RootObject = {
-//        val start = new Date().getTime
-        val a = decodeJson[model.RootObject](parseJson(result))
-//        val end = new Date().getTime
-//        println("goback" + (end - start))
-        a
-    }
+    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(result))
 }

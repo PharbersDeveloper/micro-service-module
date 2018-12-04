@@ -21,14 +21,11 @@ case class findRadarById()(implicit val rq: Request[model.RootObject], dbt: DBMa
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var radar_data: radarfigure = null
+    var radar_data: List[radarfigure] = Nil
 
-    override def prepare: Unit = {
-        request_data = formJsonapi[request](rq.body)
-    }
+    override def prepare: Unit = request_data = formJsonapi[request](rq.body)
 
-    override def exec: Unit = radar_data =
-            queryObject[radarfigure](request_data).getOrElse(throw new Exception("Could not find specified radar_figure"))
+    override def exec: Unit = radar_data = queryMultipleObject[radarfigure](request_data)
 
     override def goback: model.RootObject = toJsonapi(radar_data)
 }

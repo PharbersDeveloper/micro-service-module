@@ -1,7 +1,5 @@
 package controllers
 
-import java.util.Date
-
 import play.api.mvc._
 import io.circe.syntax._
 import akka.actor.ActorSystem
@@ -22,7 +20,7 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
     import services._
     import services.RootObject2DownloadStream.impl
 
-    def routes(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
+    def routes(v: String, pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
         (pkg, step) match {
             case ("login", 0) => Ok(PlayEntry().excution(login()).asJson)
             case ("emailVerify", 0) => Ok(PlayEntry().excution(emailVerify()).asJson)
@@ -34,14 +32,7 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
             case ("findCourseGoods", 0) => Ok(PlayEntry().excution(findBindCourseGoods()).asJson)
             case ("findCompetGoods", 0) => Ok(PlayEntry().excution(findBindCourseGoodsCompet()).asJson)
             case ("regionLst", 0) => Ok(PlayEntry().excution(findBindCourseRegion()).asJson)
-            case ("findRegionRep", 0) =>
-//                val start1 = new Date().getTime
-
-                val a = Ok(PlayEntry().excution(findBindCourseRegionRep()).asJson)
-
-//                val end1 = new Date().getTime
-//                println("excution" + (end1 - start1))
-                a
+            case ("findRegionRep", 0) => Ok(PlayEntry().excution(findBindCourseRegionRep()).asJson)
             case ("findRadarFigure", 0) => Ok(PlayEntry().excution(findBindCourseRegionRadar()).asJson)
             case ("findBusinessReport", 0) => Ok(PlayEntry().excution(findBindCourseRegionBusiness()).asJson)
             case ("findRepBehavior", 0) => Ok(PlayEntry().excution(findBindCourseRegionTimeRepBehavior()).asJson)
@@ -53,17 +44,11 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
             case ("findExamRequire", 0) => Ok(PlayEntry().excution(findExamRequireIdByCourse()).asJson)
             case ("findAllPaper", 0) => Ok(PlayEntry().excution(findAllBindUserCoursePaperByToken()).asJson)
             case ("findAllMedSales", 0) => Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimeSales()).asJson)
-            case ("findAllMedUnit", 0) =>
-
-//                val start1 = new Date().getTime
-                val a = Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimeUnit()).asJson)
-
-//                val end1 = new Date().getTime
-//                println("excution" + (end1 - start1))
-                a
+            case ("findAllMedUnit", 0) => Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimeUnit()).asJson)
             case ("findAllMedPatient", 0) => Ok(PlayEntry().excution(findAllBindCourseRegionGoodsTimePatient()).asJson)
             case ("findAllReportMedUnit", 0) => Ok(PlayEntry().excution(findAllBindPaperRegionGoodsTimeReport()).asJson)
             case ("pushBindTeacherStudentTimePaper", 0) => Ok(PlayEntry().excution(pushBindTeacherStudentTimePaper()).asJson)
+            case ("findBindTeacherStudentTimePaperCount", 0) => Ok(PlayEntry().excution(findBindTeacherStudentTimePaperCount()).asJson)
             case ("findBindTeacherStudentTimePaper", 0) => Ok(PlayEntry().excution(findBindTeacherStudentTimePaper()).asJson)
             case ("downloadStudentReport", 0) => Ok(PlayEntry().excution(downloadStudentReport()).toDownloadStream).as("excel/csv")
 
@@ -71,5 +56,5 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
         }
     }
 
-    def routes2(pkg1: String, pkg2: String, step: Int): Action[RootObject] = routes(pkg1 + "/" + pkg2, step)
+    def routes2(v: String, pkg1: String, pkg2: String, step: Int): Action[RootObject] = routes(v, pkg1 + "/" + pkg2, step)
 }

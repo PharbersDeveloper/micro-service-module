@@ -21,14 +21,11 @@ case class findBusinessById()(implicit val rq: Request[model.RootObject], dbt: D
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var businessreport_data: businessreport = null
+    var businessreport_data: List[businessreport] = null
 
-    override def prepare: Unit = {
-        request_data = formJsonapi[request](rq.body)
-    }
+    override def prepare: Unit = request_data = formJsonapi[request](rq.body)
 
-    override def exec: Unit = businessreport_data =
-            queryObject[businessreport](request_data).getOrElse(throw new Exception("Could not find specified business_report"))
+    override def exec: Unit = businessreport_data = queryMultipleObject[businessreport](request_data)
 
     override def goback: model.RootObject = toJsonapi(businessreport_data)
 }

@@ -19,9 +19,9 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
 
     import services.findRadarById
 
-    def routes(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
+    def routes(v: String, pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
         Ok(PlayEntry().excution(findRadarById()).asJson)
     }
 
-    def routes2(pkg1: String  , pkg2: String, step: Int): Action[RootObject] = routes(pkg1 + "/" + pkg2, step)
+    def routes2(v: String, pkg1: String  , pkg2: String, step: Int): Action[RootObject] = routes(v, pkg1 + "/" + pkg2, step)
 }

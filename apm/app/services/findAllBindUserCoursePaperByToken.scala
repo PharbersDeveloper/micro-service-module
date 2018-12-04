@@ -1,56 +1,63 @@
 package services
 
-import com.pharbers.pattern.common.PhToken
-import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
+import play.api.mvc.Request
 import com.pharbers.jsonapi.model
-import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_user_course_paper, paper}
+import com.pharbers.pattern.frame._
 import com.pharbers.models.request._
 import com.pharbers.models.service.auth
+import com.pharbers.pattern.common.PhToken
 import com.pharbers.mongodb.dbtrait.DBTrait
-import com.pharbers.pattern.frame._
+import com.pharbers.macros.convert.mongodb.TraitRequest
+import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
-import play.api.mvc.Request
+import com.pharbers.models.entity.{bind_user_course_paper, course, paper}
 
 case class findAllBindUserCoursePaperByToken()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
         extends Brick with CirceJsonapiSupport with PhToken {
 
-    import io.circe.syntax._
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
-    override val brick_name: String = "find bind user course paper by token"
+    override val brick_name: String = "find all paper by token"
 
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var auth_data: auth = null
-    var paperIdLst: List[bind_user_course_paper] = Nil
     var paperLst: List[paper] = Nil
 
     override def prepare: Unit = auth_data = parseToken(rq)
 
     override def exec: Unit = {
-        val rq = new request()
-        rq.res = "bind_user_course_paper"
-        rq.eqcond = Some(eq2c("user_id", auth_data.user.get.id) :: Nil)
-        rq.fmcond = Some(fm2c(0, 1000))
-        paperIdLst = queryMultipleObject[bind_user_course_paper](rq).reverse
+        val findBindLst_rq = new request()
+        findBindLst_rq.res = "bind_user_course_paper"
+        findBindLst_rq.fmcond = Some(fm2c(0, 1000))
+        findBindLst_rq.eqcond = Some(eq2c("user_id", auth_data.user.get.id) :: Nil)
+        val bindIdLst = queryMultipleObject[bind_user_course_paper](findBindLst_rq, "_id")
+
+        val findCourseLst_rq = new request()
+        findCourseLst_rq.res = "course"
+        findCourseLst_rq.fmcond = Some(fm2c(0, 1000))
+        findCourseLst_rq.incond = Some(in2c("_id", bindIdLst.map(x => x.course_id).distinct) :: Nil)
+        val courseLst = queryMultipleObject[course](findCourseLst_rq).map{course =>
+            course.describe = ""
+            course.prompt = ""
+            course
+        }
+
+        val findPaperLst_rq = new request()
+        findPaperLst_rq.res = "paper"
+        findPaperLst_rq.fmcond = Some(fm2c(0, 1000))
+        findPaperLst_rq.incond = Some(in2c("_id", bindIdLst.map(x => x.paper_id).distinct) :: Nil)
+        paperLst = queryMultipleObject[paper](findPaperLst_rq).map{ paper =>
+            paper.course = findCourseByBindPaper(paper.id)(bindIdLst, courseLst)
+            paper
+        }.reverse
     }
 
-    override def done: Option[String] = {
-        if(paperIdLst.isEmpty) None
-        else super.done
-    }
-
-    override def forwardTo(next_brick: String): Unit = {
-        val request = new request
-        request.res = "paper"
-        request.fmcond = Some(fm2c(0, 1000))
-        val valList = paperIdLst.map(_.paper_id)
-        request.incond = Some(in2c("_id", valList) :: Nil)
-
-        val str = forward("123.56.179.133", "18023")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-        paperLst = formJsonapiLst[paper](decodeJson[model.RootObject](parseJson(str)))
+    def findCourseByBindPaper(paper_id: String)(bindIdLst:List[bind_user_course_paper], courseLst: List[course]): Option[course] = {
+        bindIdLst.find(x => x.paper_id == paper_id).map{bind =>
+            courseLst.find(x => x.id == bind.course_id).get
+        }
     }
 
     override def goback: model.RootObject = {

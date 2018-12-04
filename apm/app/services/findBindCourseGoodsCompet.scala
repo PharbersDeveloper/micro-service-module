@@ -4,8 +4,8 @@ import com.pharbers.pattern.common.PhToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_goods_compet, medicine}
-import com.pharbers.models.request.{eqcond, request}
+import com.pharbers.models.entity.bind_course_goods_compet
+import com.pharbers.models.request.{fm2c, in2c, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -24,10 +24,10 @@ case class findBindCourseGoodsCompet()(implicit val rq: Request[model.RootObject
 
     var request_data: request = null
     var competIdLst: List[bind_course_goods_compet] = Nil
-    var medLst: List[medicine] = Nil
+    var medLstStr: String = ""
 
     override def prepare: Unit = request_data = {
-        parseToken(rq)
+        existToken(rq)
         formJsonapi[request](rq.body)
     }
 
@@ -36,18 +36,11 @@ case class findBindCourseGoodsCompet()(implicit val rq: Request[model.RootObject
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
         request.res = "goods"
-
-        medLst = competIdLst.map{ x =>
-            request.eqcond = None
-            val ec = eqcond()
-            ec.key = "id"
-            ec.`val` = x.compet_id
-            request.eqcond = Some(List(ec))
-//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18005")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            formJsonapi[medicine](decodeJson[model.RootObject](parseJson(str)))
-        }
+        request.fmcond = Some(fm2c(0, 1000))
+        request.incond = Some(in2c("_id", competIdLst.map(x => x.compet_id)) :: Nil)
+//        medLstStr = forward("123.56.179.133", "19007")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        medLstStr = forward("findmed", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
     }
 
-    override def goback: model.RootObject = toJsonapi(medLst)
+    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(medLstStr))
 }

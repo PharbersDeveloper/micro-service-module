@@ -4,8 +4,7 @@ import com.pharbers.driver.PhRedisDriver
 
 object writeBrickRegistry extends App {
     private val routes: Map[String, List[String]] = Map(
-//        "/api/v1/login/" -> List("127.0.0.1", "127.0.0.1"), // 目前TM在用
-        "/api/v1/login/" -> List("127.0.0.1", "encrypttoken"),
+        "/api/v1/loginTM/" -> List("127.0.0.1", "127.0.0.1"), // 目前TM在用
         "/api/v1/proposalLst/" -> List("127.0.0.1", "127.0.0.1"),
         "/api/v1/layoutLst/" -> List("127.0.0.1"),
         "/api/v1/medicsnotices/" -> List("127.0.0.1", "127.0.0.1"),
@@ -32,6 +31,7 @@ object writeBrickRegistry extends App {
         "/api/v1/evaluationLine/" -> List("127.0.0.1"),
         "/api/v1/evaluationCards/" -> List("127.0.0.1")
     ) ++ Map(
+        "/api/v1/login/" -> List("127.0.0.1", "encrypttoken"),
         "/api/v1/emailVerify/" -> List("127.0.0.1"),
         "/api/v1/userRegister/" -> List("127.0.0.1"),
         "/api/v1/companyRegister/" -> List("127.0.0.1"),
@@ -49,10 +49,11 @@ object writeBrickRegistry extends App {
         "/api/v1/apmCalc/" -> List("127.0.0.1", "apm_calc_unit"),
         "/api/v1/findRadarFigure/" -> List("127.0.0.1", "apm_findradarbyid"),
         "/api/v1/findBusinessReport/" -> List("127.0.0.1", "apm_findbusinessbyid"),
+        "/api/v1.2/findBusinessReport/" -> List("127.0.0.1", "apm_findbusiness"),
         "/api/v1/findRepBehavior/" -> List("127.0.0.1", "apm_findrepbehaviorbyid"),
         "/api/v1/paperInputLst/" -> List("127.0.0.1"),
         "/api/v1/findExamRequire/" -> List("127.0.0.1", "apm_findexamrequirebyid"),
-        "/api/v1/findAllPaper/" -> List("127.0.0.1", "apm_findallpaperbyid"),
+        "/api/v1/findAllPaper/" -> List("127.0.0.1"),
         "/api/v1/findAllMedUnit/" -> List("127.0.0.1"),
         "/api/v1/findAllMedSales/" -> List("127.0.0.1"),
         "/api/v1/findAllReportMedUnit/" -> List("127.0.0.1")
@@ -64,7 +65,7 @@ object writeBrickRegistry extends App {
         rd.addListRight(x._1, x._2: _*)
     }
 
-    val test_route = "/api/v1/callAPMr/"
+    val test_route = "/api/v1/login/"
     println(rd.getListSize(test_route))
     println(rd.getListAllValue(test_route))
     println("write brick registry success")

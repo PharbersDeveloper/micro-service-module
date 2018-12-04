@@ -21,12 +21,11 @@ case class findActionPlanById()(implicit val rq: Request[model.RootObject], dbt:
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var plan_data: actionplan = null
+    var plan_data_lst: List[actionplan] = Nil
 
     override def prepare: Unit = request_data = formJsonapi[request](rq.body)
 
-    override def exec: Unit = plan_data =
-            queryObject[actionplan](request_data).getOrElse(throw new Exception("Could not find specified action_plan"))
+    override def exec: Unit = plan_data_lst = queryMultipleObject[actionplan](request_data)
 
-    override def goback: model.RootObject = toJsonapi(plan_data)
+    override def goback: model.RootObject = toJsonapi(plan_data_lst)
 }

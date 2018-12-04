@@ -3,5 +3,5 @@
 # ~~~~
 
 # An example controller showing a sample home page
-POST    /api/v1/:pkg/:step               controllers.Controller.routes(pkg: String, step: Int)
-POST    /api/v1/:pkg1/:pkg2/:step        controllers.Controller.routes2(pkg1: String, pkg2: String, step: Int)
+POST    /api/:v/:pkg/:step               controllers.Controller.routes(v, pkg: String, step: Int)
+POST    /api/:v/:pkg1/:pkg2/:step        controllers.Controller.routes2(v, pkg1: String, pkg2: String, step: Int)

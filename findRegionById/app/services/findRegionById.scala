@@ -21,12 +21,11 @@ case class findRegionById()(implicit val rq: Request[model.RootObject], dbt: DBM
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var region_data: region = null
+    var region_data: List[region] = null
 
     override def prepare: Unit = request_data = formJsonapi[request](rq.body)
 
-    override def exec: Unit = region_data =
-            queryObject[region](request_data).getOrElse(throw new Exception("Could not find specified region"))
+    override def exec: Unit = region_data = queryMultipleObject[region](request_data)
 
     override def goback: model.RootObject = toJsonapi(region_data)
 }

@@ -27,7 +27,7 @@ case class findBindCourseQuarterReport()(implicit val rq: Request[model.RootObje
     var apm_quarter_report: String = null
 
     override def prepare: Unit = {
-        parseToken(rq)
+        existToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 

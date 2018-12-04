@@ -5,7 +5,7 @@ import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_course_region_business, businessreport}
-import com.pharbers.models.request.{eqcond, request}
+import com.pharbers.models.request.{in2c, fm2c, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -23,31 +23,32 @@ case class findBindCourseRegionBusiness()(implicit val rq: Request[model.RootObj
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var businessIdLst: List[bind_course_region_business] = Nil
+    var bindLst: List[bind_course_region_business] = Nil
 
     override def prepare: Unit = request_data = {
-        parseToken(rq)
+        existToken(rq)
         formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = businessIdLst = queryMultipleObject[bind_course_region_business](request_data)
+    override def exec: Unit = bindLst = queryMultipleObject[bind_course_region_business](request_data)
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
         request.res = "business_report"
+        request.fmcond = Some(fm2c(0, 1000))
+        request.incond = Some(in2c("id", bindLst.map(_.business_id)) :: Nil)
+//        val resultStr = forward("123.56.179.133", "19009")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        val resultStr = forward("apm_findbusiness", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        val businessLst = formJsonapiLst[businessreport](decodeJson[model.RootObject](parseJson(resultStr)))
 
-        businessIdLst = businessIdLst.map { x =>
-            request.eqcond = None
-            val ec = eqcond()
-            ec.key = "id"
-            ec.`val` = x.business_id
-            request.eqcond = Some(List(ec))
-//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18009")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            x.businessreport = Some(formJsonapi[businessreport](decodeJson[model.RootObject](parseJson(str))))
-            x
+        if(businessLst.length != bindLst.length) throw new Exception("Could not find specified business_report")
+
+        val these = bindLst.iterator
+        val those = businessLst.iterator
+        while (these.hasNext && those.hasNext){
+            these.next().businessreport = Some(those.next())
         }
     }
 
-    override def goback: model.RootObject = toJsonapi(businessIdLst)
+    override def goback: model.RootObject = toJsonapi(bindLst)
 }

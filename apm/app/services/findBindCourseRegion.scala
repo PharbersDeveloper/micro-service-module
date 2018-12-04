@@ -5,7 +5,7 @@ import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_course_region, region}
-import com.pharbers.models.request.{eqcond, request}
+import com.pharbers.models.request.{eqcond, request, in2c}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -24,10 +24,10 @@ case class findBindCourseRegion()(implicit val rq: Request[model.RootObject], db
 
     var request_data: request = null
     var regionIdLst: List[bind_course_region] = Nil
-    var regionLst: List[region] = Nil
+    var regionLstStr: String = ""
 
     override def prepare: Unit = request_data = {
-        parseToken(rq)
+        existToken(rq)
         formJsonapi[request](rq.body)
     }
 
@@ -36,18 +36,10 @@ case class findBindCourseRegion()(implicit val rq: Request[model.RootObject], db
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
         request.res = "region"
-
-        regionLst = regionIdLst.map { x =>
-            request.eqcond = None
-            val ec = eqcond()
-            ec.key = "id"
-            ec.`val` = x.region_id
-            request.eqcond = Some(List(ec))
-//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18006")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            formJsonapi[region](decodeJson[model.RootObject](parseJson(str)))
-        }
+        request.incond = Some(in2c("id", regionIdLst.map(_.region_id)) :: Nil)
+        regionLstStr = forward("123.56.179.133", "19008")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+//        regionLstStr = forward("apm_findregion", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
     }
 
-    override def goback: model.RootObject = toJsonapi(regionLst)
+    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(regionLstStr))
 }

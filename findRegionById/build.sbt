@@ -6,7 +6,7 @@ val paradiseVersion = "2.1.0"
 def common = Seq(
     scalaVersion := "2.11.8",
     crossScalaVersions := Seq("2.11.8", "2.12.6"),
-    version := "2.0",
+    version := "1.2",
     organization := "com.pharbers"
 )
 
@@ -15,7 +15,7 @@ lazy val root = (project in file(".")).
         disablePlugins(PlayFilters).
         settings(common: _*).
         settings(
-            name := "findRegionById",
+            name := "findRegion",
             fork in run := true,
             javaOptions += "-Xmx2G"
         )

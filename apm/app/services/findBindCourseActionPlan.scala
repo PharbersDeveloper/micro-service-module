@@ -5,7 +5,7 @@ import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{actionplan, bind_course_action_plan}
-import com.pharbers.models.request.{eqcond, request}
+import com.pharbers.models.request._
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -24,11 +24,11 @@ case class findBindCourseActionPlan()(implicit val rq: Request[model.RootObject]
 
     var request_data: request = null
     var planIdLst: List[bind_course_action_plan] = Nil
-    var planLst: List[actionplan] = Nil
+    var planLstStr: String = ""
 
-    override def prepare: Unit = request_data = {
-        parseToken(rq)
-        formJsonapi[request](rq.body)
+    override def prepare: Unit = {
+        existToken(rq)
+        request_data = formJsonapi[request](rq.body)
     }
 
     override def exec: Unit = planIdLst = queryMultipleObject[bind_course_action_plan](request_data)
@@ -36,18 +36,11 @@ case class findBindCourseActionPlan()(implicit val rq: Request[model.RootObject]
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
         request.res = "action_plan"
-
-        planLst = planIdLst.map { x =>
-            request.eqcond = None
-            val ec = eqcond()
-            ec.key = "id"
-            ec.`val` = x.plan_id
-            request.eqcond = Some(List(ec))
-//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18011")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            formJsonapi[actionplan](decodeJson[model.RootObject](parseJson(str)))
-        }
+        request.fmcond = Some(fm2c(0, 1000))
+        request.incond = Some(in2c("_id", planIdLst.map(x => x.plan_id)) :: Nil)
+//        planLstStr = forward("123.56.179.133", "19006")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        planLstStr = forward("apm_findactionplan", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
     }
 
-    override def goback: model.RootObject = toJsonapi(planLst)
+    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(planLstStr))
 }

@@ -4,8 +4,8 @@ import com.pharbers.pattern.common.PhToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
-import com.pharbers.models.entity.{bind_course_region_radar, radarfigure}
-import com.pharbers.models.request.{eqcond, request}
+import com.pharbers.models.entity.{bind_course_region_radar, businessreport, radarfigure}
+import com.pharbers.models.request.{eqcond, fm2c, in2c, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -23,31 +23,32 @@ case class findBindCourseRegionRadar()(implicit val rq: Request[model.RootObject
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var radarIdLst: List[bind_course_region_radar] = Nil
+    var bindLst: List[bind_course_region_radar] = Nil
 
     override def prepare: Unit = request_data = {
-        parseToken(rq)
+        existToken(rq)
         formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = radarIdLst = queryMultipleObject[bind_course_region_radar](request_data)
+    override def exec: Unit = bindLst = queryMultipleObject[bind_course_region_radar](request_data)
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
         request.res = "radar_figure"
+        request.fmcond = Some(fm2c(0, 1000))
+        request.incond = Some(in2c("id", bindLst.map(_.radar_id)) :: Nil)
+//        val resultStr = forward("123.56.179.133", "19010")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        val resultStr = forward("apm_findradar", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        val radarLst = formJsonapiLst[radarfigure](decodeJson[model.RootObject](parseJson(resultStr)))
 
-        radarIdLst = radarIdLst.map { x =>
-            request.eqcond = None
-            val ec = eqcond()
-            ec.key = "id"
-            ec.`val` = x.radar_id
-            request.eqcond = Some(List(ec))
-//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18008")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            x.radarfigure = Some(formJsonapi[radarfigure](decodeJson[model.RootObject](parseJson(str))))
-            x
+        if(radarLst.length != bindLst.length) throw new Exception("Could not find specified radar_figure")
+
+        val these = bindLst.iterator
+        val those = radarLst.iterator
+        while (these.hasNext && those.hasNext){
+            these.next().radarfigure = Some(those.next())
         }
     }
 
-    override def goback: model.RootObject = toJsonapi(radarIdLst)
+    override def goback: model.RootObject = toJsonapi(bindLst)
 }

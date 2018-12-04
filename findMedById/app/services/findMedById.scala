@@ -21,14 +21,13 @@ case class findMedById()(implicit val rq: Request[model.RootObject], dbt: DBMana
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var med_data: medicine = null
+    var med_data: List[medicine] = Nil
 
     override def prepare: Unit = {
         request_data = formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = med_data =
-            queryObject[medicine](request_data).getOrElse(throw new Exception("Could not find specified medicine"))
+    override def exec: Unit = med_data = queryMultipleObject[medicine](request_data)
 
     override def goback: model.RootObject = toJsonapi(med_data)
 }
