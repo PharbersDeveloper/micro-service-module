@@ -22,8 +22,8 @@ class BMAuthController @Inject()(implicit val cc: ControllerComponents, implicit
     def routes(pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
         Ok(
             (pkg, step) match {
-                case ("login", 0) => PlayEntry().excution(login()).asJson
-                case ("login", 1) => PlayEntry().excution(encryptToken()).asJson
+                case ("loginTM", 0) => PlayEntry().excution(login()).asJson
+                case ("loginTM", 1) => PlayEntry().excution(encryptToken()).asJson
 
                 case ("proposalLst", 0) => PlayEntry().excution(queryBindUserProposal()).asJson
                 case ("proposalLst", 1) => PlayEntry().excution(findProposal()).asJson
