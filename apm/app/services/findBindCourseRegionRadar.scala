@@ -41,12 +41,9 @@ case class findBindCourseRegionRadar()(implicit val rq: Request[model.RootObject
         val resultStr = forward("apm_findradar", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
         val radarLst = formJsonapiLst[radarfigure](decodeJson[model.RootObject](parseJson(resultStr)))
 
-        if(radarLst.length != bindLst.length) throw new Exception("Could not find specified radar_figure")
-
-        val these = bindLst.iterator
-        val those = radarLst.iterator
-        while (these.hasNext && those.hasNext){
-            these.next().radarfigure = Some(those.next())
+        bindLst = bindLst.map{ bind =>
+            bind.radarfigure = radarLst.find(_.id == bind.radar_id)
+            bind
         }
     }
 

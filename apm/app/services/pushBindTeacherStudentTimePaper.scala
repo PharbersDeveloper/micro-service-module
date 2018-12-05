@@ -19,7 +19,8 @@ case class pushBindTeacherStudentTimePaper()(implicit val rq: Request[model.Root
     override def prepare: Unit = {}
 
     override def exec: Unit = {
-        auth = forward("123.56.179.133", "18025")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+//        auth = forward("123.56.179.133", "18025")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        auth = forward("apm_pushbindteacherstudenttimepaper", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(auth))

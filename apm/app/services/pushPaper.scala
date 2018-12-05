@@ -41,7 +41,8 @@ case class pushPaper()(implicit val rq: Request[model.RootObject], dbt: DBManage
         bind_data.user_id = auth.user.get.id
         bind_data.course_id = insert_data.course.get.id
         bind_data.paper_id = insert_data.id
-        forward("123.56.179.133", "18017")(api + (cur_step + 1)).post(toJsonapi(bind_data).asJson.noSpaces).check()
+//        forward("123.56.179.133", "18017")(api + (cur_step + 1)).post(toJsonapi(bind_data).asJson.noSpaces).check()
+        forward("apm_pushbindusercoursepaper", "9000")(api + (cur_step + 1)).post(toJsonapi(bind_data).asJson.noSpaces).check()
         insert_data.course = None
     }
 

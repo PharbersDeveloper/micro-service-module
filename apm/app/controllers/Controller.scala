@@ -22,6 +22,7 @@ class Controller @Inject()(implicit val cc: ControllerComponents,
 
     def routes(v: String, pkg: String, step: Int): Action[RootObject] = Action(circe.json[RootObject]) { implicit request =>
         (pkg, step) match {
+            case ("publicKey", 0) => Ok(PlayEntry().excution(findPublicKeyByCompanyID()).asJson)
             case ("login", 0) => Ok(PlayEntry().excution(login()).asJson)
             case ("emailVerify", 0) => Ok(PlayEntry().excution(emailVerify()).asJson)
             case ("userRegister", 0) => Ok(PlayEntry().excution(userRegister()).asJson)

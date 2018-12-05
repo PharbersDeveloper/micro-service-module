@@ -23,7 +23,7 @@ case class findBindTeacherStudentTimePaperCount()(implicit val rq: Request[model
     var result: Long = 0L
 
     override def prepare: Unit = {
-        parseToken(rq)
+        existToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 

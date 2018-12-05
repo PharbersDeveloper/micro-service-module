@@ -27,13 +27,15 @@ case class userRegister()(implicit val rq: Request[model.RootObject], dbt: DBMan
 
     override def exec: Unit = {
         val company_id: String = "5bd16a83ed925c081c056966"
-        val role_id: String = "5bd1a068eeefcc015029cb88"
+        val product_id_1: String = "5bd2a347eeefcc014e395234"
+        val role_id_1: String = "5bd1a068eeefcc015029cb88"
         val course_id_1: String = "5baa0e58eeefcc05923c9414"
         val course_id_2: String = "5baa1d78eeefcc05923c9424"
         emailVerify(user_data.email)
         val user_id = insertUser(user_data, company_id)
         insertBindCompanyUser(company_id, user_id)
-        insertBindUserRole(user_id, role_id)
+        insertBindUserProduct(user_id, product_id_1)
+        insertBindUserRole(user_id, role_id_1)
         insertBindUserCourse(user_id, course_id_1)
         insertBindUserCourse(user_id, course_id_2)
     }
@@ -65,6 +67,14 @@ case class userRegister()(implicit val rq: Request[model.RootObject], dbt: DBMan
         bind_data.company_id = company_id
         bind_data.user_id = user_id
         insertObject[bind_company_user](bind_data)
+    }
+
+    def insertBindUserProduct(user_id: String, product_id: String): Unit = {
+        val bind_data = new bind_user_product
+        bind_data.`type` = "bind_user_product"
+        bind_data.user_id = user_id
+        bind_data.product_id = product_id
+        insertObject[bind_user_product](bind_data)
     }
 
     def insertBindUserRole(user_id: String, role_id: String): Unit = {

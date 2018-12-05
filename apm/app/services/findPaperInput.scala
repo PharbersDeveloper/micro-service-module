@@ -27,7 +27,7 @@ case class findPaperInput()(implicit val rq: Request[model.RootObject], dbt: DBM
     var paperInputLst: List[paperinput] = Nil
 
     override def prepare: Unit = {
-        parseToken(rq)
+        existToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 

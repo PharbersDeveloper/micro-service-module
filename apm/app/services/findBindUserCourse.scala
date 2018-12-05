@@ -25,7 +25,7 @@ case class findBindUserCourse()(implicit val rq: Request[model.RootObject], dbt:
 
     var auth_data: auth = null
     var courseIdLst: List[bind_user_course] = Nil
-    var courseLst: List[course] = Nil
+    var courseLstStr: String = ""
 
     override def prepare: Unit = auth_data = parseToken(rq)
 
@@ -41,19 +41,11 @@ case class findBindUserCourse()(implicit val rq: Request[model.RootObject], dbt:
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
         request.res = "course"
-
-        courseLst = courseIdLst.map { x =>
-            request.eqcond = None
-            val ec = eqcond()
-            ec.key = "id"
-            ec.`val` = x.course_id
-            request.eqcond = Some(List(ec))
-//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18004")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val rootObject = decodeJson[model.RootObject](parseJson(str))
-            formJsonapi[course](rootObject)
-        }
+        request.fmcond = Some(fm2c(0, 1000))
+        request.incond = Some(in2c("id", courseIdLst.map(_.course_id)) :: Nil)
+        courseLstStr = forward("123.56.179.133", "19102")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+//        courseLstStr = forward("apm_findcourse", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
     }
 
-    override def goback: model.RootObject = toJsonapi(courseLst)
+    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(courseLstStr))
 }

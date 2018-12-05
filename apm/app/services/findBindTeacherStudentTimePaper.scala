@@ -14,13 +14,13 @@ case class findBindTeacherStudentTimePaper()(implicit val rq: Request[model.Root
 
     override val brick_name: String = "find BindTeacherStudentTimePaper"
     var login_data: request = null
-    var auth: String = ""
+    var paperLstStr: String = ""
 
     override def prepare: Unit = {}
 
     override def exec: Unit = {
-        auth = forward("123.56.179.133", "18026")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        paperLstStr = forward("123.56.179.133", "18026")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
-    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(auth))
+    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(paperLstStr))
 }

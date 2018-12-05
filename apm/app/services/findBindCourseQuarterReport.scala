@@ -24,7 +24,7 @@ case class findBindCourseQuarterReport()(implicit val rq: Request[model.RootObje
 
     var request_data: request = null
     var qrIdLst: List[bind_course_goods_quarter_report] = Nil
-    var apm_quarter_report: String = null
+    var apm_quarter_report_str: String = null
 
     override def prepare: Unit = {
         existToken(rq)
@@ -42,12 +42,12 @@ case class findBindCourseQuarterReport()(implicit val rq: Request[model.RootObje
                 ec.key = "id"
                 ec.`val` = one.quarter_report_id
                 request.eqcond = Some(List(ec))
-//                val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-                apm_quarter_report = forward("123.56.179.133", "18012")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+//                apm_quarter_report = forward("123.56.179.133", "18012")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+                apm_quarter_report_str = forward("apm_findquarterreportbyid", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
             case _ => throw new Exception("find more quarter_report")
 
         }
     }
 
-    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(apm_quarter_report))
+    override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(apm_quarter_report_str))
 }

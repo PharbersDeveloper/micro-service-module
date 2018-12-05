@@ -34,7 +34,7 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
     val NEW_CHARSET: String = "GB2312"
 
     override def prepare: Unit = {
-        existToken(rq)
+//        existToken(rq) // 前端无法发送token
         request_data = formJsonapi[request](rq.body)
     }
 

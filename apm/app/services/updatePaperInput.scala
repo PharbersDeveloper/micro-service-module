@@ -28,7 +28,7 @@ case class updatePaperInput()(implicit val rq: Request[model.RootObject], dbt: D
     var update_result: Int = 0
 
     override def prepare: Unit = {
-        parseToken(rq)
+        existToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 

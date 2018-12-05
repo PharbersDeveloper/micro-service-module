@@ -27,7 +27,7 @@ case class updatePaper2Done()(implicit val rq: Request[model.RootObject], dbt: D
     var request_data: request = null
 
     override def prepare: Unit = {
-        parseToken(rq)
+        existToken(rq)
         request_data = formJsonapi[request](rq.body)
     }
 
@@ -46,7 +46,8 @@ case class updatePaper2Done()(implicit val rq: Request[model.RootObject], dbt: D
     }
 
     override def forwardTo(next_brick: String): Unit = {
-        forward("123.56.179.133", "18024")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+//        forward("123.56.179.133", "18024")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        forward("apm_calc_unit", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = {

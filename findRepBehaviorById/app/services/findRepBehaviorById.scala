@@ -17,19 +17,19 @@ case class findRepBehaviorById()(implicit val rq: Request[model.RootObject], dbt
     import com.pharbers.macros._
     import com.pharbers.macros.convert.jsonapi.JsonapiMacro._
 
-    override val brick_name: String = "find repbehaviorreport by id"
+    override val brick_name: String = "query multi repbehaviorreport by request"
 
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var rep_behavior_data: repbehaviorreport = null
+    var rep_behavior_data: List[repbehaviorreport] = Nil
 
     override def prepare: Unit = {
         request_data = formJsonapi[request](rq.body)
     }
 
     override def exec: Unit = rep_behavior_data =
-            queryObject[repbehaviorreport](request_data).getOrElse(throw new Exception("Could not find specified rep_behavior_report"))
+            queryMultipleObject[repbehaviorreport](request_data)//.getOrElse(throw new Exception("Could not find specified rep_behavior_report"))
 
     override def goback: model.RootObject = toJsonapi(rep_behavior_data)
 }

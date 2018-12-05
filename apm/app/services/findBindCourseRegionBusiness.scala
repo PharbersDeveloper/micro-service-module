@@ -41,12 +41,9 @@ case class findBindCourseRegionBusiness()(implicit val rq: Request[model.RootObj
         val resultStr = forward("apm_findbusiness", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
         val businessLst = formJsonapiLst[businessreport](decodeJson[model.RootObject](parseJson(resultStr)))
 
-        if(businessLst.length != bindLst.length) throw new Exception("Could not find specified business_report")
-
-        val these = bindLst.iterator
-        val those = businessLst.iterator
-        while (these.hasNext && those.hasNext){
-            these.next().businessreport = Some(those.next())
+        bindLst = bindLst.map{ bind =>
+            bind.businessreport = businessLst.find(_.id == bind.business_id)
+            bind
         }
     }
 

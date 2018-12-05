@@ -21,14 +21,13 @@ case class findRepById()(implicit val rq: Request[model.RootObject], dbt: DBMana
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var rep_data: representative = null
+    var rep_data: List[representative] = Nil
 
     override def prepare: Unit = {
         request_data = formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = rep_data =
-            queryObject[representative](request_data).getOrElse(throw new Exception("Could not find specified representative"))
+    override def exec: Unit = rep_data = queryMultipleObject[representative](request_data)//.getOrElse(throw new Exception("Could not find specified representative"))
 
     override def goback: model.RootObject = toJsonapi(rep_data)
 }

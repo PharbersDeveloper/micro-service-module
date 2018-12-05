@@ -5,7 +5,7 @@ import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
 import com.pharbers.jsonapi.model
 import com.pharbers.macros.convert.mongodb.TraitRequest
 import com.pharbers.models.entity.{bind_course_region_time_rep_behavior, repbehaviorreport}
-import com.pharbers.models.request.{eq2c, request}
+import com.pharbers.models.request.{fm2c, in2c, request}
 import com.pharbers.mongodb.dbtrait.DBTrait
 import com.pharbers.pattern.frame._
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
@@ -23,28 +23,29 @@ case class findBindCourseRegionTimeRepBehavior()(implicit val rq: Request[model.
     implicit val db: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
     var request_data: request = null
-    var behaviorIdLst: List[bind_course_region_time_rep_behavior] = Nil
+    var bindLst: List[bind_course_region_time_rep_behavior] = Nil
 
     override def prepare: Unit = request_data = {
-        parseToken(rq)
+        existToken(rq)
         formJsonapi[request](rq.body)
     }
 
-    override def exec: Unit = behaviorIdLst = queryMultipleObject[bind_course_region_time_rep_behavior](request_data)
+    override def exec: Unit = bindLst = queryMultipleObject[bind_course_region_time_rep_behavior](request_data)
 
     override def forwardTo(next_brick: String): Unit = {
         val request = new request()
         request.res = "rep_behavior_report"
+        request.fmcond = Some(fm2c(0, 1000))
+        request.incond = Some(in2c("id", bindLst.map(_.rep_behavior_id)) :: Nil)
+//        val resultStr = forward("123.56.179.133", "19101")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        val resultStr = forward("apm_findrepbehavior", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        val repBehaviorLst = formJsonapiLst[repbehaviorreport](decodeJson[model.RootObject](parseJson(resultStr)))
 
-        behaviorIdLst = behaviorIdLst.map { x =>
-            request.eqcond = None
-            request.eqcond = Some(eq2c("id", x.rep_behavior_id) :: Nil)
-//            val str = forward(next_brick)(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            val str = forward("123.56.179.133", "18010")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-            x.repbehaviorreport = Some(formJsonapi[repbehaviorreport](decodeJson[model.RootObject](parseJson(str))))
-            x
+        bindLst = bindLst.map{ bind =>
+            bind.repbehaviorreport = repBehaviorLst.find(_.id == bind.rep_behavior_id)
+            bind
         }
     }
 
-    override def goback: model.RootObject = toJsonapi(behaviorIdLst)
+    override def goback: model.RootObject = toJsonapi(bindLst)
 }

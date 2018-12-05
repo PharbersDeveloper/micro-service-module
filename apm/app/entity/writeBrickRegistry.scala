@@ -31,6 +31,7 @@ object writeBrickRegistry extends App {
         "/api/v1/evaluationLine/" -> List("127.0.0.1"),
         "/api/v1/evaluationCards/" -> List("127.0.0.1")
     ) ++ Map(
+        "/api/v1/publicKey/" -> List("127.0.0.1"),
         "/api/v1/login/" -> List("127.0.0.1", "encrypttoken"),
         "/api/v1/emailVerify/" -> List("127.0.0.1"),
         "/api/v1/userRegister/" -> List("127.0.0.1"),
