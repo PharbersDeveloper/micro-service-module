@@ -29,7 +29,7 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
     var request_data: request = null
     var result_str: String = ""
 
-    val SEP: String = ", "
+    val SEP: String = ","
     val OLD_CHARSET: String = "UTF-8"
     val NEW_CHARSET: String = "GB2312"
 
@@ -98,7 +98,7 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
                 outputStream.append(all_unit).append(SEP)
                 outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).unit.toIntPercent).append(SEP)
                 outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).contri.toPercent).append(SEP)
-                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).share.toPercent).append(SEP)
+                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).share.toPercent)
                 outputStream.append("\n")
             }
         }
