@@ -33,7 +33,8 @@ case class findBindTeacherStudentTimePaperCount()(implicit val rq: Request[model
 
     override def goback: model.RootObject = model.RootObject(Some(
         model.RootObject.ResourceObject(
-            `type` = "result",
+            id = Some("countresult"),
+            `type` = "countresult",
             attributes = Some(Seq(
                 model.Attribute(
                     "count",

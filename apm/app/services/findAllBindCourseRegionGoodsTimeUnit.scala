@@ -6,6 +6,7 @@ import com.pharbers.pattern.frame._
 import com.pharbers.models.request._
 import com.pharbers.pattern.common.PhToken
 import com.pharbers.jsonapi.json.circe.CirceJsonapiSupport
+import com.pharbers.models.service.auth
 import com.pharbers.pattern.module.{DBManagerModule, RedisManagerModule}
 
 case class findAllBindCourseRegionGoodsTimeUnit()(implicit val rq: Request[model.RootObject], dbt: DBManagerModule, rd: RedisManagerModule)
@@ -21,8 +22,14 @@ case class findAllBindCourseRegionGoodsTimeUnit()(implicit val rq: Request[model
     override def prepare: Unit = {}
 
     override def exec: Unit = {
-//        result = forward("123.56.179.133", "19005")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
-        result = forward("findallbindcourseregiongoodstimeunit", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        val key = rq.body.asJson.noSpaces
+        result = if (rd.exsits(key)) rd.getString(key) else {
+//            val tmp = forward("123.56.179.133", "19005")(api + (cur_step + 1)).post(key).check()
+            val tmp = forward("findallbindcourseregiongoodstimeunit", "9000")(api + (cur_step + 1)).post(key).check()
+            rd.addString(key, tmp)
+            rd.expire(key, new auth().token_expire)
+            tmp
+        }
     }
 
     override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(result))

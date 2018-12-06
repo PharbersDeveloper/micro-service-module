@@ -21,7 +21,7 @@ case class userRegister()(implicit val rq: Request[model.RootObject], dbt: DBMan
 
     override def exec: Unit = {
 //        val str = forward("123.56.179.133", "19002")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
-        val str = forward("userregister", "19002")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        val str = forward("userregister", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
         user_data = formJsonapi[user](decodeJson[model.RootObject](parseJson(str)))
     }
 
