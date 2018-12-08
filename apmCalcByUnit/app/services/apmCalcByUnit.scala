@@ -50,14 +50,14 @@ case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBMa
 
         val modelMap = queryModelMap()
 
-        val goodsSalesInfoLst = queryGoodsSales(
+        val goodsUnitInfoLst = queryGoodsUnit(
             courseId = courseId, allRegion = allRegion,
             beforeTime = before_time, genTime = gen_time,
             currentGoodsId = currentGoodsId, competIdLst = competIdLst
         )
 
         val goodsReportLstTmp = paperinputLst.map { paperinput =>
-            generateSingleReport(currentGoodsId, paperinput)(before_time, gen_time)(goodsSalesInfoLst, answerLst, modelMap)
+            generateSingleReport(currentGoodsId, paperinput)(before_time, gen_time)(goodsUnitInfoLst, answerLst, modelMap)
         }
 
         val unitSum = goodsReportLstTmp.map(_.apmreport.get.unit).sum
@@ -70,7 +70,7 @@ case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBMa
             bind
         }
 
-        val productReportLst = generateProductReportLst(currentGoodsId, competIdLst)(allRegion, before_time, gen_time)(unitSum, goodsSalesInfoLst)
+        val productReportLst = generateProductReportLst(currentGoodsId, competIdLst)(allRegion, before_time, gen_time)(unitSum, goodsUnitInfoLst)
 
         allReportLst = goodsReportLst ::: productReportLst
         allReportLst.foreach { reportInfo =>
@@ -153,13 +153,13 @@ case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBMa
         result.toMap
     }
 
-    def queryGoodsSales(courseId: String, allRegion: String,
+    def queryGoodsUnit(courseId: String, allRegion: String,
                         beforeTime: String, genTime: String,
                         currentGoodsId: String, competIdLst: List[String]): List[bind_course_region_goods_time_unit] = {
 
         implicit val db_client: DBTrait[TraitRequest] = dbt.queryDBInstance("client").get.asInstanceOf[DBTrait[TraitRequest]]
 
-        def querySales(unit_id: String): unit = {
+        def queryUnit(unit_id: String): unit = {
             val rq = new request()
             rq.res = "unit"
             rq.eqcond = Some(eq2c("_id", unit_id) :: Nil)
@@ -169,13 +169,13 @@ case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBMa
             }
         }
 
-        def querySalesAndBindInfo(course_id: String, region_id: String, goods_id: String, time: String): bind_course_region_goods_time_unit = {
+        def queryUnitAndBindInfo(course_id: String, region_id: String, goods_id: String, time: String): bind_course_region_goods_time_unit = {
             val rq = new request()
             rq.res = "bind_course_region_goods_time_unit"
             rq.eqcond = Some(eq2c("course_id", course_id) :: eq2c("region_id", region_id) :: eq2c("goods_id", goods_id) :: eq2c("time", time) :: Nil)
             queryObject[bind_course_region_goods_time_unit](rq) match {
                 case Some(one) =>
-                    one.unit = Some(querySales(one.unit_id))
+                    one.unit = Some(queryUnit(one.unit_id))
                     one
                 case None => throw new Exception("Could not find specified unit")
             }
@@ -192,36 +192,36 @@ case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBMa
             }
         }
 
-        val allGoodsLastAllRegionSales = (currentGoodsId :: competIdLst).map(querySalesAndBindInfo(courseId, allRegion, _, beforeTime))
+        val allGoodsLastAllRegionUnit = (currentGoodsId :: competIdLst).map(queryUnitAndBindInfo(courseId, allRegion, _, beforeTime))
 
         val reginonIdLst = queryRegionIdLst(courseId).filter(_ != allRegion)
-        val curGoodsLastSingleRegionSales = reginonIdLst.map(regionId => querySalesAndBindInfo(courseId, regionId, currentGoodsId, beforeTime))
-        val curGoodsGenSingleRegionSales = reginonIdLst.map(regionId => querySalesAndBindInfo(courseId, regionId, currentGoodsId, genTime))
+        val curGoodsLastSingleRegionUnit = reginonIdLst.map(regionId => queryUnitAndBindInfo(courseId, regionId, currentGoodsId, beforeTime))
+        val curGoodsGenSingleRegionUnit = reginonIdLst.map(regionId => queryUnitAndBindInfo(courseId, regionId, currentGoodsId, genTime))
 
-        allGoodsLastAllRegionSales ::: curGoodsLastSingleRegionSales ::: curGoodsGenSingleRegionSales
+        allGoodsLastAllRegionUnit ::: curGoodsLastSingleRegionUnit ::: curGoodsGenSingleRegionUnit
     }
 
     def generateSingleReport(curGoodsId: String, input: paperinput)
                             (beforeTime: String, genTime: String)
-                            (goodsSalesInfoLst: List[bind_course_region_goods_time_unit],
+                            (goodsUnitInfoLst: List[bind_course_region_goods_time_unit],
                              answerLst: List[answer],
                              modelMap: Map[String, Map[Double, Double]]): bind_paper_region_goods_time_report = {
 
-        val beforeTimeSales = goodsSalesInfoLst.find(x => x.goods_id == curGoodsId && x.time == beforeTime && x.region_id == input.region_id)
+        val beforeTimeUnit = goodsUnitInfoLst.find(x => x.goods_id == curGoodsId && x.time == beforeTime && x.region_id == input.region_id)
                 .get.unit.get
-        val genTimeSales = goodsSalesInfoLst.find(x => x.goods_id == curGoodsId && x.time == genTime && x.region_id == input.region_id)
+        val genTimeUnit = goodsUnitInfoLst.find(x => x.goods_id == curGoodsId && x.time == genTime && x.region_id == input.region_id)
                 .get.unit.get
 
         def genReport: apm_unit_report = {
             val report = new apm_unit_report()
             report.`type` = "report"
             report.growth = getPaperScore(input)(answerLst, modelMap)
-            report.unit = (beforeTimeSales.unit * (1 + report.growth)).toLong
-            report.potential = genTimeSales.potential
-            report.potential_contri = genTimeSales.potential_contri
+            report.unit = (beforeTimeUnit.unit * (1 + report.growth)).toLong
+            report.potential = genTimeUnit.potential
+            report.potential_contri = genTimeUnit.potential_contri
             report.share = report.unit / report.potential
-            report.share_change = report.share - beforeTimeSales.share
-            report.company_target = genTimeSales.company_target
+            report.share_change = report.share - beforeTimeUnit.share
+            report.company_target = genTimeUnit.company_target
             report.achieve_rate = report.unit / report.company_target
             report
         }
@@ -292,41 +292,41 @@ case class apmCalcByUnit()(implicit val rq: Request[model.RootObject], dbt: DBMa
 
     def generateProductReportLst(currentGoodsId: String, competIdLst: List[String])
                                 (allRegion: String, beforeTime: String, genTime: String)
-                                (unitSum: Double, goodsSalesInfoLst: List[bind_course_region_goods_time_unit]): List[bind_paper_region_goods_time_report] = {
-        val curGoodsLastAllRegionSalesInfo = goodsSalesInfoLst.find(x => x.goods_id == currentGoodsId && x.time == beforeTime && x.region_id == allRegion).get
-        val competLastAllRegionSalesInfo = competIdLst.map( competId =>
-            goodsSalesInfoLst.find(x => x.goods_id == competId && x.time == beforeTime && x.region_id == allRegion).get
+                                (unitSum: Double, goodsUnitInfoLst: List[bind_course_region_goods_time_unit]): List[bind_paper_region_goods_time_report] = {
+        val curGoodsLastAllRegionUnitInfo = goodsUnitInfoLst.find(x => x.goods_id == currentGoodsId && x.time == beforeTime && x.region_id == allRegion).get
+        val competLastAllRegionUnitInfo = competIdLst.map( competId =>
+            goodsUnitInfoLst.find(x => x.goods_id == competId && x.time == beforeTime && x.region_id == allRegion).get
         )
-        val allGoodsLastAllRegionSalesInfo = curGoodsLastAllRegionSalesInfo :: competLastAllRegionSalesInfo
-        val curSales: Double = curGoodsLastAllRegionSalesInfo.unit.get.unit
-        val lastSumSales: Double = allGoodsLastAllRegionSalesInfo.map(_.unit.get.unit).sum
+        val allGoodsLastAllRegionUnitInfo = curGoodsLastAllRegionUnitInfo :: competLastAllRegionUnitInfo
+        val curUnit: Double = curGoodsLastAllRegionUnitInfo.unit.get.unit
+        val lastSumUnit: Double = allGoodsLastAllRegionUnitInfo.map(_.unit.get.unit).sum
 
-        def genReport(lastSalesInfo: bind_course_region_goods_time_unit): apm_unit_report = {
-            val lastSales = lastSalesInfo.unit.get
+        def genReport(lastUnitInfo: bind_course_region_goods_time_unit): apm_unit_report = {
+            val lastUnit = lastUnitInfo.unit.get
             val report = new apm_unit_report()
             report.`type` = "report"
-            if(lastSalesInfo.goods_id == currentGoodsId)
-                report.unit = unitSum.toLong
+            if(lastUnitInfo.goods_id == currentGoodsId)
+                report.unit = (unitSum * 0.86).toLong
             else
-                report.unit = ((lastSumSales - unitSum) * lastSales.unit / (lastSumSales - curSales)).toLong
-            report.share = report.unit / lastSumSales
-            report.potential = lastSales.potential
-            report.potential_contri = lastSales.potential_contri
-            report.share_change = report.share - lastSales.share
+                report.unit = ((lastSumUnit - unitSum) * lastUnit.unit / (lastSumUnit - curUnit) * 0.86).toLong
+            report.share = report.unit / lastSumUnit
+            report.potential = lastUnit.potential
+            report.potential_contri = lastUnit.potential_contri
+            report.share_change = report.share - lastUnit.share
 
             report
         }
 
-        allGoodsLastAllRegionSalesInfo.map { lastSalesInfo =>
+        allGoodsLastAllRegionUnitInfo.map { lastUnitInfo =>
             val bind_data = new bind_paper_region_goods_time_report
             bind_data.`type` = "bind_paper_region_goods_time_report"
             bind_data.course_id = courseId
             bind_data.paper_id = paperId
             bind_data.region_id = allRegion
-            bind_data.goods_id = lastSalesInfo.goods_id
+            bind_data.goods_id = lastUnitInfo.goods_id
             bind_data.time_type = "season"
             bind_data.time = genTime
-            bind_data.apmreport = Some(genReport(lastSalesInfo))
+            bind_data.apmreport = Some(genReport(lastUnitInfo))
             bind_data
         }
     }
