@@ -1,0 +1,58 @@
+<pharbers-modules>
+    <error_code>
+        <!-- system error -->
+        <error reason="no db connection" code="-1" description="无数据库连接" />
+        <error reason="no redis connection" code="-2" description="无redis连接" />
+        <error reason="no network connection" code="-3" description="无网络连接" />
+
+        <!-- common error -->
+        <error reason="not implement" code="-101" description="工程师正在玩命的开发中" />
+        <error reason="input wrong" code="-102" description="输入的参数有错误" />
+        <error reason="Bad Request for input" code="-103" description="输入的参数有错误" />
+        <error reason="upload error" code="-104" description="上传出错" />
+        <error reason="data not exist" code="-105" description="数据不存在" />
+
+        <!-- company error -->
+        <error reason="company name has been use" code="-201" description="公司名已被使用" />
+
+        <!-- user error -->
+        <error reason="user email has been use" code="-301" description="用户邮箱已被使用" />
+        <error reason="email or password error" code="-302" description="邮箱或密码错误" />
+        <error reason="user not exist" code="-303" description="用户不存在" />
+        <error reason="token expired" code="-304" description="token过期" />
+        <error reason="token parse error" code="-304" description="token数据解析出现错误" />
+
+        <!-- action error -->
+        <error reason="Could not find specified course" code="-501" description="未找到指定课程" />
+        <error reason="Could not find specified region" code="-501" description="未找到指定区域" />
+        <error reason="Could not find specified medicine" code="-502" description="未找到指定药品" />
+        <error reason="Could not find specified representative" code="-503" description="未找到指定代表" />
+        <error reason="Could not find specified sales" code="-504" description="未找到指定销售记录" />
+        <error reason="Could not find specified radar_figure" code="-505" description="未找到指定雷达图" />
+        <error reason="Could not find specified business_report" code="-506" description="未找到指定业务报告" />
+        <error reason="Could not find specified rep_behavior_report" code="-507" description="未找到指定代表行为报告" />
+        <error reason="Could not find specified paper" code="-508" description="未找到指定试卷" />
+        <error reason="Could not find specified action_plan" code="-509" description="未找到指定行动计划" />
+        <error reason="update failed for paper" code="-510" description="更新失败" />
+        <error reason="update failed for paper_input" code="-510" description="更新失败" />
+        <error reason="Could not find specified apm_quarter_report" code="-511" description="未找到指定季度报告" />
+        <error reason="Could not find specified apm_report" code="-512" description="未找到指定报告" />
+        <error reason="find more quarter_report" code="-513" description="找到多条季度报告" />
+        <error reason="Could not find specified exam require" code="-514" description="未找到指定考试条件" />
+        <error reason="find more exam_requires" code="-515" description="找到多条考试条件" />
+        <error reason="R call fails" code="-516" description="R调用失败" />
+
+        <!-- third error -->
+        <!-- EM error -->
+        <error reason="user email has been use for EM" code="-9001" description="用户邮箱已被使用 for EM" />
+        <error reason="email or password error for EM" code="-9002" description="邮箱或密码错误 for EM" />
+        <error reason="user not exist for EM" code="-9003" description="用户不存在 for EM" />
+        <error reason="group name has been use for EM" code="-9004" description="群组名称已被使用 for EM" />
+        <error reason="group not exist for EM" code="-9005" description="群组不存在 for EM" />
+        <error reason="user is already in the group for EM" code="-9006" description="用户已在该组中 for EM" />
+
+        <!-- unknown error -->
+        <error reason="unknown error" code="-9999" description="unknown error" />
+
+    </error_code>
+</pharbers-modules>

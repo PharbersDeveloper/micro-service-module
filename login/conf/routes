@@ -1,0 +1,7 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+POST    /api/:v/:pkg/:step               controllers.Controller.routes(v: String, pkg: String, step: Int)
+POST    /api/:v/:pkg1/:pkg2/:step        controllers.Controller.routes2(v: String, pkg1: String, pkg2: String, step: Int)

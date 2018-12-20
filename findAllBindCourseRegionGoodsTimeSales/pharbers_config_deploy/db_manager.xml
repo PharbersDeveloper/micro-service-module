@@ -1,0 +1,6 @@
+<pharbers-modules>
+    <mongodb-connect-nodes>
+        <connect-config-path name="client" value="pharbers_config/client_connect.xml" />
+        <connect-config-path name="apm_report" value="pharbers_config/apm_report_connect.xml" />
+    </mongodb-connect-nodes>
+</pharbers-modules>
