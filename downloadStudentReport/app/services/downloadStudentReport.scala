@@ -77,7 +77,7 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
 
             val reportLst = layout.paper.get.reportLst.get
             val goods_id = reportLst.filter(_.region_id != "all").map(_.goods_id).distinct.head
-            val all_share = getReport(goods_id, "all")(reportLst).share.toPercent
+            val all_share = getReport(goods_id, "all")(reportLst).share.toPercentStr
             val all_unit = getReport(goods_id, "all")(reportLst).unit.toInt
 
             layout.paper.get.inputLst.get.foreach { paper_region =>
@@ -96,9 +96,9 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
                 outputStream.append(paper_region.action_plans.mkString(";")).append(SEP)
                 outputStream.append(all_share).append(SEP)
                 outputStream.append(all_unit).append(SEP)
-                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).unit.toIntPercent).append(SEP)
-                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).contri.toPercent).append(SEP)
-                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).share.toPercent)
+                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).unit.toIntStr).append(SEP)
+                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).contri.toPercentStr).append(SEP)
+                outputStream.append(getReport(goods_id, paper_region.region_id)(reportLst).share.toPercentStr)
                 outputStream.append("\n")
             }
         }
@@ -191,7 +191,8 @@ case class downloadStudentReport()(implicit val rq: Request[model.RootObject], d
     }
 
     implicit class numberTransform(double: Double) {
-        def toPercent: String = (double * 100).formatted("%.2f")
-        def toIntPercent: String = (double * 100).toInt.toString
+        def toPercentStr: String = (double * 100).formatted("%.2f")
+        def toIntPercentStr: String = (double * 100).toInt.toString
+        def toIntStr: String = double.toInt.toString
     }
 }
