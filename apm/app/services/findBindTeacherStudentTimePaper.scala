@@ -19,7 +19,7 @@ case class findBindTeacherStudentTimePaper()(implicit val rq: Request[model.Root
     override def prepare: Unit = {}
 
     override def exec: Unit = {
-        paperLstStr = forward("123.56.179.133", "18026")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
+        paperLstStr = forward("apm_findbindteacherstudenttimepaper", "9000")(api + (cur_step + 1)).post(rq.body.asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(paperLstStr))

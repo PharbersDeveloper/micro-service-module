@@ -37,8 +37,8 @@ case class findBindCourseRegion()(implicit val rq: Request[model.RootObject], db
         val request = new request()
         request.res = "region"
         request.incond = Some(in2c("id", regionIdLst.map(_.region_id)) :: Nil)
-        regionLstStr = forward("123.56.179.133", "19008")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-//        regionLstStr = forward("apm_findregion", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+//        regionLstStr = forward("123.56.179.133", "19008")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        regionLstStr = forward("apm_findregion", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(regionLstStr))

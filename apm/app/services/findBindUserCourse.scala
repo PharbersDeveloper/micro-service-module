@@ -43,8 +43,8 @@ case class findBindUserCourse()(implicit val rq: Request[model.RootObject], dbt:
         request.res = "course"
         request.fmcond = Some(fm2c(0, 1000))
         request.incond = Some(in2c("id", courseIdLst.map(_.course_id)) :: Nil)
-        courseLstStr = forward("123.56.179.133", "19102")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
-//        courseLstStr = forward("apm_findcourse", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+//        courseLstStr = forward("123.56.179.133", "19102")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
+        courseLstStr = forward("apm_findcourse", "9000")(api + (cur_step + 1)).post(toJsonapi(request).asJson.noSpaces).check()
     }
 
     override def goback: model.RootObject = decodeJson[model.RootObject](parseJson(courseLstStr))
